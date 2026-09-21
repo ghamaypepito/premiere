@@ -1,0 +1,14 @@
+# Full-size Higgsfield originals (7-10 MB each). Web-sized copies are
+# committed under assets/web, assets/embed, assets/light/web and assets/wp.
+assets/*.png
+assets/light/*.png
+
+# Scratch previews and contact sheets
+assets/preview/
+assets/light/prev/
+brand/logo/_*.png
+
+# OS / editor noise
+Thumbs.db
+desktop.ini
+.DS_Store

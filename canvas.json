@@ -1,0 +1,16 @@
+{
+  "artboards": [
+    { "file": "Sitemap.dc.html",    "x": 0,    "y": 0,     "w": 1240, "h": 1000 },
+    { "file": "Main.dc.html",       "x": 0,    "y": 1120,  "w": 1760, "h": 5600, "title": "Home" },
+    { "file": "HomeMobile.dc.html", "x": 1880, "y": 1120,  "w": 700,  "h": 4200, "title": "Home / mobile 390" },
+    { "file": "Succession.dc.html", "x": 0,    "y": 6840,  "w": 1760, "h": 4700, "title": "Succession & Continuity (flagship)" },
+    { "file": "Approach.dc.html",   "x": 1880, "y": 6840,  "w": 1760, "h": 3500, "title": "Our Approach" },
+    { "file": "WhoWeAre.dc.html",   "x": 0,    "y": 11660, "w": 1760, "h": 3500, "title": "Who We Are" },
+    { "file": "Insights.dc.html",   "x": 1880, "y": 11660, "w": 1760, "h": 3100, "title": "Insights" },
+    { "file": "Contact.dc.html",    "x": 0,    "y": 15280, "w": 1760, "h": 2700, "title": "Book a Review" }
+  ],
+  "annotations": [
+    { "id": "brief", "x": 1340, "y": 0, "w": 400, "text": "WIREFRAMES - structure and copy only, no visual design yet.\n\nRed handwriting in the right margin of each page explains why a section exists, or flags something that still needs a real fact.\n\nAnything in [SQUARE BRACKETS] is a number, date or story I would not invent. Those come from Premier.\n\nNext after sign-off: brand book, then the cinematic hero, then the Elementor build." }
+  ],
+  "launch": { "view": "canvas" }
+}

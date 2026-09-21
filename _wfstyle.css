@@ -1,0 +1,28 @@
+    *{box-sizing:border-box}
+    body{margin:0;background:#FBFAF7;color:#1C1C1A;font-family:Archivo,'Helvetica Neue',Helvetica,sans-serif;-webkit-font-smoothing:antialiased}
+    a{color:#193153;text-decoration:none}
+    a:hover{color:#F2AF11}
+    .page{width:1440px;background:#FBFAF7}
+    .sec{position:relative;padding:60px 96px;border-bottom:1px dashed #C9C7C0}
+    .tag{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#8B8A84;font-weight:700}
+    .h1{font-size:54px;line-height:1.07;font-weight:700;letter-spacing:-.022em;margin:0}
+    .h2{font-size:34px;line-height:1.16;font-weight:700;letter-spacing:-.016em;margin:0}
+    .h3{font-size:19px;line-height:1.28;font-weight:600;margin:0}
+    .p{font-size:15px;line-height:1.62;color:#4A4944;margin:0}
+    .sm{font-size:13px;line-height:1.5;color:#6E6D67;margin:0}
+    .ln{height:9px;border-radius:5px;background:#E4E2DB}
+    .lns{display:flex;flex-direction:column;gap:9px}
+    .box{background:#E9E7E1;border:1px solid #D4D2CA;display:flex;align-items:center;justify-content:center;color:#8B8A84;font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;text-align:center;padding:8px}
+    .card{background:#F3F1EB;border:1px solid #DEDCD4;padding:24px;display:flex;flex-direction:column;gap:14px}
+    .btn{height:52px;padding:0 26px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;letter-spacing:.01em}
+    .btn-p{background:#F2AF11;color:#193153}
+    .btn-g{border:1.5px solid #193153;color:#193153}
+    .note{position:absolute;left:1466px;width:280px;font-family:Caveat,'Segoe Print',cursive;font-size:19px;line-height:1.26;color:#C0392B}
+    .note b{font-weight:700}
+    .note:before{content:'';position:absolute;left:-24px;top:10px;width:16px;height:2px;background:#C0392B}
+    .nav{background:#193153;height:88px;display:flex;align-items:center;justify-content:space-between;padding:0 96px}
+    .navlink{color:#FFFFFF;font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+    .row{display:flex;gap:24px}
+    .grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
+    .grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+    .grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:48px}

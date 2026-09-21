@@ -1,0 +1,509 @@
+(async () => {
+const U = '/wp-content/uploads/2026/09/';
+const MEDIA = {
+  family:[14,'filipino-family-business-three-generations.jpg'], handover:[15,'family-business-succession-handover.jpg'],
+  council:[16,'family-council-meeting.jpg'], nextgen:[17,'next-generation-family-business-leader.jpg'],
+  warehouse:[18,'professionalizing-family-business-operations.jpg'], advisor:[19,'family-business-consultant-meeting.jpg'],
+  capiz:[20,'capiz-window-light-texture.jpg'], lunch:[21,'filipino-family-sunday-lunch.jpg'],
+  idea:[22,'premier-idea-digital-execution-app.jpg'], pli:[23,'premier-leadership-institute-workshop.jpg'],
+  forum:[24,'family-business-forum-cebu.jpg'], logo:[25,'premier-family-business-consulting-logo.png'],
+  logow:[26,'premier-family-business-consulting-logo-white.png']
+};
+const LINK = { home:'/', who:'/who-we-are/', what:'/what-we-do/', fep:'/what-we-do/family-enterprise-planning/',
+  ose:'/what-we-do/organizational-systems-effectiveness/', idea:'/what-we-do/premier-idea/',
+  pli:'/what-we-do/premier-leadership-institute/', events:'/events/', res:'/resources/', contact:'/get-in-touch/',
+  cal:'https://meetings.hubspot.com/premier-family-business-consulting/exploratory-meeting' };
+const G='#F2AF11', N='#193153', B='#3E4756', M='#5F6674', W='#FFFFFF', P='#F7F6F2', R='#E6E2D9', L='#DCE3EE';
+const SERIF='Newsreader', SANS='Poppins';
+
+const uid = () => Math.random().toString(16).slice(2, 9);
+const px = s => ({unit:'px', size:s, sizes:[]});
+const em = s => ({unit:'em', size:s, sizes:[]});
+const pct = s => ({unit:'%', size:s, sizes:[]});
+const bx = (t,r,b,l) => ({unit:'px', top:String(t), right:String(r), bottom:String(b), left:String(l), isLinked:false});
+const gp = (c, r) => ({unit:'px', size:c, column:String(c), row:String(r === undefined ? c : r), isLinked: r === undefined});
+const img = k => ({id:MEDIA[k][0], url:U + MEDIA[k][1], alt:'', source:'library'});
+const lnk = u => ({url:u, is_external: u.startsWith('http') ? 'on' : '', nofollow:'', custom_attributes:''});
+
+const C = (s, els, inner = true) => ({ id:uid(), elType:'container', isInner:inner,
+  settings: Object.assign({content_width:'full', flex_direction:'column', flex_gap:gp(0), padding:bx(0,0,0,0)}, s),
+  elements: els.filter(Boolean) });
+const S = (o, els) => C(Object.assign({
+    content_width:'boxed', boxed_width:px(1200), flex_direction:'column',
+    padding:bx(o.pt ?? 128, 24, o.pb ?? 128, 24),
+    padding_tablet:bx(o.ptt ?? Math.round((o.pt ?? 128) * 0.75), 32, o.pbt ?? Math.round((o.pb ?? 128) * 0.75), 32),
+    padding_mobile:bx(o.ptm ?? Math.min(o.pt ?? 128, 64), 22, o.pbm ?? Math.min(o.pb ?? 128, 64), 22),
+    flex_gap:gp(o.gap ?? 48)
+  }, o.bg ? {background_background:'classic', background_color:o.bg} : {}, o.s || {}), els, false);
+const Row = (o, els) => C(Object.assign({flex_direction:'row', flex_direction_mobile:'column', flex_gap:gp(o.gap ?? 32, o.rgap),
+  flex_align_items:o.align || 'flex-start', flex_justify_content:o.justify || 'space-between', flex_wrap:o.wrap ? 'wrap' : 'nowrap'}, o.s || {}), els);
+const Col = (w, o, els) => C(Object.assign({width:pct(w), width_mobile:pct(100), flex_direction:'column', flex_gap:gp(o.gap ?? 20)}, o.s || {}), els);
+
+const Wd = (type, s) => ({id:uid(), elType:'widget', widgetType:type, settings:s, elements:[]});
+const typo = (fam, size, o = {}) => Object.assign(
+  {typography_typography:'custom', typography_font_family:fam, typography_font_size:px(size), typography_font_weight:o.w || '400', typography_line_height:em(o.lh || 1.2)},
+  o.ls !== undefined ? {typography_letter_spacing:px(o.ls)} : {},
+  o.tt ? {typography_text_transform:o.tt} : {},
+  o.m ? {typography_font_size_mobile:px(o.m)} : {},
+  o.t ? {typography_font_size_tablet:px(o.t)} : {});
+const H = (text, tag, size, o = {}) => Wd('heading', Object.assign({title:text, header_size:tag, title_color:o.c || N, align:o.align || ''},
+  typo(SERIF, size, {lh:o.lh || 1.12, ls:o.ls ?? -0.5, m:o.m, t:o.t})));
+const EB = (text, o = {}) => Wd('heading', Object.assign({title:text, header_size:'p', title_color:o.c || M, align:o.align || ''},
+  typo(SANS, 12, {w:'600', lh:1.4, ls:2.2, tt:'uppercase'})));
+const T = (html, o = {}) => Wd('text-editor', Object.assign({editor:html, text_color:o.c || B, align:o.align || ''},
+  typo(o.serif ? SERIF : SANS, o.size || 17, {lh:o.lh || 1.7, m:o.m, w:o.w})));
+const IMG = (k, h, o = {}) => Wd('image', Object.assign({image:img(k), image_size:'full', width:pct(100), height:px(h),
+  height_mobile:px(o.hm || Math.round(h * 0.6)), object_fit:'cover', align:'left'}, o.s || {}));
+const LOGO = (k, w) => Wd('image', {image:img(k), image_size:'full', width:px(w), align:'left'});
+const BTN = (text, url, kind = 'p', o = {}) => Wd('button', Object.assign({text, link:lnk(url), align:o.align || 'left', size:'md'},
+  typo(SANS, 15, {w:'600', lh:1.2}),
+  kind === 'p' ? {button_text_color:N, background_color:G, button_background_background:'classic', button_background_color:G,
+      hover_color:N, background_hover_color:'#FFCE60', button_background_hover_background:'classic', button_background_hover_color:'#FFCE60',
+      border_radius:bx(0,0,0,0), text_padding:bx(18,30,18,30)}
+  : kind === 's' ? {button_text_color:N, background_color:'rgba(0,0,0,0)', button_background_background:'classic', button_background_color:'rgba(0,0,0,0)',
+      hover_color:W, background_hover_color:N, button_background_hover_background:'classic', button_background_hover_color:N,
+      border_border:'solid', border_width:bx(1.5,1.5,1.5,1.5), border_color:N, border_radius:bx(0,0,0,0), text_padding:bx(17,28,17,28)}
+  : {button_text_color:N, background_color:'rgba(0,0,0,0)', button_background_background:'classic', button_background_color:'rgba(0,0,0,0)',
+      hover_color:'#0F2340', border_border:'solid', border_width:bx(0,0,1.5,0), border_color:N, border_radius:bx(0,0,0,0), text_padding:bx(4,0,4,0)},
+  o.s || {}));
+const DIV = (color = R, w = 1) => Wd('divider', {color, weight:px(w), gap:px(0)});
+const SP = h => Wd('spacer', {space:px(h), space_mobile:px(Math.round(h / 2))});
+const q = s => '“' + s + '”';
+
+/* ---------- shared blocks ---------- */
+const FOOTER = () => S({bg:N, pt:96, pb:48, ptm:56, pbm:40, gap:48, s:{css_classes:'pfb-footer'}}, [
+  Row({gap:48}, [
+    Col(46, {gap:24}, [
+      LOGO('logow', 220),
+      H('Connect with us to learn how to grow your family business across multiple generations.', 'p', 28, {c:W, lh:1.3, ls:0, m:22}),
+      T('<p><a href="#">LinkedIn</a> &nbsp;&middot;&nbsp; <a href="#">Facebook</a> &nbsp;&middot;&nbsp; <a href="#">YouTube</a> &nbsp;&middot;&nbsp; <a href="#">Instagram</a></p>', {c:L, size:14})
+    ]),
+    Col(18, {gap:12}, [
+      EB('Explore', {c:'#D9DEE7'}),
+      T('<p><a href="/who-we-are/">Who we are</a><br><a href="/what-we-do/">What we do</a><br><a href="/events/">Events</a><br><a href="/resources/">Resources</a></p>', {c:L, size:14, lh:2.1})
+    ]),
+    Col(28, {gap:12}, [
+      EB('Get in touch', {c:'#D9DEE7'}),
+      T('<p><a href="mailto:info@premierfamilybusiness.com">info@premierfamilybusiness.com</a><br>0917 316 9881<br>35F Cebu Exchange Tower, Salinas Drive, Cebu City</p>', {c:L, size:14, lh:1.9}),
+      BTN('Schedule a call', LINK.contact, 'p')
+    ])
+  ]),
+  DIV('#34507A', 1),
+  T('<p>&copy; 2026 Premier Family Business Consulting, Inc. All rights reserved.</p>', {c:'#9FB0C9', size:13})
+]);
+
+const CTA = (title, text, btn = 'Schedule a call', url = LINK.contact) => S({pt:0, pb:144, pbm:64, gap:0}, [
+  Row({gap:40, align:'center', s:{background_background:'classic', background_color:P, padding:bx(80,88,80,88), padding_mobile:bx(40,24,40,24)}}, [
+    Col(64, {gap:14}, [H(title, 'h2', 40, {m:28}), text ? T('<p>' + text + '</p>', {size:17}) : null]),
+    Col(30, {gap:0, s:{flex_align_items:'flex-end', flex_align_items_mobile:'flex-start'}}, [BTN(btn, url, 'p')])
+  ])
+]);
+
+const ANSWER = (question, answer) => S({pt:0, pb:128, pbm:64, gap:0}, [
+  Row({gap:48, s:{background_background:'classic', background_color:P, padding:bx(64,80,64,80), padding_mobile:bx(32,24,36,24)}}, [
+    Col(32, {gap:14}, [EB('In short'), H(question, 'h2', 34, {m:26})]),
+    Col(60, {gap:0}, [T('<p>' + answer + '</p>', {serif:true, size:22, lh:1.6, c:N, m:18})])
+  ])
+]);
+
+const PAGEHERO = (crumb, eyebrow, h1, lede, imgKey, buttons) => S({pt:88, pb:112, ptm:36, pbm:56, gap:0}, [
+  Row({gap:64, align:'center'}, [
+    Col(50, {gap:24}, [
+      T('<p>' + crumb + '</p>', {size:13, c:M}),
+      EB(eyebrow),
+      H(h1, 'h1', 60, {lh:1.05, m:36, t:46}),
+      T('<p>' + lede + '</p>', {size:18.5, m:16}),
+      Row({gap:28, align:'center', justify:'flex-start', s:{flex_align_items_mobile:'stretch'}}, buttons)
+    ]),
+    Col(44, {gap:0}, [IMG(imgKey, 560, {hm:300})])
+  ])
+]);
+
+const PROGRAMCARD = (k, eyebrow, title, desc, url) => C({width:pct(48), width_mobile:pct(100), html_tag:'a', link:lnk(url), flex_gap:gp(14)}, [
+  IMG(k, 360, {hm:230}), SP(8), EB(eyebrow), H(title, 'h3', 32, {m:25}), T('<p>' + desc + '</p>', {size:15.5}),
+  T('<p><strong>Learn more &rarr;</strong></p>', {size:14.5, c:N})
+]);
+const PROGRAMS = () => Row({gap:40, rgap:64, wrap:true}, [
+  PROGRAMCARD('handover', 'Succession, estate and governance', 'Family Enterprise Planning', 'A holistic process covering wealth, estate, organization and succession planning, with family unity kept at the centre.', LINK.fep),
+  PROGRAMCARD('warehouse', 'Leadership, planning and people', 'Organizational Systems Effectiveness', 'Leadership development, strategic and operational planning, and human resource systems that outlast the founder.', LINK.ose),
+  PROGRAMCARD('idea', 'Integrated Digital Execution App', 'Premier IDEA', 'An app that improves planning and execution efficiency through system automation.', LINK.idea),
+  PROGRAMCARD('pli', 'Online leadership learning', 'Premier Leadership Institute', 'An online platform for soft-skill, leadership and management development.', LINK.pli)
+]);
+
+const STEP = (n, title, desc, first, last) => Row({gap:24, s:{flex_direction_mobile:'row', border_border:'solid',
+    border_width:bx(first ? 2 : 1, 0, last ? 1 : 0, 0), border_color:first ? G : R, padding:bx(34,0,34,0), padding_mobile:bx(24,0,24,0)}}, [
+  Col(12, {gap:0, s:{width_mobile:pct(16)}}, [H(n, 'p', 44, {lh:1, m:28})]),
+  Col(84, {gap:10, s:{width_mobile:pct(80)}}, [H(title, 'h3', 28, {m:22}), T('<p>' + desc + '</p>', {size:16, m:15})])
+]);
+const HOWITWORKS = () => S({bg:P, pt:136, pb:136, gap:0}, [
+  Row({gap:64}, [
+    Col(40, {gap:24}, [EB('How it works'), H('It starts with a conversation, not a proposal.', 'h2', 46, {m:31}), IMG('lunch', 300, {hm:220})]),
+    Col(52, {gap:0}, [
+      STEP('01', 'Book an exploratory meeting', 'We sit down with you and hear what is weighing on the family and on the business, in confidence.', true, false),
+      STEP('02', 'A complimentary family discussion', 'We share practices for managing and growing a business across generations, as part of our advocacy for families in business.', false, false),
+      STEP('03', 'Action and implementation', 'We stay with you and your family through every step of professionalizing the family and the business.', false, true)
+    ])
+  ])
+]);
+
+const QUOTE_ALJUNE = ['In the two-day program with the family culture building, I really like the part when we had the chance to give thanks and ask forgiveness to each other for the wrongs we have done. This program left a big impact on my family and my children.', 'Aljune Diamante', 'Founder, Diamond Logistics &amp; Custom Brokerage; former Mayor of Tuburan, Cebu'];
+const QUOTE_FE = ['This really helped us especially with planning and creating our family constitution. The younger generation will now have peace of mind, and they will have a sense of security as to where we are going and what will happen.', 'Fe Barino', 'President, Duros Group of Companies'];
+const QUOTE_HAYCO = ['Even after the forming of the family constitution, they still joined our monthly board meeting for over 3 years and we feel it&rsquo;s very fruitful and productive because there is someone that&rsquo;s a professional that is joining in and gives professional inputs.', 'Edward Hayco', 'Founder, Hayco Group of Companies'];
+const QCOL = (qq, w) => Col(w, {gap:20, s:{border_border:'solid', border_width:bx(2,0,0,0), border_color:G, padding:bx(30,0,0,0)}}, [
+  T('<p>' + q(qq[0]) + '</p>', {serif:true, size:20, lh:1.52, c:N, m:18}),
+  T('<p><strong>' + qq[1] + '</strong><br>' + qq[2] + '</p>', {size:13, lh:1.55, c:M})
+]);
+const TESTIMONIALS3 = (title) => S({pt:144, pb:144, gap:56}, [
+  Col(64, {gap:18}, [EB('What families say'), H(title, 'h2', 46, {m:31})]),
+  Row({gap:48}, [QCOL(QUOTE_ALJUNE, 31), QCOL(QUOTE_FE, 31), QCOL(QUOTE_HAYCO, 31)])
+]);
+
+/* ---------- HOME ---------- */
+const home = [
+  S({pt:96, pb:120, ptm:40, pbm:64, gap:0}, [
+    Row({gap:64, align:'center'}, [
+      Col(50, {gap:28}, [
+        EB('Family business consulting &middot; Philippines'),
+        H('Uniting families in business, <em>across generations.</em>', 'h1', 76, {lh:1.02, ls:-1.5, t:56, m:42}),
+        T('<p>We help Filipino business families keep the family whole and the business growing, through succession, governance and the hard conversations in between.</p>', {size:19, m:16.5}),
+        Row({gap:28, align:'center', justify:'flex-start', s:{flex_align_items_mobile:'stretch'}}, [BTN('Schedule a call', LINK.contact, 'p'), BTN('Explore our programs', LINK.what, 'l')])
+      ]),
+      Col(44, {gap:0}, [
+        IMG('family', 640, {hm:420}),
+        C({width:px(340), width_mobile:pct(100), background_background:'classic', background_color:W, padding:bx(26,28,26,28),
+           margin:bx(-150,0,0,-90), margin_mobile:bx(-40,12,0,12), flex_gap:gp(12), z_index:2,
+           box_shadow_box_shadow_type:'yes', box_shadow_box_shadow:{horizontal:0, vertical:20, blur:44, spread:-22, color:'rgba(25,49,83,0.32)'}}, [
+          T('<p>' + q('Premier&rsquo;s continued presence professionalized our orientation, our attitudes, our perspectives towards family business.') + '</p>', {serif:true, size:18.5, lh:1.45, c:N}),
+          T('<p><strong>Edward Hayco</strong><br>Founder, Hayco Group of Companies</p>', {size:12.5, lh:1.5, c:M})
+        ])
+      ])
+    ])
+  ]),
+  S({pt:0, pb:120, ptm:0, pbm:64, gap:28}, [
+    EB('Our partners and affiliations'),
+    DIV(R, 1),
+    Row({gap:24, align:'center', wrap:true, s:{flex_direction_mobile:'row'}},
+      ['Family Firm Institute', 'FBN Asia', 'University of Asia &amp; the Pacific', 'Strathmore University', 'Insular Life', 'RCBC']
+        .map(n => Col(14.5, {gap:0, s:{width_mobile:pct(46)}}, [H(n, 'p', 20, {c:'#6B7280', align:'center', ls:0, lh:1.3, m:16})])))
+  ]),
+  S({bg:P, pt:136, pb:136, gap:0, s:{flex_align_items:'center'}}, [
+    Col(84, {gap:26, s:{flex_align_items:'center', width_mobile:pct(100)}}, [
+      EB('Why it matters', {align:'center'}),
+      H('Roughly a third of family businesses reach the second generation. Around one in eight reach the third.', 'h2', 50, {align:'center', lh:1.15, t:40, m:30}),
+      T('<p>The ones that survive decided early, and in writing, who leads, who owns, and how the family will handle disagreement.</p>', {align:'center', size:18}),
+      T('<p>[Source to be cited before launch]</p>', {align:'center', size:12, c:'#6B7280'})
+    ])
+  ]),
+  S({pt:144, pb:144, gap:60}, [
+    Row({gap:48, align:'flex-end'}, [
+      Col(56, {gap:18}, [EB('How we can help'), H('Four programs, built around one family.', 'h2', 48, {m:32, t:40})]),
+      Col(36, {gap:0}, [T('<p>Achieve generational wealth through holistic, integrated family enterprise programs. Most families start with the first.</p>', {size:16})])
+    ]),
+    PROGRAMS()
+  ]),
+  S({pt:0, pb:144, pbm:64, gap:0}, [
+    Row({gap:64, align:'center'}, [
+      Col(56, {gap:0}, [IMG('council', 520, {hm:260})]),
+      Col(34, {gap:22}, [
+        EB('Our team'),
+        H('Together, let&rsquo;s build your family legacy.', 'h2', 42, {m:30}),
+        T('<p>The only multidisciplinary team of family business consultants in the region, with global knowledge, local expertise and regional coverage.</p>', {size:16.5}),
+        BTN('Meet the team', LINK.who, 'l')
+      ])
+    ])
+  ]),
+  HOWITWORKS(),
+  S({pt:144, pb:144, gap:60}, [
+    Col(60, {gap:18}, [EB('What families say'), H('In their own words.', 'h2', 48, {m:32})]),
+    Row({gap:64}, [
+      Col(58, {gap:26, s:{border_border:'solid', border_width:bx(0,0,0,2), border_color:G, padding:bx(0,0,0,40), padding_mobile:bx(0,0,0,20)}}, [
+        T('<p>' + q('&hellip;things that are hard to discuss and open up about like sensitive matters and relationships, but through this program, it became easier to discuss and those cold relationships were restored. &hellip;Now I see everyone taking part in the decision making and I&rsquo;m very happy because it gives us freedom and now Lito &amp; I can happily retire and let the younger generation take care of the business that we started.') + '</p>', {serif:true, size:26, lh:1.45, c:N, m:20}),
+        T('<p><strong>Fe Barino</strong><br>President, Duros Group of Companies</p>', {size:14, c:M})
+      ]),
+      Col(34, {gap:44}, [
+        Col(100, {gap:16, s:{border_border:'solid', border_width:bx(1,0,0,0), border_color:R, padding:bx(28,0,0,0)}}, [
+          T('<p>' + q('This program left a big impact on my family and my children. Now, I&rsquo;m sure that the future is looking good for the company I started and made a lot of sacrifices for.') + '</p>', {serif:true, size:20, lh:1.5, c:N, m:18}),
+          T('<p><strong>Aljune Diamante</strong><br>Founder, Diamond Logistics &amp; Custom Brokerage</p>', {size:13, c:M})
+        ]),
+        Col(100, {gap:16, s:{border_border:'solid', border_width:bx(1,0,0,0), border_color:R, padding:bx(28,0,0,0)}}, [
+          T('<p>' + q('We have a very constructive experience with Premier. Even after the forming of the family constitution, they still joined our monthly board meeting for over 3 years&hellip;') + '</p>', {serif:true, size:20, lh:1.5, c:N, m:18}),
+          T('<p><strong>Edward Hayco</strong><br>Founder, Hayco Group of Companies</p>', {size:13, c:M})
+        ])
+      ])
+    ])
+  ]),
+  S({pt:0, pb:144, pbm:64, gap:0}, [
+    Row({gap:0, align:'stretch', s:{background_background:'classic', background_color:P}}, [
+      Col(50, {gap:0}, [IMG('capiz', 460, {hm:220})]),
+      Col(50, {gap:20, s:{padding:bx(72,64,72,64), padding_mobile:bx(36,24,40,24), flex_justify_content:'center'}}, [
+        EB('Free resource'),
+        H('The family business succession checklist', 'h2', 38, {m:27}),
+        T('<p>Twelve questions every family should be able to answer before the handover. [Checklist PDF to be supplied.]</p>', {size:16}),
+        BTN('Request the checklist', LINK.contact, 'p')
+      ])
+    ])
+  ]),
+  FOOTER()
+];
+
+/* ---------- WHAT WE DO ---------- */
+const what = [
+  S({pt:104, pb:96, ptm:40, pbm:48, gap:0}, [
+    Row({gap:64, align:'flex-end'}, [
+      Col(60, {gap:24}, [EB('What we do'), H('Family business programs, built around one family.', 'h1', 64, {lh:1.05, m:38, t:48})]),
+      Col(32, {gap:0}, [T('<p>Achieve generational wealth through holistic and integrated family enterprise programs. Most families begin with Family Enterprise Planning; the other three make it hold.</p>', {size:17})])
+    ])
+  ]),
+  S({pt:0, pb:144, gap:0}, [PROGRAMS()]),
+  HOWITWORKS(),
+  S({pt:144, pb:0, gap:0}, []),
+  CTA('Not sure where to start?', 'Tell us what is happening in the family and the business. We will point you to the right program, or tell you honestly if we are not the right firm.'),
+  FOOTER()
+];
+
+/* ---------- FEP ---------- */
+const PS = (n, title, desc, optional) => Col(17.6, {gap:12, s:{border_border:'solid', border_width:bx(2,0,0,0), border_color:optional ? '#CFCAC0' : G, padding:bx(24,0,0,0)}}, [
+  H(n, 'p', 17, {c:M, ls:0}), H(title, 'h3', 24, {m:22}), T('<p>' + desc + '</p>', {size:14.5})
+]);
+const fep = [
+  PAGEHERO('<a href="/">Home</a> &nbsp;/&nbsp; <a href="/what-we-do/">What we do</a> &nbsp;/&nbsp; Family Enterprise Planning', 'Family Enterprise Planning (FEP)',
+    'Succession and continuity planning for Filipino family businesses',
+    'A holistic, integrated process covering wealth, estate, organization and succession, with family unity kept at the centre of every decision.',
+    'handover', [BTN('Get started', LINK.contact, 'p'), BTN('Talk to a consultant', LINK.cal, 'l')]),
+  ANSWER('What is family enterprise planning?', 'Family enterprise planning is the process of deciding, documenting and rehearsing how leadership and ownership of a family-owned company pass to the next generation. It covers three handovers that are often confused: management, ownership, and the family authority behind both. A complete plan names successors, sets a timetable, protects and transfers assets, and defines how the family will resolve disagreement.'),
+  S({pt:0, pb:144, gap:56}, [
+    Col(60, {gap:18}, [EB('How it works'), H('The process, in five parts.', 'h2', 48, {m:32})]),
+    Row({gap:28}, [
+      PS('01', 'Family unity building', 'We help build the family&rsquo;s culture: shared values, trust, and the habit of talking openly.'),
+      PS('02', 'Leadership succession planning', 'We guide the family in crafting its family constitution and deciding who leads next.'),
+      PS('03', 'Ownership succession planning', 'We help the family protect its assets and plan how its estate and shares will pass.'),
+      PS('04', 'Building effective governance', 'We facilitate family council meetings and establish a governance rhythm that lasts.'),
+      PS('05 &middot; optional', 'Financial planning', 'A comprehensive plan to reach the family&rsquo;s financial goals.', true)
+    ])
+  ]),
+  S({bg:P, pt:136, pb:136, gap:0}, [
+    Row({gap:64, align:'center'}, [
+      Col(42, {gap:0}, [IMG('council', 520, {hm:260})]),
+      Col(50, {gap:24}, [
+        EB('What you walk away with'),
+        H('Documents the family can hold, sign and revisit.', 'h2', 44, {m:30}),
+        T('<ul><li>A family constitution covering employment, dividends and exit</li><li>A written succession plan with named successors and dates</li><li>An ownership and estate transfer plan</li><li>A family council with a meeting calendar that holds</li><li>A development plan for the next generation of leaders</li></ul>', {size:16, lh:2, c:N})
+      ])
+    ])
+  ]),
+  TESTIMONIALS3('From families who have been through it.'),
+  S({pt:0, pb:144, gap:0}, [
+    Row({gap:64}, [
+      Col(32, {gap:18}, [EB('Common questions'), H('Asked on the first call.', 'h2', 40, {m:30})]),
+      Col(60, {gap:0}, [
+        Col(100, {gap:12, s:{border_border:'solid', border_width:bx(1,0,0,0), border_color:R, padding:bx(28,0,28,0)}}, [H('When should a family business start succession planning?', 'h3', 23, {m:20}), T('<p>While the founder still has the authority to make an unpopular decision stick. Once illness, a dispute or an outside offer sets the timetable, the range of workable options has already narrowed.</p>', {size:15.5})]),
+        Col(100, {gap:12, s:{border_border:'solid', border_width:bx(1,0,0,0), border_color:R, padding:bx(28,0,28,0)}}, [H('How is this different from estate planning?', 'h3', 23, {m:20}), T('<p>Estate planning decides how assets pass and what tax is due. Succession planning decides who runs and who owns the business. Families that do one without the other find the gap at the worst moment.</p>', {size:15.5})]),
+        Col(100, {gap:12, s:{border_border:'solid', border_width:bx(1,0,1,0), border_color:R, padding:bx(28,0,28,0)}}, [H('How long does it take?', 'h3', 23, {m:20}), T('<p>[Typical duration to be confirmed by Premier.]</p>', {size:15.5})])
+      ])
+    ])
+  ]),
+  CTA('Build a prosperous family business across generations.', 'Let&rsquo;s discuss how we can help your family.'),
+  S({pt:0, pb:0, ptm:0, pbm:0, gap:0}, [Wd('html', {html: '<script type="application/ld+json">' + JSON.stringify({
+    '@context':'https://schema.org', '@type':'FAQPage', mainEntity:[
+      {'@type':'Question', name:'What is family enterprise planning?', acceptedAnswer:{'@type':'Answer', text:'Family enterprise planning is the process of deciding, documenting and rehearsing how leadership and ownership of a family-owned company pass to the next generation. It covers three handovers that are often confused: management, ownership, and the family authority behind both. A complete plan names successors, sets a timetable, protects and transfers assets, and defines how the family will resolve disagreement.'}},
+      {'@type':'Question', name:'When should a family business start succession planning?', acceptedAnswer:{'@type':'Answer', text:'While the founder still has the authority to make an unpopular decision stick. Once illness, a dispute or an outside offer sets the timetable, the range of workable options has already narrowed.'}},
+      {'@type':'Question', name:'How is succession planning different from estate planning?', acceptedAnswer:{'@type':'Answer', text:'Estate planning decides how assets pass and what tax is due. Succession planning decides who runs and who owns the business. Families that do one without the other find the gap at the worst moment.'}}
+    ]}) + '</script>'})]),
+  FOOTER()
+];
+
+/* ---------- OSE ---------- */
+const ose = [
+  PAGEHERO('<a href="/">Home</a> &nbsp;/&nbsp; <a href="/what-we-do/">What we do</a> &nbsp;/&nbsp; Organizational Systems Effectiveness', 'Organizational Systems Effectiveness (OSE)',
+    'Professionalizing the family business so it outlasts the founder',
+    'Leadership development, strategic and operational planning, and human resource management for family-owned companies.',
+    'warehouse', [BTN('Get started', LINK.contact, 'p'), BTN('Talk to a consultant', LINK.cal, 'l')]),
+  ANSWER('What does professionalizing a family business mean?', 'Professionalizing a family business means replacing decisions that depend on one person&rsquo;s memory and presence with systems anyone competent can run. In practice it covers defined roles and reporting lines, written policies for hiring and promotion that apply to relatives too, financial reporting the family can read, delegated authority with clear limits, and performance review for family and non-family staff on the same terms.'),
+  S({pt:0, pb:144, gap:0}, [
+    Row({gap:64, align:'center'}, [
+      Col(50, {gap:24}, [
+        EB('What the program covers'),
+        H('The founder is the bottleneck, and everybody knows it.', 'h2', 44, {m:30}),
+        T('<ul><li>Leadership development for family and non-family managers</li><li>Strategic and operational planning</li><li>Roles, reporting lines and delegated authority</li><li>Human resource systems that apply to relatives on the same terms</li></ul>', {size:16, lh:2, c:N})
+      ]),
+      Col(42, {gap:0}, [IMG('nextgen', 480, {hm:260})])
+    ])
+  ]),
+  CTA('A business that only runs on one person cannot be handed to anyone.', 'Let&rsquo;s talk about what would stop if the founder stepped away for a month.'),
+  FOOTER()
+];
+
+/* ---------- IDEA ---------- */
+const idea = [
+  PAGEHERO('<a href="/">Home</a> &nbsp;/&nbsp; <a href="/what-we-do/">What we do</a> &nbsp;/&nbsp; Premier IDEA', 'Integrated Digital Execution App',
+    'Premier IDEA: from the family&rsquo;s plan to tracked execution',
+    'An app that enhances planning and execution efficiency through system automation.',
+    'idea', [BTN('Request a demo', LINK.contact, 'p'), BTN('Talk to a consultant', LINK.cal, 'l')]),
+  ANSWER('What is Premier IDEA?', 'Premier IDEA is Premier&rsquo;s Integrated Digital Execution App, built to improve planning and execution efficiency in family businesses through system automation. [Feature list, platforms and access details to be supplied by Premier.]'),
+  CTA('See Premier IDEA working on your own plan.', 'Book a walkthrough with our team.', 'Request a demo'),
+  FOOTER()
+];
+
+/* ---------- PLI ---------- */
+const pli = [
+  PAGEHERO('<a href="/">Home</a> &nbsp;/&nbsp; <a href="/what-we-do/">What we do</a> &nbsp;/&nbsp; Premier Leadership Institute', 'Premier Leadership Institute (PLI)',
+    'Leadership learning for the people who will run the family business',
+    'An online learning platform focused on soft-skill, leadership and management development.',
+    'pli', [BTN('Ask about enrollment', LINK.contact, 'p'), BTN('Talk to a consultant', LINK.cal, 'l')]),
+  ANSWER('What is the Premier Leadership Institute?', 'The Premier Leadership Institute is Premier&rsquo;s online learning platform for soft-skill, leadership and management development, built for successors and the managers who will work alongside them. [Course catalogue and enrollment details to be supplied by Premier.]'),
+  CTA('Prepare the successor before the handover, not during it.', 'Ask us about upcoming cohorts.', 'Ask about enrollment'),
+  FOOTER()
+];
+
+/* ---------- WHO WE ARE ---------- */
+const PERSON = (name, role) => Col(23, {gap:12, s:{width_mobile:pct(47)}}, [
+  C({min_height:px(300), min_height_mobile:px(200), background_background:'classic', background_color:'#E9E6DE', flex_justify_content:'center', flex_align_items:'center'}, [
+    T('<p>Photo to come</p>', {size:12, c:'#6B7280', align:'center'})
+  ]),
+  H(name, 'h3', 21, {m:18, ls:0}),
+  T('<p>' + role + '</p>', {size:13, lh:1.5, c:M})
+]);
+const who = [
+  S({pt:104, pb:80, ptm:40, pbm:40, gap:0}, [
+    Row({gap:64, align:'flex-end'}, [
+      Col(58, {gap:24}, [EB('About Premier'), H('Built by people who have sat at the family table.', 'h1', 66, {lh:1.05, m:38, t:50})]),
+      Col(34, {gap:0}, [T('<p>Premier is the only family business advisory firm in Southeast Asia that treats the family system and the business system as one piece of work.</p>', {size:17})])
+    ])
+  ]),
+  S({pt:0, pb:144, pbm:64, gap:0}, [IMG('council', 600, {hm:260})]),
+  S({pt:0, pb:144, pbm:64, gap:0}, [
+    Row({gap:64}, [
+      Col(44, {gap:22}, [EB('Our story'), H('[Founding year]: one family, one unresolved handover.', 'h2', 42, {m:30}), T('<p>[Origin story to be written with Jon Ramos: the specific family, the specific problem, and the reason the firm exists.]</p>', {size:16.5})]),
+      Col(44, {gap:18, s:{background_background:'classic', background_color:P, padding:bx(48,44,48,44), padding_mobile:bx(32,24,32,24)}}, [
+        EB('Chief consultant and CEO'),
+        H('Jonathan &ldquo;Jon&rdquo; A. Ramos', 'h3', 32, {m:26}),
+        T('<p>RFC, CFWA. Fellow of the Family Firm Institute since 2021, and the first Filipino elected to its global Board of Directors.</p>', {size:16})
+      ])
+    ])
+  ]),
+  S({bg:P, pt:128, pb:128, gap:56}, [
+    Row({gap:48, align:'flex-end'}, [
+      Col(56, {gap:18}, [EB('Our consultants'), H('Lawyers, bankers, doctors and operators.', 'h2', 46, {m:31})]),
+      Col(36, {gap:0}, [T('<p>A succession is never only a legal problem, and never only a family one, so the team is not only one discipline.</p>', {size:16})])
+    ]),
+    Row({gap:28, rgap:48, wrap:true, s:{flex_direction_mobile:'row', flex_justify_content:'flex-start'}}, [
+      PERSON('Jonathan A. Ramos', 'RFC, CFWA &middot; Finance and wealth management'),
+      PERSON('Dr. Corazon B. Ca&ntilde;ete', 'MD, RFC &middot; Senior partner consultant, family dynamics'),
+      PERSON('Neil Arnold C. Montescarlos', 'CFBA &middot; Leadership and team building'),
+      PERSON('Ma. Theresa B. Ramos', 'CFBA &middot; Team building and family counseling'),
+      PERSON('Atty. Darlon B. Serenio', 'CPA and lawyer &middot; Asset protection and estate planning'),
+      PERSON('Jefferson Al Tio', 'MBA, CFBA &middot; Management and sales'),
+      PERSON('Marvin J. Soco', 'MBA, CFBA &middot; Banking and finance'),
+      PERSON('[Consultant]', '[Credentials and specialism]')
+    ])
+  ]),
+  S({pt:128, pb:128, gap:36}, [
+    Col(60, {gap:16}, [EB('Collaborating partners'), H('The institutions we work alongside.', 'h2', 40, {m:28})]),
+    Row({gap:24, rgap:24, wrap:true, s:{flex_direction_mobile:'row'}},
+      ['Family Firm Institute', 'FBN Asia', 'University of Asia &amp; the Pacific', 'Strathmore University', 'Insular Life', 'RCBC']
+        .map(n => C({width:pct(31), width_mobile:pct(46), min_height:px(120), min_height_mobile:px(90), border_border:'solid', border_width:bx(1,1,1,1), border_color:R, flex_justify_content:'center', flex_align_items:'center', padding:bx(12,12,12,12)}, [H(n, 'p', 20, {c:'#6B7280', align:'center', ls:0, lh:1.3, m:15})])))
+  ]),
+  CTA('Meet the consultant who would lead your engagement.', null),
+  FOOTER()
+];
+
+/* ---------- EVENTS ---------- */
+const events = [
+  PAGEHERO('<a href="/">Home</a> &nbsp;/&nbsp; Events', 'Events', 'Forums, workshops and conversations for families in business',
+    'Premier runs forums and workshops across Luzon, the Visayas and Mindanao for founders, successors and the advisers around them.',
+    'forum', [BTN('Ask about upcoming events', LINK.contact, 'p')]),
+  S({pt:0, pb:144, gap:28}, [
+    EB('Upcoming'),
+    H('The next dates will appear here.', 'h2', 40, {m:28}),
+    T('<p>[Event titles, dates, venues and registration links to be supplied by Premier.]</p>', {size:16})
+  ]),
+  CTA('Hear about the next forum first.', 'Leave your details and we will let you know when registration opens.', 'Keep me posted'),
+  FOOTER()
+];
+
+/* ---------- RESOURCES ---------- */
+const ART = (k, eyebrow, title) => Col(31, {gap:16}, [IMG(k, 250, {hm:200}), EB(eyebrow), H(title, 'h3', 24, {lh:1.28, m:21}), T('<p>Coming soon</p>', {size:13, c:M})]);
+const resources = [
+  S({pt:104, pb:96, ptm:40, pbm:48, gap:0}, [
+    Row({gap:64, align:'flex-end'}, [
+      Col(60, {gap:24}, [EB('Resources'), H('Answers to the questions families ask before they call anyone.', 'h1', 60, {lh:1.06, m:36, t:46})]),
+      Col(32, {gap:0}, [T('<p>Guides, checklists and articles written for founders, successors and the advisers who work with them.</p>', {size:17})])
+    ])
+  ]),
+  S({pt:0, pb:144, gap:0}, [
+    Row({gap:36}, [
+      ART('council', 'Governance', 'What is a family constitution, and does a Philippine family business need one?'),
+      ART('handover', 'Succession', 'The seven conversations to have before you hand over the business'),
+      ART('warehouse', 'Ownership and tax', 'Estate tax and ownership transfer: what actually changes at the handover')
+    ])
+  ]),
+  S({pt:0, pb:144, pbm:64, gap:0}, [
+    Row({gap:0, align:'stretch', s:{background_background:'classic', background_color:P}}, [
+      Col(50, {gap:0}, [IMG('capiz', 420, {hm:200})]),
+      Col(50, {gap:20, s:{padding:bx(64,60,64,60), padding_mobile:bx(36,24,40,24), flex_justify_content:'center'}}, [
+        EB('Free resource'), H('The family business succession checklist', 'h2', 36, {m:26}),
+        T('<p>Twelve questions every family should be able to answer before the handover. [Checklist PDF to be supplied.]</p>', {size:16}),
+        BTN('Request the checklist', LINK.contact, 'p')
+      ])
+    ])
+  ]),
+  FOOTER()
+];
+
+/* ---------- CONTACT ---------- */
+const CSTEP = (n, title, desc, first, last) => Row({gap:18, s:{flex_direction_mobile:'row', border_border:'solid', border_width:bx(first ? 2 : 1, 0, last ? 1 : 0, 0), border_color:first ? G : R, padding:bx(22,0,22,0)}}, [
+  Col(10, {gap:0, s:{width_mobile:pct(14)}}, [H(n, 'p', 22, {lh:1, ls:0})]),
+  Col(86, {gap:6, s:{width_mobile:pct(82)}}, [H(title, 'h3', 22, {ls:0}), T('<p>' + desc + '</p>', {size:14.5})])
+]);
+const contact = [
+  S({pt:104, pb:144, ptm:40, pbm:64, gap:0}, [
+    Row({gap:64}, [
+      Col(44, {gap:24}, [
+        EB('Get in touch'),
+        H('Start with one honest conversation.', 'h1', 62, {lh:1.05, m:38, t:48}),
+        T('<p>An exploratory meeting with a senior consultant. No cost, no proposal at the end of it, and nothing leaves the room.</p>', {size:18}),
+        Col(100, {gap:0, s:{margin:bx(12,0,0,0)}}, [
+          CSTEP('01', 'You choose a time', 'A confirmation arrives with a short note on what to think about beforehand.', true, false),
+          CSTEP('02', 'We listen', 'You describe the situation. Nothing is recorded and nothing is shared.', false, false),
+          CSTEP('03', 'You get an honest read', 'What we would do first, and whether we are the right firm for it at all.', false, true)
+        ])
+      ]),
+      Col(48, {gap:28}, [
+        Col(100, {gap:18, s:{border_border:'solid', border_width:bx(1,1,1,1), border_color:R, padding:bx(48,44,48,44), padding_mobile:bx(32,24,32,24)}}, [
+          H('Schedule a call', 'h2', 32, {m:26}),
+          T('<p>Pick a time that suits you on our calendar. You will get a confirmation straight away.</p>', {size:16}),
+          BTN('Open the calendar', LINK.cal, 'p'),
+          DIV(R, 1),
+          EB('Or reach us directly'),
+          T('<p><a href="mailto:info@premierfamilybusiness.com">info@premierfamilybusiness.com</a><br>0917 316 9881 &middot; +63 32 252 3504<br>35F Cebu Exchange Tower, Salinas Drive, Cebu City, Philippines</p>', {size:15.5, lh:1.9, c:N})
+        ]),
+        IMG('advisor', 300, {hm:220})
+      ])
+    ])
+  ]),
+  FOOTER()
+];
+
+/* ---------- save ---------- */
+const PAGES = [[27,'Home',home],[29,'What We Do',what],[30,'Family Enterprise Planning',fep],[31,'Organizational Systems Effectiveness',ose],
+  [32,'Premier IDEA',idea],[33,'Premier Leadership Institute',pli],[28,'Who We Are',who],[34,'Events',events],[35,'Resources',resources],[36,'Get in Touch',contact]];
+const only = window.__onlyPages;
+const ed = await (await fetch('/wp-admin/post.php?post=27&action=elementor', {credentials:'same-origin'})).text();
+const nonce = (ed.match(/"ajax":\{"url":"[^"]+","nonce":"([a-z0-9]+)"\}/) || [])[1];
+if (!nonce) return 'no nonce';
+const out = [];
+for (const [pid, title, elements] of PAGES) {
+  if (only && !only.includes(pid)) continue;
+  const fd = new FormData();
+  fd.append('action', 'elementor_ajax');
+  fd.append('_nonce', nonce);
+  fd.append('editor_post_id', pid);
+  fd.append('initial_document_id', pid);
+  fd.append('actions', JSON.stringify({save_builder:{action:'save_builder', data:{status:'publish', elements, settings:{post_title:title, post_status:'publish', template:'elementor_header_footer'}}}}));
+  const r = await fetch('/wp-admin/admin-ajax.php', {method:'POST', body:fd, credentials:'same-origin'});
+  const t = await r.text();
+  let ok = false; try { const j = JSON.parse(t); ok = j.success && j.data.responses.save_builder.success; } catch (e) {}
+  out.push(pid + ':' + (ok ? 'ok' : 'FAIL ' + t.slice(0, 160)));
+}
+return out.join(' | ');
+})()

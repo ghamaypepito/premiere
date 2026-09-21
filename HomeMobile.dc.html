@@ -1,0 +1,172 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&amp;family=Caveat:wght@600;700&amp;display=swap">
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;background:#FBFAF7;color:#1C1C1A;font-family:Archivo,'Helvetica Neue',Helvetica,sans-serif;-webkit-font-smoothing:antialiased}
+    a{color:#193153;text-decoration:none}
+    a:hover{color:#F2AF11}
+    .page{width:1440px;background:#FBFAF7}
+    .sec{position:relative;padding:60px 96px;border-bottom:1px dashed #C9C7C0}
+    .tag{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#8B8A84;font-weight:700}
+    .h1{font-size:54px;line-height:1.07;font-weight:700;letter-spacing:-.022em;margin:0}
+    .h2{font-size:34px;line-height:1.16;font-weight:700;letter-spacing:-.016em;margin:0}
+    .h3{font-size:19px;line-height:1.28;font-weight:600;margin:0}
+    .p{font-size:15px;line-height:1.62;color:#4A4944;margin:0}
+    .sm{font-size:13px;line-height:1.5;color:#6E6D67;margin:0}
+    .ln{height:9px;border-radius:5px;background:#E4E2DB}
+    .lns{display:flex;flex-direction:column;gap:9px}
+    .box{background:#E9E7E1;border:1px solid #D4D2CA;display:flex;align-items:center;justify-content:center;color:#8B8A84;font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;text-align:center;padding:8px}
+    .card{background:#F3F1EB;border:1px solid #DEDCD4;padding:24px;display:flex;flex-direction:column;gap:14px}
+    .btn{height:52px;padding:0 26px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;letter-spacing:.01em}
+    .btn-p{background:#F2AF11;color:#193153}
+    .btn-g{border:1.5px solid #193153;color:#193153}
+    .note{position:absolute;left:1466px;width:280px;font-family:Caveat,'Segoe Print',cursive;font-size:19px;line-height:1.26;color:#C0392B}
+    .note b{font-weight:700}
+    .note:before{content:'';position:absolute;left:-24px;top:10px;width:16px;height:2px;background:#C0392B}
+    .nav{background:#193153;height:88px;display:flex;align-items:center;justify-content:space-between;padding:0 96px}
+    .navlink{color:#FFFFFF;font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+    .row{display:flex;gap:24px}
+    .grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
+    .grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+    .grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:48px}
+  </style>
+</helmet>
+<div style="width:700px;background:#FBFAF7">
+<div class="page" style="width:390px;border-right:1px solid #E4E2DB">
+
+  <!-- NAV -->
+  <div class="sec" style="padding:0;border-bottom:none">
+    <div class="nav" style="height:64px;padding:0 20px">
+      <img src="pfbc-logo-navy.png" alt="Premier Family Business Consulting" style="width:150px;height:26px;display:block">
+      <div style="display:flex;flex-direction:column;gap:5px;width:24px">
+        <div style="height:2px;background:#FFFFFF"></div><div style="height:2px;background:#FFFFFF"></div><div style="height:2px;background:#FFFFFF"></div>
+      </div>
+    </div>
+    <div class="note" style="left:414px;width:262px;top:16px">No fake status bar. The device draws its own on top of this.</div>
+  </div>
+
+  <!-- HERO -->
+  <div class="sec" style="padding:0;background:#193153;border-bottom:none">
+    <div style="height:600px;position:relative;display:flex;flex-direction:column;justify-content:center;padding:0 20px;border:2px dashed #4A628A">
+      <div style="position:absolute;top:16px;left:20px;font-size:9px;letter-spacing:.12em;color:#8FA6C9;font-weight:700">CINEMATIC LOOP &middot; PORTRAIT CROP</div>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div style="font-size:9px;letter-spacing:.16em;color:#F2AF11;font-weight:700">FAMILY BUSINESS SUCCESSION &middot; PHILIPPINES</div>
+        <h1 class="h1" style="color:#FFFFFF;font-size:34px;line-height:1.12">One generation built it. The next has to be ready to carry it.</h1>
+        <p class="p" style="color:#D6DEEA;font-size:15px">We help Filipino business families plan the handover before it becomes an emergency.</p>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:6px">
+          <div class="btn btn-p" style="height:52px;font-size:13px">Book a Family Business Review</div>
+          <div class="btn" style="height:52px;border:1.5px solid #8FA6C9;color:#FFFFFF;font-size:13px">See how succession works</div>
+        </div>
+      </div>
+    </div>
+    <div class="note" style="left:414px;width:262px;top:120px">Portrait crop of the same film, not the desktop frame letterboxed. Two exports from one generation.</div>
+    <div class="note" style="left:414px;width:262px;top:330px">Buttons full width, <b>52px</b> tall, stacked. Comfortably above the 44px minimum target.</div>
+  </div>
+
+  <!-- STAKES -->
+  <div class="sec" style="padding:48px 20px">
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div class="tag">The stakes</div>
+      <h2 class="h2" style="font-size:26px">Roughly a third of family businesses reach the second generation. Around one in eight reach the third.</h2>
+      <p class="p">The ones that survive decided early, and in writing, who leads and who owns.</p>
+      <div style="font-size:11px;color:#8B8A84">[SOURCE TO CITE ON BUILD]</div>
+    </div>
+  </div>
+
+  <!-- RECOGNISE -->
+  <div class="sec" style="padding:48px 0 48px 20px;background:#F3F1EB">
+    <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:24px;padding-right:20px">
+      <div class="tag">Does any of this sound familiar</div>
+      <h2 class="h2" style="font-size:26px">Families rarely arrive asking for governance.</h2>
+    </div>
+    <div style="display:flex;gap:14px;overflow:hidden">
+      <div class="card" style="background:#FBFAF7;min-width:250px;padding:20px"><div style="font-size:28px;color:#F2AF11;line-height:.6">&ldquo;</div><p class="p" style="font-size:16px;color:#1C1C1A">Dad says he is retiring. He has been saying that for nine years.</p></div>
+      <div class="card" style="background:#FBFAF7;min-width:250px;padding:20px"><div style="font-size:28px;color:#F2AF11;line-height:.6">&ldquo;</div><p class="p" style="font-size:16px;color:#1C1C1A">My siblings and I cannot agree on what fair actually means.</p></div>
+    </div>
+    <div style="display:flex;gap:6px;margin-top:20px"><div style="width:24px;height:3px;background:#193153"></div><div style="width:24px;height:3px;background:#D4D2CA"></div><div style="width:24px;height:3px;background:#D4D2CA"></div><div style="width:24px;height:3px;background:#D4D2CA"></div></div>
+    <div class="note" style="left:414px;width:262px;top:120px">The four-up grid becomes a swipe rail that bleeds off the right edge, so it reads as scrollable without an arrow.</div>
+  </div>
+
+  <!-- PRACTICES -->
+  <div class="sec" style="padding:48px 20px">
+    <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:24px">
+      <div class="tag">What we do</div>
+      <h2 class="h2" style="font-size:26px">Four practices. One of them is why families call.</h2>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="background:#193153;padding:24px;display:flex;flex-direction:column;gap:12px">
+        <div style="font-size:10px;letter-spacing:.14em;color:#F2AF11;font-weight:700">FLAGSHIP</div>
+        <h3 class="h3" style="color:#FFFFFF;font-size:22px">Succession &amp; Continuity</h3>
+        <p class="sm" style="color:#A9B8CE">Decide who leads and who owns while the founder is still in the room.</p>
+        <span style="color:#F2AF11;font-size:13px;font-weight:700;margin-top:4px">Explore succession &rarr;</span>
+      </div>
+      <div class="card" style="padding:20px"><h3 class="h3">Family Governance</h3><p class="sm">A family constitution, a council that meets, and a board that decides.</p></div>
+      <div class="card" style="padding:20px"><h3 class="h3">Professionalizing the Business</h3><p class="sm">Roles, systems and accountability that outlast the founder.</p></div>
+      <div class="card" style="padding:20px"><h3 class="h3">Next-Gen Leadership</h3><p class="sm">Prepare the successor before the handover, not during it.</p></div>
+    </div>
+  </div>
+
+  <!-- METHOD -->
+  <div class="sec" style="padding:48px 20px;background:#193153;border-bottom:none">
+    <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:28px">
+      <div class="tag" style="color:#F2AF11">The Premier method</div>
+      <h2 class="h2" style="color:#FFFFFF;font-size:26px">Six steps, in this order, every time.</h2>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:0">
+      <div style="display:grid;grid-template-columns:44px minmax(0,1fr);gap:14px;padding:18px 0;border-top:1px solid #2C4570"><span style="color:#F2AF11;font-size:13px;font-weight:700">01</span><div style="display:flex;flex-direction:column;gap:6px"><h3 class="h3" style="color:#FFFFFF">Listen</h3><p class="sm" style="color:#A9B8CE">Confidential interviews with every family member.</p></div></div>
+      <div style="display:grid;grid-template-columns:44px minmax(0,1fr);gap:14px;padding:18px 0;border-top:1px solid #2C4570"><span style="color:#F2AF11;font-size:13px;font-weight:700">02</span><div style="display:flex;flex-direction:column;gap:6px"><h3 class="h3" style="color:#FFFFFF">Map</h3><p class="sm" style="color:#A9B8CE">Family, ownership and business drawn side by side.</p></div></div>
+      <div style="display:grid;grid-template-columns:44px minmax(0,1fr);gap:14px;padding:18px 0;border-top:1px solid #2C4570"><span style="color:#F2AF11;font-size:13px;font-weight:700">03</span><div style="display:flex;flex-direction:column;gap:6px"><h3 class="h3" style="color:#FFFFFF">Align</h3><p class="sm" style="color:#A9B8CE">Facilitated sessions until the agreement is real.</p></div></div>
+      <div style="display:grid;grid-template-columns:44px minmax(0,1fr);gap:14px;padding:18px 0;border-top:1px solid #2C4570"><span style="color:#F2AF11;font-size:13px;font-weight:700">04</span><div style="display:flex;flex-direction:column;gap:6px"><h3 class="h3" style="color:#FFFFFF">Document</h3><p class="sm" style="color:#A9B8CE">Plan, constitution, charter. Written down and signed.</p></div></div>
+      <div style="display:grid;grid-template-columns:44px minmax(0,1fr);gap:14px;padding:18px 0;border-top:1px solid #2C4570"><span style="color:#F2AF11;font-size:13px;font-weight:700">05</span><div style="display:flex;flex-direction:column;gap:6px"><h3 class="h3" style="color:#FFFFFF">Install</h3><p class="sm" style="color:#A9B8CE">Councils and boards that keep it alive after we leave.</p></div></div>
+      <div style="display:grid;grid-template-columns:44px minmax(0,1fr);gap:14px;padding:18px 0;border-top:1px solid #2C4570;border-bottom:1px solid #2C4570"><span style="color:#F2AF11;font-size:13px;font-weight:700">06</span><div style="display:flex;flex-direction:column;gap:6px"><h3 class="h3" style="color:#FFFFFF">Accompany</h3><p class="sm" style="color:#A9B8CE">Quarterly counsel through the transition itself.</p></div></div>
+    </div>
+  </div>
+
+  <!-- PROOF -->
+  <div class="sec" style="padding:48px 20px">
+    <div style="display:flex;justify-content:space-between;margin-bottom:28px">
+      <div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:34px;font-weight:700;color:#193153;letter-spacing:-.03em">[13]+</span><span class="tag" style="font-size:9px">Years</span></div>
+      <div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:34px;font-weight:700;color:#193153;letter-spacing:-.03em">[100]+</span><span class="tag" style="font-size:9px">Families</span></div>
+      <div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:34px;font-weight:700;color:#193153;letter-spacing:-.03em">[40]+</span><span class="tag" style="font-size:9px">Consultants</span></div>
+    </div>
+    <div style="border-left:3px solid #F2AF11;padding-left:18px">
+      <p class="p" style="font-size:16px;color:#1C1C1A">Jon Ramos is a Fellow of the Family Firm Institute and the first Filipino elected to its global Board of Directors.</p>
+    </div>
+  </div>
+
+  <!-- BOOK -->
+  <div class="sec" style="padding:48px 20px;background:#193153;border-bottom:none">
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <h2 class="h2" style="color:#FFFFFF;font-size:26px">Start with one honest conversation.</h2>
+      <p class="p" style="color:#D6DEEA">A [45]-minute Family Business Review. No cost, and nothing leaves the room.</p>
+      <div style="background:#FBFAF7;padding:20px;display:flex;flex-direction:column;gap:14px">
+        <span class="tag">Choose a time</span>
+        <div class="box" style="height:150px;background:#EFEDE6;border-style:dashed;font-size:9px">HUBSPOT SCHEDULER</div>
+        <div class="btn btn-p" style="width:100%">Confirm my review</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STICKY BAR -->
+  <div class="sec" style="padding:0;border-bottom:none">
+    <div style="background:#F2AF11;height:64px;display:flex;align-items:center;justify-content:center;color:#193153;font-size:14px;font-weight:700">Book a Family Business Review</div>
+    <div class="note" style="left:414px;width:262px;top:12px">Sticky bottom bar appears after the hero leaves the viewport, on mobile only. Slides up 100%, 240ms, ease-out.</div>
+  </div>
+
+  <div class="sec" style="padding:28px 20px;background:#142948;border-bottom:none">
+    <div class="box" style="height:52px;background:transparent;border:1px dashed #2C4570;color:#5D7399;font-size:9px">GLOBAL FOOTER</div>
+  </div>
+
+</div>
+</div>
+</x-dc>
+</body>
+</html>
