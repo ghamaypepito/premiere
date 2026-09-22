@@ -5,11 +5,11 @@
   "launch": { "view": "canvas" },
   "pages": [],
   "boards": {
-    "Main.dc.html":       { "x": 0,    "y": 0,     "w": 1440, "h": 7400, "title": "Home, desktop", "is_interactive": true },
-    "HomeMobile.dc.html": { "x": 1520, "y": 0,     "w": 390,  "h": 6000, "title": "Home, mobile", "is_interactive": true },
-    "Program.dc.html":    { "x": 0,    "y": 7520,  "w": 1440, "h": 5000, "title": "Program: Family Enterprise Planning", "is_interactive": true },
-    "WhoWeAre.dc.html":   { "x": 1520, "y": 7520,  "w": 1440, "h": 4400, "title": "Who We Are", "is_interactive": true },
-    "Contact.dc.html":    { "x": 0,    "y": 12640, "w": 1440, "h": 1500, "title": "Get in touch", "is_interactive": true }
+    "Main.dc.html":       { "x": 0,    "y": 0,     "w": 1440, "h": 7850, "title": "Home, desktop", "is_interactive": true },
+    "HomeMobile.dc.html": { "x": 1520, "y": 0,     "w": 390,  "h": 6300, "title": "Home, mobile", "is_interactive": true },
+    "Program.dc.html":    { "x": 0,    "y": 7970,  "w": 1440, "h": 5000, "title": "Program: Family Enterprise Planning", "is_interactive": true },
+    "WhoWeAre.dc.html":   { "x": 1520, "y": 7970,  "w": 1440, "h": 5400, "title": "Who We Are", "is_interactive": true },
+    "Contact.dc.html":    { "x": 0,    "y": 13490, "w": 1440, "h": 1500, "title": "Get in touch", "is_interactive": true }
   },
   "order": ["Main.dc.html", "HomeMobile.dc.html", "Program.dc.html", "WhoWeAre.dc.html", "Contact.dc.html"],
   "notes": {},

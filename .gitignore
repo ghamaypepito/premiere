@@ -12,3 +12,10 @@ brand/logo/_*.png
 Thumbs.db
 desktop.ini
 .DS_Store
+
+# Source downloads and intermediate extractions (web copies are committed)
+assets/team/src/
+assets/team/raw/
+assets/partners/src/
+**/_sheet.*
+design/_fragments/

@@ -1,0 +1,94 @@
+/* ---------- WHO WE ARE ---------- */
+const VALUE = (name, desc) => Col(23, {gap:14, s:{width_mobile:pct(100), border_border:'solid', border_width:bx(2,0,0,0), border_color:G, padding:bx(26,0,0,0)}}, [
+  H(name, 'h3', 28, {m:24}),
+  T('<p>' + desc + '</p>', {size:15.5, lh:1.65})
+]);
+const MILESTONE = (year, title, desc, last) => Row({gap:40, s:{flex_direction_mobile:'row', border_border:'solid', border_width:bx(1,0,last ? 1 : 0,0), border_color:R, padding:bx(34,0,34,0), padding_mobile:bx(24,0,24,0)}}, [
+  Col(18, {gap:0, s:{width_mobile:pct(26)}}, [H(year, 'p', 44, {lh:1, m:28, c:N})]),
+  Col(78, {gap:10, s:{width_mobile:pct(70)}}, [H(title, 'h3', 26, {m:21}), T('<p>' + desc + '</p>', {size:16, m:15})])
+]);
+const who = [
+  S({pt:104, pb:80, ptm:40, pbm:40, gap:0}, [
+    Row({gap:64, align:'flex-end'}, [
+      Col(58, {gap:24}, [EB('About Premier'), H('We honor family unity as the cornerstone of an enduring legacy.', 'h1', 62, {lh:1.06, m:36, t:48})]),
+      Col(34, {gap:0}, [T('<p>Your business represents a lifetime of dedication and a gift for the generations that follow. It is our privilege to help you align shared values, so that both the enterprise and the family grow stronger.</p>', {size:17})])
+    ])
+  ]),
+  S({pt:0, pb:144, pbm:64, gap:0}, [
+    Row({gap:0, align:'stretch', s:{background_background:'classic', background_color:P}}, [
+      Col(50, {gap:18, s:{padding:bx(64,64,64,64), padding_mobile:bx(36,24,36,24)}}, [
+        EB('Our mission'),
+        T('<p>We inspire and influence family unity as the highest model for building generational wealth in family business.</p>', {serif:true, size:28, lh:1.35, c:N, m:22})
+      ]),
+      Col(50, {gap:18, s:{padding:bx(64,64,64,64), padding_mobile:bx(0,24,40,24), border_border:'solid', border_width:bx(0,0,0,1), border_width_mobile:bx(0,0,0,0), border_color:R}}, [
+        EB('Our vision'),
+        T('<p>The Global Family Enterprise Resource Center for Excellence: a trusted platform for business families who want to strengthen unity, preserve legacy, and build wealth that lasts beyond one generation.</p>', {serif:true, size:24, lh:1.4, c:N, m:20})
+      ])
+    ])
+  ]),
+  S({pt:0, pb:144, pbm:64, gap:56}, [
+    Row({gap:48, align:'flex-end'}, [
+      Col(52, {gap:18}, [EB('Our core values'), H('How we think, serve, decide and build trust.', 'h2', 46, {m:31})]),
+      Col(40, {gap:0}, [T('<p>Families entrust us with matters that are deeply personal, generational and lasting. These four values shape every engagement.</p>', {size:16})])
+    ]),
+    Row({gap:32}, [
+      VALUE('Positivity', 'Optimism, flexibility, collaboration and a constructive spirit brought to every challenge.'),
+      VALUE('Responsibility', 'Proactive service, dependability, organization and resourcefulness in delivering meaningful outcomes.'),
+      VALUE('God-centered', 'Humility, patience, commitment and faith shaping our work and our relationships.'),
+      VALUE('Integrity', 'Honesty, sincerity, transparency and confidentiality, above all else.')
+    ])
+  ]),
+  S({bg:P, pt:136, pb:136, gap:48}, [
+    Row({gap:64}, [
+      Col(34, {gap:22}, [
+        EB('Milestones'),
+        H('More than a decade of work with families in business.', 'h2', 44, {m:30}),
+        T('<p>From one conference in Cebu to more than 100 family businesses across the Philippines and abroad.</p>', {size:16.5})
+      ]),
+      Col(58, {gap:0}, [
+        MILESTONE('2011', 'The first Family Enterprise Excellence Conference', 'Premier convened its first Family Enterprise Excellence Conference in Cebu City, bringing business families together to learn from each other.'),
+        MILESTONE('2014', 'A network of 23 professionals', 'Premier grew to a partnership of at least 23 professionals from different fields and disciplines, committed to serving, strengthening and uniting families in business.'),
+        MILESTONE('2015', 'Partnerships with chambers of commerce', 'Co-organized family business seminar-workshops with the Chambers of Commerce and Industry of Cebu City, Mandaue City, Cagayan de Oro City, Davao City and General Santos City.'),
+        MILESTONE('2018', 'Five national conferences', 'The Family Enterprise Excellence Conference returned to Cebu City for the fourth time, after Cebu editions in 2011, 2013 and 2015 and a Mindanao edition in General Santos in 2016.'),
+        MILESTONE('2021', 'Family Firm Institute Fellowship', 'Jon Ramos was granted Fellow status by the Family Firm Institute in October 2021, and became the first Filipino on its Board of Directors. Premier also hosted the virtual Asian Family Enterprise Excellence Conference, with over 700 registrants worldwide.'),
+        MILESTONE('2023', 'More than 100 family businesses', 'Premier had served more than 100 families in business, across retail, fishing, food, real estate, education, transportation, energy, agribusiness and hospitality, in Luzon, the Visayas, Mindanao and two countries abroad.', true)
+      ])
+    ])
+  ]),
+  S({pt:144, pb:112, gap:56}, [
+    Row({gap:48, align:'flex-end'}, [
+      Col(56, {gap:18}, [EB('Leadership'), H('The people who would sit at your table.', 'h2', 46, {m:31})]),
+      Col(36, {gap:0}, [T('<p>Jon Ramos, our founder, is a Fellow of the Family Firm Institute and the first Filipino on its global Board of Directors.</p>', {size:16})])
+    ]),
+    Row({gap:28, rgap:48, wrap:true, s:{flex_direction_mobile:'row', flex_justify_content:'flex-start'}}, [
+      PORTRAIT('jon', 'Jon Ramos', 'FFI Fellow, ACFWA<br>CEO and Founder'),
+      PORTRAIT('neil', 'Neil Arnold Montescarlos', 'CFBA<br>Chief Operations Officer'),
+      PORTRAIT('jeff', 'Jefferson Tio', 'MBA, CFBA, RODP<br>Chief Partnership and Relationship Officer'),
+      PORTRAIT('gen', 'Genevieve Ramos', 'MBA<br>Chief Finance Officer')
+    ])
+  ]),
+  S({pt:0, pb:144, pbm:64, gap:56}, [
+    Col(60, {gap:18}, [EB('Senior consultants'), H('Law, psychology, operations and people.', 'h2', 40, {m:28})]),
+    Row({gap:28, rgap:48, wrap:true, s:{flex_direction_mobile:'row', flex_justify_content:'flex-start'}}, [
+      PORTRAIT('lagundi', 'Atty. Domingo Lagundi', 'CPA<br>Relationship Director'),
+      PORTRAIT('theresa', 'Ma. Theresa B. Ramos', 'MA, RPSY, CFBA<br>Senior Consultant'),
+      PORTRAIT('jb', 'Julian &ldquo;JB&rdquo; Pido', 'MM<br>Senior Consultant'),
+      PORTRAIT('irish', 'Irish Rago', 'AHRI, CHRP<br>Senior Consultant')
+    ]),
+    T('<p>Supported by a team of 25 across finance, legal and compliance, client relations, and marketing and communications.</p>', {size:15, c:M})
+  ]),
+  S({bg:P, pt:112, pb:112, gap:40}, [
+    Row({gap:48, align:'center'}, [
+      Col(34, {gap:16}, [EB('Partners and strategic alliances'), H('The institutions we work alongside.', 'h2', 36, {m:26})]),
+      Row({gap:40, align:'center', s:{width:pct(60), width_mobile:pct(100), flex_direction_mobile:'row'}}, [
+        Col(30, {gap:14, s:{flex_align_items:'center'}}, [PLOGO('ffi', 90), T('<p>Family Firm Institute</p>', {size:13, c:M, align:'center'})]),
+        Col(30, {gap:14, s:{flex_align_items:'center'}}, [PLOGO('uap', 90), T('<p>University of Asia and the Pacific</p>', {size:13, c:M, align:'center'})]),
+        Col(30, {gap:14, s:{flex_align_items:'center'}}, [PLOGO('fbn', 90), T('<p>Family Business Network Asia</p>', {size:13, c:M, align:'center'})])
+      ])
+    ])
+  ]),
+  S({pt:144, pb:0, gap:0}, []),
+  CTA('Meet the consultant who would lead your engagement.', null),
+  FOOTER()
+];
+
