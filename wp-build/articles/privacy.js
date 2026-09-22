@@ -1,0 +1,16 @@
+const fs = require('fs');
+let raw = fs.readFileSync('privacy.src', 'utf8');
+raw = raw.replace(/<(script|style|noscript|svg|iframe|form|button)[\s\S]*?<\/\1>/gi, '');
+const s = raw.indexOf('mfn-builder-content') >= 0 ? raw.indexOf('mfn-builder-content') : raw.indexOf('<main');
+let e = raw.indexOf('Ready to Talk', s); if (e < 0) e = raw.length;
+let h = raw.slice(raw.indexOf('>', s) + 1, e);
+const ALLOWED = new Set(['p','h2','h3','h4','ul','ol','li','strong','b','em','i','br','a']);
+h = h.replace(/<(\/?)h1\b/gi, '<$1h2').replace(/<(\/?)h[56]\b/gi, '<$1h4');
+h = h.replace(/<(\/?)([a-z0-9]+)\b([^>]*)>/gi, (m, sl, t, at) => { t = t.toLowerCase(); if (!ALLOWED.has(t)) return (t === 'div' || t === 'section') ? '\n' : '';
+  if (t === 'a' && !sl) { const href = (at.match(/href="([^"]+)"/) || [])[1]; return href ? '<a href="' + href + '">' : ''; } return '<' + sl + t + '>'; });
+for (let i = 0; i < 3; i++) h = h.replace(/<(p|h2|h3|h4|li|strong|em|b|i)>\s*<\/\1>/g, '');
+h = h.replace(/&nbsp;/g, ' ').replace(/[ \t]+/g, ' ').replace(/\n\s*\n+/g, '\n').trim();
+h = h.replace(/<[^>]*$/, '').split('\n').map(l => /^\s*</.test(l) || !l.trim() ? l : '<p>' + l.trim() + '</p>').join('\n');
+fs.writeFileSync('privacy-clean.html', h);
+const text = h.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+console.log('words', text.split(' ').length); console.log(h.slice(0, 700)); console.log('...'); console.log(h.slice(-400));

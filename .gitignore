@@ -17,5 +17,11 @@ desktop.ini
 assets/team/src/
 assets/team/raw/
 assets/partners/src/
-**/_sheet.*
+**/_sheet*
 design/canvas/_fragments/
+assets/faq-src/
+wp-build/articles/*.html
+!wp-build/articles/privacy-final.html
+!wp-build/articles/privacy-clean.html
+wp-build/articles/*.png
+wp-build/articles/*.src

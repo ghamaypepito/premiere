@@ -1,0 +1,232 @@
+/* ---------- EVENTS ---------- */
+const PASTEVENT = (date, title, desc, last) => Row({gap:40, s:{flex_direction_mobile:'column', border_border:'solid', border_width:bx(1,0,last ? 1 : 0,0), border_color:R, padding:bx(30,0,30,0), padding_mobile:bx(22,0,22,0), flex_gap_mobile:gp(8)}}, [
+  Col(26, {gap:0}, [T('<p>' + date + '</p>', {size:14, c:M, w:'500'})]),
+  Col(70, {gap:8}, [H(title, 'h3', 24, {m:20}), T('<p>' + desc + '</p>', {size:15.5})])
+]);
+const events = [
+  PAGEHERO('<a href="/">Home</a> &nbsp;/&nbsp; Events', 'Events', 'Forums, workshops and conversations for families in business',
+    'Premier runs forums and workshops across Luzon, the Visayas and Mindanao for founders, successors and the advisers around them.',
+    'forum', [BTN('Ask about upcoming events', LINK.contact, 'p')]),
+  S({pt:0, pb:112, gap:24}, [
+    EB('Upcoming'),
+    H('New dates will be announced here.', 'h2', 40, {m:28}),
+    T('<p>[Upcoming event titles, dates, venues and registration links to be supplied by Premier.]</p>', {size:16})
+  ]),
+  S({bg:P, pt:120, pb:120, gap:40}, [
+    Row({gap:64}, [
+      Col(32, {gap:18}, [EB('Past events'), H('Recent forums and workshops.', 'h2', 40, {m:28})]),
+      Col(62, {gap:0}, [
+        PASTEVENT('April 6, 2022', 'Cohesions, Recovery, and Growth in the Family Business', 'A forum on harnessing family cohesion as the foundation for recovery and growth.'),
+        PASTEVENT('December 9, 2021', 'Family Business Roadmap to Cohesions, Recovery, and Growth', 'Paving the way to create, review and implement family constitutions, while investing cohesively in strategies for survival and growth.'),
+        PASTEVENT('December 7, 2020', 'Leadership and Management in the Virtual Organization', 'Developing leaders who can manage well in a highly digital world.', true)
+      ])
+    ])
+  ]),
+  S({pt:120, pb:0, gap:40}, [
+    Row({gap:64}, [
+      Col(32, {gap:18}, [EB('Our conferences'), H('The Family Enterprise Excellence Conference.', 'h2', 40, {m:28})]),
+      Col(62, {gap:16}, [
+        T('<p>Premier has organized five national and one international conference for family businesses: four in Cebu City (2011, 2013, 2015 and 2018), one in General Santos City, Mindanao (2016), and the virtual Asian Family Enterprise Excellence Conference (2021), which drew over 700 registrants worldwide.</p>', {size:17}),
+        BTN('See our milestones', '/who-we-are/', 'l')
+      ])
+    ])
+  ]),
+  S({pt:144, pb:0, gap:0}, []),
+  CTA('Hear about the next forum first.', 'Leave your details and we will let you know when registration opens.', 'Keep me posted'),
+  FOOTER()
+];
+
+/* ---------- RESOURCES ---------- */
+const ART = (k, eyebrow, title, by, url) => Col(23, {gap:14, s:{html_tag:'a', link:lnk(url), width_tablet:pct(47), width_mobile:pct(100)}}, [
+  IMG(k, 250, {hm:300, pos:'top center'}), EB(eyebrow), H(title, 'h3', 21, {lh:1.3, m:20, ls:0}),
+  T('<p>by ' + by + '</p>', {size:13, c:M}), T('<p><strong>Read the article &rarr;</strong></p>', {size:13.5, c:N})
+]);
+const resources = [
+  S({pt:104, pb:96, ptm:40, pbm:48, gap:0}, [
+    Row({gap:64, align:'flex-end'}, [
+      Col(60, {gap:24}, [EB('Resources'), H('Your guide to a mind for business and a heart for family.', 'h1', 58, {lh:1.06, m:36, t:46})]),
+      Col(32, {gap:0}, [T('<p>Insights on professionalizing ownership and securing your family&rsquo;s legacy, for founders, successors and the advisers who work with them.</p>', {size:17})])
+    ])
+  ]),
+  S({pt:0, pb:144, gap:0}, [
+    Row({gap:32, rgap:48, wrap:true, s:{flex_direction_tablet:'row', flex_wrap_tablet:'wrap'}}, [
+      ART('toshio', 'Family business longevity', 'The Secrets of the Thousand-Year Heritage: Lessons in Business Longevity with Professor Toshio Goto', 'Ruby Joy Limbaga', '/family-firm-longevity-professor-toshio-goto/'),
+      ART('council', 'Family meetings', 'Christian Stewart&rsquo;s The Value of Family Meetings During the Pandemic', 'Maria Chonita Rivera-Cejas', '/christian-stewart-value-of-family-meetings/'),
+      ART('ffiaward', 'Firm news', 'Razilee Rae Ligaray and Jefferson Tio Receive Elite Global Distinction in Family Business Advising', 'Jefferson Tio', '/razilee-rae-ligaray-and-jefferson-tio-receive-elite-global-distinction-in-family-business-advising/'),
+      ART('yntig', 'Firm news', 'Safeguarding the Wealth of Generations: Atty. Allan Yntig&rsquo;s Global Milestone in Family Wealth Stewardship', 'Casey Andre Que', '/atty-allan-yntigs-global-milestone-in-family-wealth-stewardship/')
+    ])
+  ]),
+  S({pt:0, pb:144, pbm:64, gap:0}, [
+    Row({gap:0, align:'stretch', s:{background_background:'classic', background_color:P}}, [
+      Col(50, {gap:0}, [IMG('capiz', 420, {hm:200})]),
+      Col(50, {gap:20, s:{padding:bx(64,60,64,60), padding_mobile:bx(36,24,40,24), flex_justify_content:'center'}}, [
+        EB('Common questions'), H('Answers about our programs, timelines and process.', 'h2', 34, {m:26}),
+        T('<p>How long Family Enterprise Planning takes, what governance involves, and how an engagement begins.</p>', {size:16}),
+        BTN('Read the FAQs', '/faqs/', 'p')
+      ])
+    ])
+  ]),
+  FOOTER()
+];
+
+/* ---------- OUR TEAM ---------- */
+const TEAMGROUP = (title, people) => S({pt:0, pb:112, pbm:56, gap:36}, [
+  Row({gap:24, align:'center', justify:'flex-start', s:{flex_direction_mobile:'row'}}, [EB(title), Col(60, {gap:0, s:{flex_grow:1, width_mobile:pct(40)}}, [DIV(R, 1)])]),
+  Row({gap:28, rgap:44, wrap:true, s:{flex_direction_mobile:'row', flex_justify_content:'flex-start'}}, people)
+]);
+const P4 = (k, name, role, url) => PORTRAIT(k, name, role, 23, 330, url);
+const team = [
+  S({pt:104, pb:96, ptm:40, pbm:48, gap:0}, [
+    Row({gap:64, align:'flex-end'}, [
+      Col(58, {gap:24}, [
+        T('<p><a href="/">Home</a> &nbsp;/&nbsp; <a href="/who-we-are/">Who we are</a> &nbsp;/&nbsp; Our team</p>', {size:13, c:M}),
+        EB('Our team'), H('The people behind every family we serve.', 'h1', 62, {lh:1.05, m:38, t:48})
+      ]),
+      Col(34, {gap:0}, [T('<p>The only multidisciplinary team of consultants who are thought leaders with global knowledge, local expertise and regional coverage, providing integrated and holistic services.</p>', {size:17})])
+    ])
+  ]),
+  TEAMGROUP('Administration and executive', [
+    P4('jon', 'Jon Ramos', 'FFI Fellow, ACFWA<br>CEO and Founder', '/who-we-are/our-team/jon-ramos/'),
+    P4('neil', 'Neil Arnold Montescarlos', 'CFBA<br>Executive Director and Chief Operations Officer', '/who-we-are/our-team/neil-arnold-montescarlos/'),
+    P4('jeff', 'Jefferson Tio', 'MBA, CFBA, RODP<br>Chief Partnership and Relationship Officer')
+  ]),
+  TEAMGROUP('Client relations and consulting', [
+    P4('lagundi', 'Atty. Domingo Lagundi', 'CPA<br>Relationship Director'),
+    P4('theresa', 'Ma. Theresa B. Ramos', 'MA, RPSY, ACC, ACMC, CHt, CMC, CSFP, CFBA<br>Senior Consultant and Co-founder', '/who-we-are/our-team/ma-theresa-ramos/'),
+    P4('marvin', 'Marvin Soco', 'MBA, CFBA<br>Relationship Manager'),
+    P4('jb', 'Julian &ldquo;JB&rdquo; Pido', 'MM<br>Senior Consultant, KPMC and TOM'),
+    P4('larry', 'Engr. Larry Yba&ntilde;ez', 'OSE Consultant, Operational Excellence'),
+    P4('imee', 'Imee Gaddi', 'Relationship Manager, Luzon'),
+    P4('jr', 'JR Hernandez', 'Relationship Manager, Luzon'),
+    P4('irish', 'Irish Rago', 'HR Certified (AFPM), AHRI, CHRP<br>Senior Consultant'),
+    P4('alyana', 'Alyana Manalili-Acaso', 'LPT, CHRP<br>HR Manager and OSE Client Associate'),
+    P4('eissen', 'Eissen A. Amancio', 'Client Associate and HR Admin Assistant'),
+    P4('ruby', 'Ruby Joy Limbaga Daplin', 'Executive Assistant, Office of the CEO'),
+    P4('ranadyn', 'Ranadyn Bacayo', 'Client Associate, FEP Program')
+  ]),
+  TEAMGROUP('Finance and accounting', [
+    P4('gen', 'Genevieve Ramos', 'MBA<br>Chief Finance Officer'),
+    P4('mellen', 'Mellen Odchigue', 'Accounting Staff'),
+    P4('mechelle', 'Mechelle Villarta', 'Compliance Officer'),
+    P4('grace', 'Angel Grace Jarabe', 'Treasury Officer'),
+    P4('anamay', 'Ana May Bacia', 'Client Servicing')
+  ]),
+  TEAMGROUP('Legal and compliance', [
+    P4('auman', 'Atty. Evangeline Auman', 'Legal Affairs Manager'),
+    P4('christine', 'Christine Marie Jovita', 'Paralegal')
+  ]),
+  TEAMGROUP('Marketing and communications', [
+    P4('casey', 'Casey Andre Que', 'Marketing and Communications Manager'),
+    P4('aleks', 'Aleks Sandra Canieso', 'Creative Multimedia Artist'),
+    P4('marjorie', 'Marjorie Duterte', 'Publishing Manager')
+  ]),
+  S({pt:32, pb:0, gap:0}, []),
+  CTA('Meet the consultant who would lead your engagement.', 'Tell us about the family and the business, and we will introduce the right people.'),
+  FOOTER()
+];
+
+/* ---------- PROFILES ---------- */
+const PROFILE = (o) => [
+  S({pt:88, pb:112, ptm:36, pbm:56, gap:0}, [
+    Row({gap:72, align:'center'}, [
+      Col(38, {gap:0}, [IMG(o.k, 560, {hm:420, pos:'top center'})]),
+      Col(54, {gap:22}, [
+        T('<p><a href="/">Home</a> &nbsp;/&nbsp; <a href="/who-we-are/our-team/">Our team</a> &nbsp;/&nbsp; ' + o.name + '</p>', {size:13, c:M}),
+        EB(o.role),
+        H(o.name, 'h1', 58, {lh:1.05, m:38, t:46}),
+        T('<p>' + o.creds + '</p>', {size:15, c:M, w:'500'}),
+        o.quote ? T('<p>' + q(o.quote) + '</p>', {serif:true, size:26, lh:1.4, c:N, m:21}) : null,
+        T('<p>' + o.intro + '</p>', {size:17})
+      ])
+    ])
+  ]),
+  S({bg:P, pt:120, pb:120, gap:0}, [
+    Row({gap:64}, [
+      Col(52, {gap:20}, [EB('About ' + o.first), ...o.about.map(p => T('<p>' + p + '</p>', {size:16.5}))]),
+      Col(40, {gap:20}, [EB('Credentials'), T('<ul>' + o.credentials.map(c => '<li>' + c + '</li>').join('') + '</ul>', {size:15.5, lh:1.6, c:N})])
+    ])
+  ]),
+  o.works && o.works.length ? S({pt:120, pb:0, gap:28}, [
+    EB('Published work'),
+    T('<ul>' + o.works.map(w => '<li>' + w + '</li>').join('') + '</ul>', {size:17, lh:1.6, c:N})
+  ]) : null,
+  S({pt:144, pb:0, gap:0}, []),
+  CTA('Talk to ' + o.first + ' about your family business.', 'Start with an exploratory meeting, in confidence.'),
+  FOOTER()
+].filter(Boolean);
+
+const profileJon = PROFILE({k:'jon', first:'Jon', name:'Jonathan &ldquo;Jon&rdquo; A. Ramos', role:'CEO and Founder', creds:'FFI Fellow, ACFWA',
+  quote:'The family business is everybody&rsquo;s business.',
+  intro:'Jon Ramos founded Premier Family Business Consulting to help families build long-lasting businesses, by introducing the tools and sciences of family business succession to the family.',
+  about:['His journey began when families in business approached him for advice and mentoring. That led him to study the sciences of family business, and to build a firm of value-driven professionals committed to uniting families in business.',
+    'He believes building strong competencies across an organization is a must, and that knowing how to innovate and manage change has become urgent. By his own count he has served more than 80 families in business.'],
+  credentials:['Family Firm Institute Fellow, 2021', 'First Filipino on the Family Firm Institute Board of Directors, 2021', 'ACFWA from the Family Firm Institute', 'Pioneer graduate of the University of Asia and the Pacific and IESE Advanced Management Program', 'Graduate of the Stanford Mergers and Acquisitions Program'],
+  works:['Family Business, Braving Fears from COVID-19 &middot; July 2020']});
+
+const profileNeil = PROFILE({k:'neil', first:'Neil', name:'Neil Arnold C. Montescarlos', role:'Executive Director and Chief Operations Officer', creds:'CFBA',
+  intro:'Neil has over 30 years of leadership experience. He specializes in guiding pioneering and start-up organizations, with a strong focus on family business governance, family dynamics facilitation and leadership development.',
+  about:['His years in the seminary honed his skills in personal and group-learning facilitation, processing and coaching. Extensive experience in management and administration made him an expert in visioning, goal-setting, strategic planning and implementation, and in developing people through module design and motivational speaking.',
+    'His direct approach to management lets him get to the root of an issue and put the right systems in place promptly.'],
+  credentials:['Certificate in Family Business Advising (CFBA), FFI Global Educational Network, USA', 'Magna Cum Laude, Philosophy, Don Bosco Seminary College', 'MA and PhD units in Organizational Development, Southeast Asia Interdisciplinary Development Institute (SAIDI)'],
+  works:['The Impact of Community Involvement in a Sustainable Family Firm &middot; October 2021', 'The Family Business Success Story &middot; September 2021', 'The Family Business Reality at the Onslaught of COVID-19: A PwC Report &middot; August 2021']});
+
+const profileThresa = PROFILE({k:'theresa', first:'Thresa', name:'Ma. Theresa B. Ramos', role:'Senior Consultant and Co-founder', creds:'MA, RPSY, ACC, ACMC, CHt, CMC, CSFP, CFBA',
+  intro:'As co-founder of Premier, Thresa leads the firm&rsquo;s family strategy and the design of its training programs, guided by experiential education, strengths-based methods and servant leadership.',
+  about:['Thresa designs training modules and facilitates group and family dynamics sessions. She runs the firm&rsquo;s family programs, including Family Culture Building and the Family Constitution retreat.',
+    'She has served more than 80 Filipino family businesses across the Philippines and abroad, and believes she is called to help families build stronger relationships for the holistic growth of the individual, the family and the enterprise.'],
+  credentials:['Certified in Family Business Advising by the Family Firm Institute, Boston, USA', 'Master of Arts in Clinical Psychology, University of San Carlos', 'Certificate in Family Dynamics and Counseling, Center for Family Ministries (CEFAM), Ateneo de Manila University'],
+  works:['Case of a Transgenerational Entrepreneurship in the Cousin Consortium &middot; November 2021', 'Reflection on Dennis Jaffe&rsquo;s Tapping the Wisdom of 100-Year-Old Family Enterprise &middot; October 2021', 'Emotional Leadership in a Long-lived Family Firm &middot; September 2021']});
+
+/* ---------- FAQS ---------- */
+const FAQS = [
+  ['General', [
+    ['How do we get started with Premier?', 'Book an exploratory meeting. We listen to what is happening in the family and the business, in confidence. From there we offer a complimentary family-focused discussion, and then agree the right program and scope with you.'],
+    ['Which program is right for our family?', 'Most families begin with Family Enterprise Planning, which covers succession, ownership and family culture. Organizational Systems Effectiveness and Key Process Management Consulting strengthen the business itself, and Building Effective Governance keeps the family council and board working after the plan is signed.']
+  ]],
+  ['Family Enterprise Planning (FEP)', [
+    ['What is Family Enterprise Planning?', 'FEP is a planning process for families in business. It first strengthens the family culture, then clarifies policies and direction. It has four main processes: family culture building, ownership succession planning, leadership succession planning and family financial planning. The program is designed to leave a lasting legacy of sustainability across generations.'],
+    ['How long does the FEP process take?', 'About 196 hours of total process time, roughly 24.5 days, from family orientation to the ceremonial signing. The largest parts are leadership succession planning (about 124 hours), financial planning (about 114 hours), and ownership succession planning and family culture building (about 60 hours each).']
+  ]],
+  ['Organizational Systems Effectiveness (OSE)', [
+    ['What is Organizational Systems Effectiveness?', 'OSE is a change-management service model for organizations seeking sustainable relevance. It integrates leadership and organizational development with a strategy- and core-competency-based people system, built around leadership development and a cohesive team that can champion change.'],
+    ['How long does OSE take?', 'OSE is built from modules: guided meetings and coaching of about two hours per key person, a one-day leadership workshop, a one-day teambuilding for key leaders, enterprise strategic planning over about 2.5 days, and about one day of core competencies modeling.']
+  ]],
+  ['Key Process Management Consulting (KPMC)', [
+    ['What is Key Process Management Consulting?', 'KPMC helps growing enterprises and family businesses that are scaling up to a more ambitious level of operations. It combines a strategy review, a leadership review and hands-on management of the key business processes.'],
+    ['How long does KPMC take?', 'Twelve months. The strategy and leadership reviews happen in the first month. Process assessment runs over the first three months, design and development over the next three to four, and execution over the last five to six. Sessions run weekly for Cebu-based clients, and three days every two weeks for clients outside Cebu.']
+  ]],
+  ['Building Effective Governance (BEG)', [
+    ['What is Building Effective Governance?', 'BEG helps families in business establish their governance structures and systems, professionalizing the family business for growth and generational wealth. A Premier consultant joins the family and business systems as facilitator, coach, technical adviser and change catalyst.'],
+    ['What does Premier commit to in BEG?', 'One year of monthly family council meeting facilitation and guidance, and one year of monthly board of directors facilitation and guidance, each with the option of a pre-meeting consultation.'],
+    ['How long does BEG take?', 'One year of monthly council and board facilitation, plus a half-day family team building session and a half-day family constitution review.']
+  ]]
+];
+const FAQGROUP = (title, qs, last) => S({pt:0, pb:last ? 0 : 96, pbm:48, gap:0}, [
+  Row({gap:64}, [
+    Col(30, {gap:0}, [H(title, 'h2', 28, {m:24})]),
+    Col(64, {gap:0}, qs.map(([qq, a], i) => Col(100, {gap:12, s:{border_border:'solid', border_width:bx(1,0,i === qs.length - 1 ? 1 : 0,0), border_color:R, padding:bx(26,0,26,0)}}, [H(qq, 'h3', 22, {m:19, ls:0}), T('<p>' + a + '</p>', {size:15.5})])))
+  ])
+]);
+const faqSchema = {'@context':'https://schema.org', '@type':'FAQPage', mainEntity: FAQS.flatMap(g => g[1].map(([qq, a]) => ({'@type':'Question', name:qq, acceptedAnswer:{'@type':'Answer', text:a}})))};
+const faqs = [
+  S({pt:104, pb:96, ptm:40, pbm:48, gap:0}, [
+    Row({gap:64, align:'flex-end'}, [
+      Col(58, {gap:24}, [EB('Frequently asked questions'), H('How our programs work, and how long they take.', 'h1', 58, {lh:1.06, m:36, t:46})]),
+      Col(34, {gap:0}, [T('<p>Straight answers about Family Enterprise Planning, organizational effectiveness, key process management and governance. Anything else, ask us directly.</p>', {size:17})])
+    ])
+  ]),
+  ...FAQS.map((g, i) => FAQGROUP(g[0], g[1], i === FAQS.length - 1)),
+  S({pt:0, pb:0, ptm:0, pbm:0, gap:0}, [Wd('html', {html:'<script type="application/ld+json">' + JSON.stringify(faqSchema) + '</script>'})]),
+  S({pt:144, pb:0, gap:0}, []),
+  CTA('Still have a question?', 'Ask us directly. We reply to every message.'),
+  FOOTER()
+];
+
+/* ---------- PRIVACY ---------- */
+const PRIVACY_HTML = __PRIVACY_HTML__;
+const privacy = [
+  S({pt:104, pb:64, ptm:40, pbm:32, gap:20}, [EB('Legal'), H('Privacy Policy', 'h1', 56, {m:36})]),
+  S({pt:0, pb:144, pbm:64, gap:0, s:{css_classes:'pfb-legal'}}, [Col(72, {gap:0, s:{width_tablet:pct(100)}}, [T(PRIVACY_HTML, {size:16, lh:1.75})])]),
+  FOOTER()
+];
+
