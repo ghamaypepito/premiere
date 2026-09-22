@@ -1,0 +1,140 @@
+/* ---------- LEGACY IN ACTION ---------- */
+const CHAPTER = (num, part, title, desc, more, last) => Row({gap:40, s:{flex_direction_mobile:'column', flex_gap_mobile:gp(10), border_border:'solid', border_width:bx(1,0,last ? 1 : 0,0), border_color:R, padding:bx(40,0,40,0), padding_mobile:bx(28,0,28,0)}}, [
+  Col(12, {gap:0}, [H(num, 'p', 64, {lh:1, m:44, c:N})]),
+  Col(38, {gap:10}, [EB(part), H(title, 'h3', 32, {m:26})]),
+  Col(44, {gap:10}, [T('<p>' + desc + '</p>', {serif:true, size:21, lh:1.5, c:N, m:19}), T('<p>' + more + '</p>', {size:15.5})])
+]);
+const READER = (title, desc) => Col(47, {gap:10, s:{width_mobile:pct(100), border_border:'solid', border_width:bx(2,0,0,0), border_color:G, padding:bx(22,0,0,0)}}, [
+  H(title, 'h3', 24, {m:21}), T('<p>' + desc + '</p>', {size:15, lh:1.6})
+]);
+const SPEC = (label, value, last) => Row({gap:24, s:{flex_direction_mobile:'column', flex_gap_mobile:gp(2), border_border:'solid', border_width:bx(1,0,last ? 1 : 0,0), border_color:R, padding:bx(14,0,14,0)}}, [
+  Col(30, {gap:0}, [T('<p>' + label + '</p>', {size:13, c:M, w:'500'})]),
+  Col(66, {gap:0}, [T('<p>' + value + '</p>', {size:15, c:N})])
+]);
+const EPISODE = (n, title, id, last) => Row({gap:24, align:'center', s:{html_tag:'a', link:lnk('https://www.youtube.com/watch?v=' + id), _css_classes:'pfb-episode', flex_direction_mobile:'row',
+    border_border:'solid', border_width:bx(1,0,last ? 1 : 0,0), border_color:R, padding:bx(22,0,22,0), padding_mobile:bx(18,0,18,0)}}, [
+  Col(9, {gap:0, s:{width_mobile:pct(16)}}, [H(String(n).padStart(2, '0'), 'p', 30, {lh:1, m:24, c:M})]),
+  Col(73, {gap:6, s:{width_mobile:pct(80)}}, [EB('Season 1 &middot; Episode ' + n), H(title, 'h3', 23, {m:19, ls:0, lh:1.3})]),
+  Col(14, {gap:0, s:{flex_align_items:'flex-end', hide_mobile:'hidden-mobile'}}, [T('<p>Watch &rarr;</p>', {size:14, c:N, w:'600'})])
+]);
+const VIDEO = id => Wd('video', {video_type:'youtube', youtube_url:'https://www.youtube.com/watch?v=' + id, yt_privacy:'yes', lazy_load:'yes',
+  modestbranding:'yes', aspect_ratio:'169', controls:'yes'});
+const legacy = [
+  Wd('html', {html:'<style>.pfb-episode{transition:background-color .2s ease-out}.pfb-episode:hover{background:#F7F6F2}.pfb-episode:hover h3{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}.pfb-episode:focus-visible{outline:2px solid #193153;outline-offset:4px}.pfb-mmm span{color:#F2AF11}</style>'}),
+  S({pt:88, pb:120, ptm:36, pbm:56, gap:0}, [
+    Row({gap:64, align:'center'}, [
+      Col(46, {gap:24}, [
+        T('<p><a href="/">Home</a> &nbsp;/&nbsp; Legacy in Action</p>', {size:13, c:M}),
+        EB('The book and the podcast by Jon Ramos'),
+        H('Legacy is not what you leave behind. It is what you build today.', 'h1', 58, {lh:1.06, m:36, t:46}),
+        T('<p>A transformative journey for families in business, and for the next generation of Southeast Asian family business leaders.</p>', {size:18}),
+        Row({gap:28, align:'center', justify:'flex-start', s:{flex_direction_mobile:'row', flex_wrap:'wrap'}}, [BTN('Get a copy', LINK.book, 'p'), BTN('Watch the podcast', '#podcast', 'l')])
+      ]),
+      Col(50, {gap:12}, [
+        IMG('liabook', 580, {hm:340, pos:'72% center'}),
+        T('<p>Jon Ramos at the launch of Legacy in Action, Cebu City, June 2025.</p>', {size:13, c:M})
+      ])
+    ])
+  ]),
+  S({bg:P, pt:136, pb:136, gap:56}, [
+    Row({gap:48, align:'flex-end'}, [
+      Col(56, {gap:18}, [EB('Inside the book'), H('Three parts, one idea: legacy begins with the person who leads.', 'h2', 44, {m:30})]),
+      Col(36, {gap:0}, [T('<p>Legacy in Action follows the order a family business has to follow: the leader first, then the family, then the enterprise.</p>', {size:16})])
+    ]),
+    Col(100, {gap:0}, [
+      CHAPTER('I', 'Part one', 'Legacy within', 'Build self-awareness and inner mastery as the foundation.', 'Personal stewardship comes first: the mindset and discipline a leader needs before leading anyone else.'),
+      CHAPTER('II', 'Part two', 'Legacy with family', 'Strengthen family unity, communication and shared purpose.', 'Avoid the misunderstandings that damage both the family and the business, and find peace and clarity through proactive succession planning.'),
+      CHAPTER('III', 'Part three', 'Legacy with impact', 'Build a resilient business and create a lasting impact.', 'Create the systems and structures that let a family business last for generations.', true)
+    ])
+  ]),
+  S({pt:144, pb:144, pbm:64, gap:0}, [
+    Row({gap:72}, [
+      Col(46, {gap:22}, [
+        EB('The book'),
+        H('The must-have guide for every family business.', 'h2', 44, {m:30}),
+        T('<p>A practical and heartfelt guide for family business owners who want to preserve unity, strengthen governance and prepare the next generation for responsible leadership. Legacy is not only wealth or business success. It is values, relationships, stewardship, and the deliberate decisions a family makes today.</p>', {size:16.5}),
+        Col(100, {gap:0, s:{margin:bx(8,0,8,0)}}, [
+          SPEC('Author', 'Jonathan &ldquo;Jon&rdquo; Ramos, ACFWA, FFI Fellow'),
+          SPEC('First release', 'June 4, 2025, Cebu City'),
+          SPEC('Includes', 'A hardbound copy of Legacy in Action and a complimentary family business consultation', true)
+        ]),
+        BTN('Get a copy', LINK.book, 'p')
+      ]),
+      Col(46, {gap:28}, [
+        EB('Who this book is for'),
+        Row({gap:32, rgap:36, wrap:true, s:{flex_direction_mobile:'column'}}, [
+          READER('Founders', 'Seeking strategies to safeguard their legacy and transition it well.'),
+          READER('The next generation', 'Charting their own path while carrying an inheritance and its responsibilities.'),
+          READER('Managers', 'Handling the particular complexities and dynamics of a family firm.'),
+          READER('Educators and advisers', 'Developing the next generation of family business leaders.')
+        ])
+      ])
+    ])
+  ]),
+  S({bg:P, pt:136, pb:136, gap:64, s:{_element_id:'podcast'}}, [
+    Row({gap:64, align:'center'}, [
+      Col(38, {gap:20}, [
+        EB('The podcast'),
+        H('Legacy in Action Podcast', 'h2', 44, {m:30}),
+        T('<p>Conversations with Jon Ramos on self-leadership, faith, family and the work of building an enterprise that outlasts its founder.</p>', {size:16.5}),
+        DIV(R, 1),
+        EB('Start here'),
+        H('The Self-Leadership Blueprint: 90 Days to Grow Yourself', 'h3', 26, {m:22, lh:1.25}),
+        T('<p>Jon explores the moment conviction turns into direction, and gives practical ways to strengthen your personal stewardship.</p>', {size:15.5}),
+        BTN('Subscribe on YouTube', LINK.yt, 's')
+      ]),
+      Col(58, {gap:0}, [VIDEO('DI8mKXWaqdA')])
+    ]),
+    Col(100, {gap:20}, [
+      Row({gap:24, align:'center', justify:'flex-start', s:{flex_direction_mobile:'row'}}, [EB('Season 1'), Col(60, {gap:0, s:{flex_grow:1, width_mobile:pct(60)}}, [DIV(R, 1)])]),
+      Col(100, {gap:0}, [
+        EPISODE(8, 'Transcendent Impact: When Success Becomes Service', '0H_t_HcmJPM'),
+        EPISODE(7, 'Faith in Action: Anchor, Filter, Fuel', 'Z_jiNXf-35M'),
+        EPISODE(6, 'The Truth About Enterprise Growth Most Leaders Ignore', 'eF7vaEi30Ak'),
+        EPISODE(5, 'The Hidden Key to Protecting Family, Leadership, and Legacy', 'CJ3vUgd3tMA'),
+        EPISODE(4, 'The Self-Leadership Blueprint: 90 Days to Grow Yourself', 'DI8mKXWaqdA'),
+        EPISODE(3, 'The Real Threat to Your Leadership Might Be You', 'wYxIF_fN7aQ'),
+        EPISODE(2, 'Personal Stewardship: The First Step to Building Your Legacy', '0n8X3eN4N9Q'),
+        EPISODE(1, 'Secrets to Creating a Lasting Legacy', 'SRayqNuCeX4', true)
+      ])
+    ])
+  ]),
+  S({bg:N, pt:136, pb:136, gap:44}, [
+    EB('The 3Ms of self-leadership', {c:'#D9DEE7'}),
+    Row({gap:32, s:{flex_direction_mobile:'column', flex_gap_mobile:gp(8), _css_classes:'pfb-mmm'}}, [
+      Col(32, {gap:0}, [H('Mindset<span>.</span>', 'p', 92, {c:W, lh:1, m:56, t:68})]),
+      Col(32, {gap:0}, [H('Mastery<span>.</span>', 'p', 92, {c:W, lh:1, m:56, t:68})]),
+      Col(32, {gap:0}, [H('Mission<span>.</span>', 'p', 92, {c:W, lh:1, m:56, t:68})])
+    ]),
+    Row({gap:64}, [
+      Col(58, {gap:0}, [T('<p>From early mornings working in the public market to lessons forged in seasons of failure and renewal, Jon&rsquo;s stories come back to three things a leader can strengthen, starting today.</p>', {serif:true, size:24, lh:1.45, c:W, m:20})]),
+      Col(34, {gap:0, s:{flex_justify_content:'flex-end'}}, [BTN('Watch the episodes', '#podcast', 'p')])
+    ])
+  ]),
+  S({pt:144, pb:144, pbm:64, gap:56}, [
+    Row({gap:48, align:'flex-end'}, [
+      Col(52, {gap:18}, [EB('Setting your legacy in motion'), H('Where the book meets the work we do with families.', 'h2', 44, {m:30})]),
+      Col(40, {gap:0}, [T('<p>We do not just provide consulting. We facilitate transformation, through storytelling, systemic strategy and self-leadership.</p>', {size:16})])
+    ]),
+    Row({gap:32, rgap:40, s:{flex_direction_mobile:'column'}}, [
+      Col(31, {gap:14, s:{width_mobile:pct(100), border_border:'solid', border_width:bx(2,0,0,0), border_color:G, padding:bx(26,0,0,0)}}, [
+        H('Holistic succession planning', 'h3', 26, {m:22}),
+        T('<p>Beyond legal structures and financial formulas. Family Focused Discussions give the family a safe space to align values, resolve hidden tensions and build a shared vision.</p>', {size:15.5}),
+        BTN('Family Enterprise Planning', LINK.fep, 'l')
+      ]),
+      Col(31, {gap:14, s:{width_mobile:pct(100), border_border:'solid', border_width:bx(2,0,0,0), border_color:G, padding:bx(26,0,0,0)}}, [
+        H('Leadership development for successors', 'h3', 26, {m:22}),
+        T('<p>The inner mastery a successor needs to lead with confidence, so they do not only inherit the business but steward it into a modern world.</p>', {size:15.5}),
+        BTN('Premier Leadership Institute', LINK.pli, 'l')
+      ]),
+      Col(31, {gap:14, s:{width_mobile:pct(100), border_border:'solid', border_width:bx(2,0,0,0), border_color:G, padding:bx(26,0,0,0)}}, [
+        H('An ecosystem of growth', 'h3', 26, {m:22}),
+        T('<p>Books, roadshows and podcasts that bring global practice into the Southeast Asian context, so the business stays competitive and true to its roots.</p>', {size:15.5}),
+        BTN('Events and roadshows', LINK.events, 'l')
+      ])
+    ])
+  ]),
+  CTA('Set your family&rsquo;s legacy in motion.', 'Start with an exploratory meeting with a senior consultant, in confidence.'),
+  FOOTER()
+];
+

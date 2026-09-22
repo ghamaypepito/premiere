@@ -1,0 +1,65 @@
+/* ---------- booking pop-up (HubSpot exploratory meeting) ---------- */
+const BOOKING = () => Wd('html', {html:`<dialog id="pfb-book" class="pfb-modal" aria-labelledby="pfb-book-title">
+<div class="pfb-modal__panel">
+<div class="pfb-modal__head">
+<div><p class="pfb-modal__eb">Exploratory meeting</p><h2 id="pfb-book-title" class="pfb-modal__title">Schedule a call with a senior consultant</h2></div>
+<button type="button" class="pfb-modal__close" aria-label="Close the calendar">&times;</button>
+</div>
+<div class="pfb-modal__body"><p class="pfb-modal__loading">Loading the calendar&hellip;</p></div>
+<p class="pfb-modal__foot">No cost, and nothing leaves the room. Prefer email? <a href="mailto:info@premierfamilybusiness.com">info@premierfamilybusiness.com</a></p>
+</div>
+</dialog>
+<style>
+.pfb-modal{padding:0;border:0;margin:0;background:transparent;width:100%;height:100%;max-width:none;max-height:none;display:none;align-items:center;justify-content:center}
+.pfb-modal[open]{display:flex}
+.pfb-modal::backdrop{background:rgba(15,35,64,.62);animation:pfbFade .2s ease-out}
+.pfb-modal__panel{background:#fff;width:min(960px,calc(100vw - 48px));height:min(800px,calc(100dvh - 48px));display:flex;flex-direction:column;box-shadow:0 30px 80px rgba(15,35,64,.35);animation:pfbIn .28s cubic-bezier(.23,1,.32,1)}
+.pfb-modal__head{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;padding:28px 32px 20px;border-bottom:1px solid #E6E2D9}
+.pfb-modal__eb{margin:0 0 8px;font:600 12px/1.4 Poppins,sans-serif;letter-spacing:2.2px;text-transform:uppercase;color:#5F6674}
+.pfb-modal__title{margin:0;font:400 30px/1.15 Newsreader,Georgia,serif;letter-spacing:-.5px;color:#193153}
+.pfb-modal__close{flex:none;width:44px;height:44px;display:grid;place-items:center;border:1px solid #E6E2D9;background:#fff;color:#193153;font-size:24px;line-height:1;cursor:pointer;border-radius:0;padding:0;transition:background-color .15s ease-out}
+.pfb-modal__close:hover{background:#F7F6F2}
+.pfb-modal__close:focus-visible{outline:2px solid #193153;outline-offset:2px}
+.pfb-modal__body{flex:1;position:relative;min-height:0}
+.pfb-modal__body iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:transparent}
+.pfb-modal__loading{position:absolute;inset:0;display:grid;place-items:center;margin:0;font:400 14px Poppins,sans-serif;color:#5F6674}
+.pfb-modal__foot{margin:0;padding:14px 32px;border-top:1px solid #E6E2D9;font:400 13px/1.5 Poppins,sans-serif;color:#5F6674}
+.pfb-modal__foot a{color:#193153;text-decoration:underline;text-underline-offset:2px}
+html.pfb-modal-open{overflow:hidden}
+@keyframes pfbIn{from{opacity:0;transform:translateY(12px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes pfbFade{from{opacity:0}to{opacity:1}}
+@media (max-width:767px){.pfb-modal__panel{width:100vw;height:100dvh}.pfb-modal__head{padding:20px 20px 14px}.pfb-modal__title{font-size:24px}.pfb-modal__foot{padding:12px 20px}}
+@media (prefers-reduced-motion:reduce){.pfb-modal__panel,.pfb-modal::backdrop{animation:none}}
+</style>
+<script>
+(function(){
+  if (window.__pfbBook) return; window.__pfbBook = true;
+  var SRC = 'https://meetings.hubspot.com/premier-family-business-consulting/exploratory-meeting?embed=true';
+  var d = document.getElementById('pfb-book'); if (!d) return;
+  var last = null;
+  function open(){
+    if (typeof d.showModal !== 'function') { window.open(SRC.split('?')[0], '_blank', 'noopener'); return; }
+    if (!d.querySelector('iframe')) {
+      var f = document.createElement('iframe');
+      f.src = SRC; f.title = 'Schedule an exploratory meeting with Premier';
+      d.querySelector('.pfb-modal__body').appendChild(f);
+    }
+    last = document.activeElement;
+    d.showModal();
+    document.documentElement.classList.add('pfb-modal-open');
+  }
+  d.addEventListener('close', function(){
+    document.documentElement.classList.remove('pfb-modal-open');
+    if (last && last.focus) last.focus();
+  });
+  d.addEventListener('click', function(e){ if (e.target === d) d.close(); });
+  d.querySelector('.pfb-modal__close').addEventListener('click', function(){ d.close(); });
+  document.addEventListener('click', function(e){
+    var a = e.target.closest && e.target.closest('a[href*="meetings.hubspot.com"], a[href$="#schedule"]');
+    if (!a || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+    e.preventDefault(); open();
+  });
+  if (location.hash === '#schedule') open();
+})();
+</script>`});
+

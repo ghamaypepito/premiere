@@ -25,3 +25,9 @@ wp-build/articles/*.html
 !wp-build/articles/privacy-clean.html
 wp-build/articles/*.png
 wp-build/articles/*.src
+wp-build/legacy/*.html
+wp-build/legacy/*.png
+wp-build/legacy/*.xml
+wp-build/legacy/*.svg
+wp-build/legacy/DSC_*.jpg
+wp-build/legacy/about-*.jpg
