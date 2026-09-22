@@ -91,14 +91,14 @@ const q = s => '“' + s + '”';
 
 /* ---------- shared blocks ---------- */
 const SOCIAL_LINKS = [
-  ["fab fa-linkedin-in","LinkedIn","https://www.linkedin.com/company/premier-family-business-consulting-inc/"],
-  ["fab fa-facebook-f","Facebook","https://www.facebook.com/PremierFamilyBusiness"],
-  ["fab fa-youtube","YouTube","https://www.youtube.com/@legacyinactionpodcast"],
-  ["fab fa-instagram","Instagram","https://www.instagram.com/premier_fbc/"]
+  ["fab fa-linkedin-in","https://www.linkedin.com/company/premier-family-business-consulting-inc/"],
+  ["fab fa-facebook-f","https://www.facebook.com/PremierFamilyBusiness"],
+  ["fab fa-youtube","https://www.youtube.com/@legacyinactionpodcast"],
+  ["fab fa-instagram","https://www.instagram.com/premier_fbc/"]
 ];
 const SOCIAL = (dark = true) => Wd("social-icons", {
-  social_icon_list: SOCIAL_LINKS.map(([icon, label, url]) => ({_id:uid(), social_icon:{value:icon, library:"fa-brands"},
-    link:{url, is_external:"on", nofollow:"", custom_attributes:"aria-label|Premier on " + label}, item_icon_color:"default"})),
+  social_icon_list: SOCIAL_LINKS.map(([icon, url]) => ({_id:uid(), social_icon:{value:icon, library:"fa-brands"},
+    link:{url, is_external:"on", nofollow:"", custom_attributes:""}, item_icon_color:"default"})),
   shape:"circle", align:"left", align_mobile:"left", icon_color:"custom",
   icon_primary_color: dark ? "#2A4670" : N, icon_secondary_color: W,
   hover_primary_color: G, hover_secondary_color: N,
