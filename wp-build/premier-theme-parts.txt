@@ -1,0 +1,322 @@
+(async () => {
+const U = '/wp-content/uploads/2026/09/';
+const MEDIA = {
+  family:[14,'filipino-family-business-three-generations.jpg'], handover:[15,'family-business-succession-handover.jpg'],
+  council:[16,'family-council-meeting.jpg'], nextgen:[17,'next-generation-family-business-leader.jpg'],
+  warehouse:[18,'professionalizing-family-business-operations.jpg'], advisor:[19,'family-business-consultant-meeting.jpg'],
+  capiz:[20,'capiz-window-light-texture.jpg'], lunch:[21,'filipino-family-sunday-lunch.jpg'],
+  idea:[22,'premier-idea-digital-execution-app.jpg'], pli:[23,'premier-leadership-institute-workshop.jpg'],
+  forum:[24,'family-business-forum-cebu.jpg'], logo:[25,'premier-family-business-consulting-logo.png'],
+  logow:[26,'premier-family-business-consulting-logo-white.png'],
+  jon:[213,'jon-ramos-ceo-premier-family-business-portrait.jpg'], neil:[87,'neil-arnold-montescarlos-coo.jpg'],
+  jeff:[88,'jefferson-tio-chief-partnership-officer.jpg'], gen:[89,'genevieve-ramos-cfo.jpg'],
+  lagundi:[90,'atty-domingo-lagundi-relationship-director.jpg'], theresa:[91,'ma-theresa-ramos-senior-consultant.jpg'],
+  jb:[92,'julian-jb-pido-senior-consultant.jpg'], irish:[93,'irish-rago-senior-consultant.jpg'],
+  ffi:[94,'family-firm-institute-logo.png'], uap:[95,'university-of-asia-and-the-pacific-logo.png'], fbn:[96,'fbn-asia-logo.png'],
+  mellen:[214,'mellen-odchigue-portrait.jpg'], mechelle:[131,'mechelle-villarta.jpg'], grace:[132,'angel-grace-jarabe.jpg'], anamay:[133,'ana-may-bacia.jpg'],
+  christine:[215,'christine-marie-jovita-portrait.jpg'], auman:[135,'atty-evangeline-auman.jpg'], marvin:[136,'marvin-soco.jpg'], larry:[137,'engr-larry-ybanez.jpg'],
+  imee:[216,'imee-gaddi-portrait.jpg'], jr:[139,'jr-hernandez.jpg'], alyana:[140,'alyana-manalili-acaso.jpg'], eissen:[141,'eissen-amancio.jpg'],
+  ruby:[142,'ruby-joy-limbaga-daplin.jpg'], ranadyn:[143,'ranadyn-bacayo.jpg'], casey:[144,'casey-andre-que.jpg'], aleks:[145,'aleks-sandra-canieso.jpg'],
+  marjorie:[146,'marjorie-duterte.jpg'], toshio:[147,'professor-toshio-goto-family-business-longevity.jpg'],
+  ffiaward:[148,'jefferson-tio-razilee-ligaray-ffi-cfba.jpg'], yntig:[149,'atty-allan-yntig-ffi-cfwa.jpg'],
+  teamgroup:[329,'premier-team-culture-of-engagement-and-trust.jpg'], hrignite:[330,'premier-hr-ignite-culture-of-values-session.jpg'],
+  office:[331,'premier-family-business-consulting-cebu-office.jpg'], rsgroup:[332,'family-enterprise-roadshow-bohol-2026-participants.jpg'],
+  rsguests:[333,'jon-ramos-family-enterprise-roadshow-bohol-2026.jpg'], rssession:[334,'family-enterprise-roadshow-bohol-2026-session.jpg'],
+  rspodium:[335,'jon-ramos-speaking-family-enterprise-roadshow.jpg'], liabook:[336,'legacy-in-action-book-by-jon-ramos.jpg']
+};
+const LINK = { home:'/', who:'/who-we-are/', what:'/what-we-do/', fep:'/what-we-do/family-enterprise-planning/',
+  ose:'/what-we-do/organizational-systems-effectiveness/', idea:'/what-we-do/premier-idea/',
+  pli:'/what-we-do/premier-leadership-institute/', events:'/events/', res:'/resources/', contact:'/get-in-touch/',
+  cal:'https://meetings.hubspot.com/premier-family-business-consulting/exploratory-meeting', lia:'/legacy-in-action/',
+  book:'https://www.paypal.com/ncp/payment/2JKJ26FS4KHJ2', yt:'https://www.youtube.com/@legacyinactionpodcast' };
+const G='#F2AF11', N='#193153', B='#3E4756', M='#5F6674', W='#FFFFFF', P='#F7F6F2', R='#E6E2D9', L='#DCE3EE';
+const SERIF='Newsreader', SANS='Poppins';
+
+const uid = () => Math.random().toString(16).slice(2, 9);
+const px = s => ({unit:'px', size:s, sizes:[]});
+const em = s => ({unit:'em', size:s, sizes:[]});
+const pct = s => ({unit:'%', size:s, sizes:[]});
+const bx = (t,r,b,l) => ({unit:'px', top:String(t), right:String(r), bottom:String(b), left:String(l), isLinked:false});
+const gp = (c, r) => ({unit:'px', size:c, column:String(c), row:String(r === undefined ? c : r), isLinked: r === undefined});
+const img = k => ({id:MEDIA[k][0], url:U + MEDIA[k][1], alt:'', source:'library'});
+const lnk = u => ({url:u, is_external: u.startsWith('http') ? 'on' : '', nofollow:'', custom_attributes:''});
+
+const C = (s, els, inner = true) => ({ id:uid(), elType:'container', isInner:inner,
+  settings: Object.assign({content_width:'full', flex_direction:'column', flex_gap:gp(0), padding:bx(0,0,0,0)}, s),
+  elements: els.filter(Boolean) });
+const S = (o, els) => C(Object.assign({
+    content_width:'boxed', boxed_width:px(1200), flex_direction:'column',
+    padding:bx(o.pt ?? 128, 24, o.pb ?? 128, 24),
+    padding_tablet:bx(o.ptt ?? Math.round((o.pt ?? 128) * 0.75), 32, o.pbt ?? Math.round((o.pb ?? 128) * 0.75), 32),
+    padding_mobile:bx(o.ptm ?? Math.min(o.pt ?? 128, 64), 22, o.pbm ?? Math.min(o.pb ?? 128, 64), 22),
+    flex_gap:gp(o.gap ?? 48)
+  }, o.bg ? {background_background:'classic', background_color:o.bg} : {}, o.s || {}), els, false);
+const Row = (o, els) => C(Object.assign({flex_direction:'row', flex_direction_mobile:'column', flex_gap:gp(o.gap ?? 32, o.rgap),
+  flex_align_items:o.align || 'flex-start', flex_justify_content:o.justify || 'space-between', flex_wrap:o.wrap ? 'wrap' : 'nowrap'}, o.s || {}), els);
+const Col = (w, o, els) => C(Object.assign({width:pct(w), width_mobile:pct(100), flex_direction:'column', flex_gap:gp(o.gap ?? 20)}, o.s || {}), els);
+
+const Wd = (type, s) => ({id:uid(), elType:'widget', widgetType:type, settings:s, elements:[]});
+const typo = (fam, size, o = {}) => Object.assign(
+  {typography_typography:'custom', typography_font_family:fam, typography_font_size:px(size), typography_font_weight:o.w || '400', typography_line_height:em(o.lh || 1.2)},
+  o.ls !== undefined ? {typography_letter_spacing:px(o.ls)} : {},
+  o.tt ? {typography_text_transform:o.tt} : {},
+  o.m ? {typography_font_size_mobile:px(o.m)} : {},
+  o.t ? {typography_font_size_tablet:px(o.t)} : {});
+const H = (text, tag, size, o = {}) => Wd('heading', Object.assign({title:text, header_size:tag, title_color:o.c || N, align:o.align || ''},
+  typo(SERIF, size, {lh:o.lh || 1.12, ls:o.ls ?? -0.5, m:o.m, t:o.t})));
+const EB = (text, o = {}) => Wd('heading', Object.assign({title:text, header_size:'p', title_color:o.c || M, align:o.align || ''},
+  typo(SANS, 12, {w:'600', lh:1.4, ls:2.2, tt:'uppercase'})));
+const T = (html, o = {}) => Wd('text-editor', Object.assign({editor:html, text_color:o.c || B, align:o.align || ''},
+  typo(o.serif ? SERIF : SANS, o.size || 17, {lh:o.lh || 1.7, m:o.m, w:o.w})));
+const IMG = (k, h, o = {}) => Wd('image', Object.assign({image:img(k), image_size:'full', width:pct(100), height:px(h),
+  height_mobile:px(o.hm || Math.round(h * 0.6)), 'object-fit':'cover', 'object-position':o.pos || 'center center', align:'left'}, o.s || {}));
+const LOGO = (k, w) => Wd('image', {image:img(k), image_size:'full', width:px(w), align:'left'});
+const PLOGO = (k, h = 72) => Wd('image', {image:img(k), image_size:'full', width:pct(100), height:px(h), height_mobile:px(Math.round(h * 0.8)),
+  'object-fit':'contain', align:'center', _css_classes:'pfb-logo'});
+const PORTRAIT = (k, name, role, w = 23, h = 330, url) => Col(w, {gap:12, s:Object.assign({width_mobile:pct(47)}, url ? {html_tag:'a', link:lnk(url)} : {})}, [
+  IMG(k, h, {hm:210, pos:'top center'}),
+  H(name, 'h3', 21, {m:17, ls:0, lh:1.25}),
+  T('<p>' + role + '</p>', {size:13, lh:1.5, c:M}),
+  url ? T('<p><strong>View profile &rarr;</strong></p>', {size:13, c:N}) : null
+]);
+const BTN = (text, url, kind = 'p', o = {}) => Wd('button', Object.assign({text, link:lnk(url), align:o.align || 'left', size:'md'},
+  typo(SANS, 15, {w:'600', lh:1.2}),
+  kind === 'p' ? {button_text_color:N, background_color:G, button_background_background:'classic', button_background_color:G,
+      hover_color:N, background_hover_color:'#FFCE60', button_background_hover_background:'classic', button_background_hover_color:'#FFCE60',
+      border_radius:bx(0,0,0,0), text_padding:bx(18,30,18,30)}
+  : kind === 's' ? {button_text_color:N, background_color:'rgba(0,0,0,0)', button_background_background:'classic', button_background_color:'rgba(0,0,0,0)',
+      hover_color:W, background_hover_color:N, button_background_hover_background:'classic', button_background_hover_color:N,
+      border_border:'solid', border_width:bx(1.5,1.5,1.5,1.5), border_color:N, border_radius:bx(0,0,0,0), text_padding:bx(17,28,17,28)}
+  : {button_text_color:N, background_color:'rgba(0,0,0,0)', button_background_background:'classic', button_background_color:'rgba(0,0,0,0)',
+      hover_color:'#0F2340', border_border:'solid', border_width:bx(0,0,1.5,0), border_color:N, border_radius:bx(0,0,0,0), text_padding:bx(4,0,4,0)},
+  o.s || {}));
+const DIV = (color = R, w = 1) => Wd('divider', {color, weight:px(w), gap:px(0)});
+const SP = h => Wd('spacer', {space:px(h), space_mobile:px(Math.round(h / 2))});
+const q = s => '“' + s + '”';
+
+/* ---------- shared blocks ---------- */
+/* ---------- booking pop-up (HubSpot exploratory meeting) ---------- */
+const BOOKING = () => Wd('html', {html:`<dialog id="pfb-book" class="pfb-modal" aria-labelledby="pfb-book-title">
+<div class="pfb-modal__panel">
+<div class="pfb-modal__head">
+<div><p class="pfb-modal__eb">Exploratory meeting</p><h2 id="pfb-book-title" class="pfb-modal__title">Schedule a call with a senior consultant</h2></div>
+<button type="button" class="pfb-modal__close" aria-label="Close the calendar">&times;</button>
+</div>
+<div class="pfb-modal__body"><p class="pfb-modal__loading">Loading the calendar&hellip;</p></div>
+<p class="pfb-modal__foot">No cost, and nothing leaves the room. Prefer email? <a href="mailto:info@premierfamilybusiness.com">info@premierfamilybusiness.com</a></p>
+</div>
+</dialog>
+<style>
+.pfb-modal{padding:0;border:0;margin:0;background:transparent;width:100%;height:100%;max-width:none;max-height:none;display:none;align-items:center;justify-content:center}
+.pfb-modal[open]{display:flex}
+.pfb-modal::backdrop{background:rgba(15,35,64,.62);animation:pfbFade .2s ease-out}
+.pfb-modal__panel{background:#fff;width:min(960px,calc(100vw - 48px));height:min(800px,calc(100dvh - 48px));display:flex;flex-direction:column;box-shadow:0 30px 80px rgba(15,35,64,.35);animation:pfbIn .28s cubic-bezier(.23,1,.32,1)}
+.pfb-modal__head{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;padding:28px 32px 20px;border-bottom:1px solid #E6E2D9}
+.pfb-modal__eb{margin:0 0 8px;font:600 12px/1.4 Poppins,sans-serif;letter-spacing:2.2px;text-transform:uppercase;color:#5F6674}
+.pfb-modal__title{margin:0;font:400 30px/1.15 Newsreader,Georgia,serif;letter-spacing:-.5px;color:#193153}
+.pfb-modal .pfb-modal__close{flex:none;width:44px;height:44px;display:grid;place-items:center;border:1px solid #E6E2D9!important;background:#fff!important;color:#193153!important;font-size:24px;line-height:1;cursor:pointer;border-radius:0!important;padding:0!important;transition:background-color .15s ease-out}
+.pfb-modal .pfb-modal__close:hover,.pfb-modal .pfb-modal__close:focus{background:#F7F6F2!important;color:#193153!important}
+.pfb-modal__close:focus-visible{outline:2px solid #193153;outline-offset:2px}
+.pfb-modal__body{flex:1;position:relative;min-height:0}
+.pfb-modal__body iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:transparent}
+.pfb-modal__loading{position:absolute;inset:0;display:grid;place-items:center;margin:0;font:400 14px Poppins,sans-serif;color:#5F6674}
+.pfb-modal__foot{margin:0;padding:14px 32px;border-top:1px solid #E6E2D9;font:400 13px/1.5 Poppins,sans-serif;color:#5F6674}
+.pfb-modal__foot a{color:#193153;text-decoration:underline;text-underline-offset:2px}
+html.pfb-modal-open{overflow:hidden}
+@keyframes pfbIn{from{opacity:0;transform:translateY(12px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes pfbFade{from{opacity:0}to{opacity:1}}
+@media (max-width:767px){.pfb-modal__panel{width:100vw;height:100dvh}.pfb-modal__head{padding:20px 20px 14px}.pfb-modal__title{font-size:24px}.pfb-modal__foot{padding:12px 20px}}
+@media (prefers-reduced-motion:reduce){.pfb-modal__panel,.pfb-modal::backdrop{animation:none}}
+</style>
+<script>
+(function(){
+  if (window.__pfbBook) return; window.__pfbBook = true;
+  var SRC = 'https://meetings.hubspot.com/premier-family-business-consulting/exploratory-meeting?embed=true';
+  var d = document.getElementById('pfb-book'); if (!d) return;
+  var last = null;
+  function open(){
+    if (typeof d.showModal !== 'function') { window.open(SRC.split('?')[0], '_blank', 'noopener'); return; }
+    if (!d.querySelector('iframe')) {
+      var f = document.createElement('iframe');
+      f.src = SRC; f.title = 'Schedule an exploratory meeting with Premier';
+      d.querySelector('.pfb-modal__body').appendChild(f);
+    }
+    last = document.activeElement;
+    d.showModal();
+    document.documentElement.classList.add('pfb-modal-open');
+  }
+  function closed(){
+    if (!document.documentElement.classList.contains('pfb-modal-open')) return;
+    document.documentElement.classList.remove('pfb-modal-open');
+    if (last && last.focus) last.focus();
+  }
+  new MutationObserver(function(){ if (!d.open) closed(); }).observe(d, {attributes:true, attributeFilter:['open']});
+  d.addEventListener('close', closed);
+  d.addEventListener('click', function(e){ if (e.target === d) d.close(); });
+  d.querySelector('.pfb-modal__close').addEventListener('click', function(){ d.close(); });
+  document.addEventListener('click', function(e){
+    var a = e.target.closest && e.target.closest('a[href*="meetings.hubspot.com"], a[href$="#schedule"]');
+    if (!a || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+    e.preventDefault(); open();
+  });
+  if (location.hash === '#schedule') open();
+})();
+</script>`});
+
+const SOCIAL_LINKS = [
+  ["fab fa-linkedin-in","LinkedIn","https://www.linkedin.com/company/premier-family-business-consulting-inc/"],
+  ["fab fa-facebook-f","Facebook","https://www.facebook.com/PremierFamilyBusiness"],
+  ["fab fa-youtube","YouTube","https://www.youtube.com/@legacyinactionpodcast"],
+  ["fab fa-instagram","Instagram","https://www.instagram.com/premier_fbc/"]
+];
+const SOCIAL = (dark = true) => Wd("social-icons", {
+  social_icon_list: SOCIAL_LINKS.map(([icon, label, url]) => ({_id:uid(), social_icon:{value:icon, library:"fa-brands"},
+    link:{url, is_external:"on", nofollow:"", custom_attributes:"aria-label|Premier on " + label}, item_icon_color:"default"})),
+  shape:"circle", align:"left", align_mobile:"left", icon_color:"custom",
+  icon_primary_color: dark ? "#2A4670" : N, icon_secondary_color: W,
+  hover_primary_color: G, hover_secondary_color: N,
+  icon_size:{unit:"px", size:15}, icon_padding:{unit:"em", size:0.8}, icon_spacing:{unit:"px", size:10},
+  _css_classes:"pfb-social"
+});
+
+const FOOTER = () => S({bg:N, pt:96, pb:48, ptm:56, pbm:40, gap:48, s:{css_classes:'pfb-footer'}}, [
+  Row({gap:48}, [
+    Col(46, {gap:24}, [
+      LOGO('logow', 220),
+      H('Connect with us to learn how to grow your family business across multiple generations.', 'p', 28, {c:W, lh:1.3, ls:0, m:22}),
+      SOCIAL(true)
+    ]),
+    Col(18, {gap:12}, [
+      EB('Explore', {c:'#D9DEE7'}),
+      T('<p><a href="/who-we-are/">Who we are</a><br><a href="/who-we-are/our-team/">Our team</a><br><a href="/what-we-do/">What we do</a><br><a href="/events/">Events</a><br><a href="/resources/">Resources</a><br><a href="/legacy-in-action/">Legacy in Action</a><br><a href="/faqs/">FAQs</a></p>', {c:L, size:14, lh:2.1})
+    ]),
+    Col(28, {gap:12}, [
+      EB('Get in touch', {c:'#D9DEE7'}),
+      T('<p><a href="mailto:info@premierfamilybusiness.com">info@premierfamilybusiness.com</a><br>0917 316 9881<br>35F Cebu Exchange Tower, Salinas Drive, Cebu City</p>', {c:L, size:14, lh:1.9}),
+      BTN('Schedule a call', LINK.cal, 'p')
+    ])
+  ]),
+  DIV('#34507A', 1),
+  T('<p>&copy; 2026 Premier Family Business Consulting, Inc. All rights reserved. &nbsp;&middot;&nbsp; <a href="/privacy-policy/">Privacy Policy</a></p>', {c:'#9FB0C9', size:13}),
+  BOOKING()
+]);
+
+
+/* ---------- header ---------- */
+/* Solid navy on every page. The prototype's transparent-over-hero treatment is
+   available by setting this to true, but it has not been previewed against the
+   live pages, so it ships off. */
+const HOME_TRANSPARENT = false;
+
+const NAVMENU = () => Wd('nav-menu', Object.assign({
+    menu: window.__pfbMenu || '',
+    layout:'horizontal', align_items:'center',
+    pointer:'underline', animation_line:'fade',
+    color_menu_item:W, color_menu_item_hover:G, pointer_color_menu_item_hover:G,
+    color_menu_item_active:G, pointer_color_menu_item_active:G,
+    space_between:{unit:'px', size:26},
+    padding_horizontal_menu_item:{unit:'px', size:0},
+    padding_vertical_menu_item:{unit:'px', size:8},
+    toggle:'burger', toggle_size:{unit:'px', size:20},
+    toggle_color:W, toggle_color_hover:G,
+    color_menu_item_dropdown:W, background_color_dropdown:N,
+    color_menu_item_hover_dropdown:N, background_color_hover_dropdown:G,
+    dropdown_divider_width:{unit:'px', size:0},
+    padding_horizontal_dropdown_item:{unit:'px', size:22},
+    padding_vertical_dropdown_item:{unit:'px', size:14},
+    _css_classes:'pfb-nav'
+  },
+  Object.keys(typo(SANS, 15, {w:'500'})).reduce((o, k) => {
+    o[k.replace('typography_', 'menu_typography_')] = typo(SANS, 14.5, {w:'500', lh:1.4})[k];
+    return o;
+  }, {}),
+  Object.keys(typo(SANS, 15, {w:'500'})).reduce((o, k) => {
+    o[k.replace('typography_', 'dropdown_typography_')] = typo(SANS, 14, {w:'500', lh:1.5})[k];
+    return o;
+  }, {})));
+
+const HEADERCSS = () => Wd('html', {html:`<style>
+.pfb-header{transition:background-color .28s ease-out,backdrop-filter .28s ease-out,border-color .28s ease-out;border-bottom:1px solid rgba(143,166,201,0)}
+.pfb-header.pfb-solid{border-bottom-color:rgba(143,166,201,.18)}
+.pfb-nav .elementor-item{letter-spacing:.1px}
+.pfb-nav .elementor-nav-menu--dropdown a{border-radius:0}
+.pfb-header .elementor-button{border-radius:0}
+@media(max-width:1024px){.pfb-header .pfb-headcta{display:none}}
+${HOME_TRANSPARENT ? `
+body.home .pfb-header{background-color:rgba(25,49,83,0)!important}
+body.home .pfb-header.pfb-solid{background-color:rgba(25,49,83,.94)!important;backdrop-filter:blur(10px)}` : ''}
+</style>
+<script>
+(function(){
+  var h=document.querySelector('.pfb-header'); if(!h) return;
+  var tick=function(){ h.classList.toggle('pfb-solid', window.scrollY>24); };
+  tick(); window.addEventListener('scroll', tick, {passive:true});
+})();
+</script>`});
+
+const HEADER = () => C({
+    content_width:'boxed', boxed_width:px(1200), flex_direction:'row',
+    flex_align_items:'center', flex_justify_content:'space-between', flex_wrap:'nowrap',
+    flex_gap:gp(32),
+    padding:bx(18,24,18,24), padding_tablet:bx(14,32,14,32), padding_mobile:bx(12,22,12,22),
+    background_background:'classic', background_color:N,
+    sticky:'top', sticky_on:['desktop','tablet','mobile'], sticky_offset:0, z_index:60,
+    css_classes:'pfb-header'
+  }, [
+    C({width:pct(24), width_mobile:pct(52), flex_direction:'row', flex_align_items:'center', flex_gap:gp(0),
+       html_tag:'a', link:lnk(LINK.home)}, [LOGO('logow', 196)]),
+    C({width:pct(72), width_mobile:pct(44), flex_direction:'row', flex_align_items:'center',
+       flex_justify_content:'flex-end', flex_wrap:'nowrap', flex_gap:gp(28)}, [
+      NAVMENU(),
+      C({flex_direction:'row', flex_gap:gp(0), css_classes:'pfb-headcta'}, [
+        BTN('Schedule a call', LINK.cal, 'p', {s:{text_padding:bx(13,22,13,22)}})
+      ])
+    ]),
+    HEADERCSS()
+  ], false);
+
+/* ---------- find the two Theme Builder templates ---------- */
+const findTemplate = async (type) => {
+  const override = type === 'header' ? window.__pfbHeaderId : window.__pfbFooterId;
+  if (override) return override;
+  const html = await (await fetch('/wp-admin/edit.php?post_type=elementor_library&elementor_library_type=' + type,
+    {credentials:'same-origin'})).text();
+  const ids = [...html.matchAll(/id="post-(\d+)"/g)].map(m => Number(m[1]));
+  const unique = [...new Set(ids)];
+  if (!unique.length) return null;
+  return unique[0];
+};
+
+/* ---------- save ---------- */
+const headerId = await findTemplate('header');
+const footerId = await findTemplate('footer');
+
+if (!headerId || !footerId) {
+  return 'Create the templates first: Templates > Theme Builder > Header (and Footer) > Add New, '
+    + 'name them "Premier Header" / "Premier Footer", set the display condition to Entire Site, save, '
+    + 'then run this again. Found header=' + headerId + ' footer=' + footerId;
+}
+
+const ed = await (await fetch('/wp-admin/post.php?post=' + headerId + '&action=elementor', {credentials:'same-origin'})).text();
+const nonce = (ed.match(/"ajax":\{"url":"[^"]+","nonce":"([a-z0-9]+)"\}/) || [])[1];
+if (!nonce) return 'no nonce';
+
+const TEMPLATES = [[headerId, 'Premier Header', [HEADER()]], [footerId, 'Premier Footer', [FOOTER()]]];
+const out = [];
+
+for (const [pid, title, elements] of TEMPLATES) {
+  await fetch('/wp-admin/post.php?post=' + pid + '&action=elementor', {credentials:'same-origin'});
+  const fd = new FormData();
+  fd.append('action', 'elementor_ajax');
+  fd.append('_nonce', nonce);
+  fd.append('editor_post_id', pid);
+  fd.append('initial_document_id', pid);
+  fd.append('actions', JSON.stringify({save_builder:{action:'save_builder', data:{status:'publish', elements, settings:{post_title:title, post_status:'publish'}}}}));
+  const r = await fetch('/wp-admin/admin-ajax.php', {method:'POST', body:fd, credentials:'same-origin'});
+  const t = await r.text();
+  let ok = false; try { const j = JSON.parse(t); ok = j.success && j.data.responses.save_builder.success; } catch (e) {}
+  out.push(title + ' (' + pid + '): ' + (ok ? 'ok' : 'FAIL ' + t.slice(0, 160)));
+}
+
+return out.join(' | ');
+})()
