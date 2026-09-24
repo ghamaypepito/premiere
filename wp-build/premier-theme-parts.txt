@@ -25,8 +25,8 @@ const MEDIA = {
   rspodium:[335,'jon-ramos-speaking-family-enterprise-roadshow.jpg'], liabook:[336,'legacy-in-action-book-by-jon-ramos.jpg']
 };
 const LINK = { home:'/', who:'/who-we-are/', what:'/what-we-do/', fep:'/what-we-do/family-enterprise-planning/',
-  ose:'/what-we-do/organizational-systems-effectiveness/', idea:'/what-we-do/premier-idea/',
-  pli:'/what-we-do/premier-leadership-institute/', events:'/events/', res:'/resources/', contact:'/get-in-touch/',
+  ose:'/what-we-do/organizational-systems-effectiveness/', kpmc:'/what-we-do/key-process-management-consulting/',
+  beg:'/what-we-do/building-effective-governance/', events:'/events/', res:'/resources/', contact:'/get-in-touch/',
   cal:'https://meetings.hubspot.com/premier-family-business-consulting/exploratory-meeting', lia:'/legacy-in-action/',
   book:'https://www.paypal.com/ncp/payment/2JKJ26FS4KHJ2',
   form:'https://docs.google.com/forms/d/e/1FAIpQLSeLpaR-2YZ-k-Utkm6H72Uk69qtyfwGYok9Ip8ylHFpw-yCjg/viewform', yt:'https://www.youtube.com/@legacyinactionpodcast' };

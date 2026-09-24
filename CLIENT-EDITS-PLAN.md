@@ -13,20 +13,23 @@ decision. **Flagged** — doable, but I think it costs more than it gives; see t
 The two biggest items. Both are page renames, not copy tweaks, and they touch the nav,
 the footer, every cross-link, the slug and the schema.
 
-| Now | Becomes | Source given |
+| Now | Becomes | Source |
 |---|---|---|
 | Premier IDEA | **Key Process Management Consulting** | premierfamilybusiness.com/key-process-management-consulting/ |
 | Premier Leadership Institute | **Building Effective Governance** | premierfamilybusiness.com/building-effective-governance/ |
 
-**Needs input.** Both source URLs are on the old production site, which this environment
-cannot reach and which was returning a PHP fatal error when this project started. I need the
-body copy for each page — paste it, or export the two pages to PDF, or get the old site
-back up.
+**Done in v12.** Both source pages were fetched once the environment's network policy
+allowed the domain, and are saved under `wp-build/source/`. Both target pages were stubs
+carrying bracketed placeholders, so this is the first real content either has had.
 
-The rename itself is mechanical and I can do it today: `LINK.idea` → `LINK.kpmc`,
-`LINK.pli` → `LINK.beg`, slugs `/what-we-do/premier-idea/` →
-`/what-we-do/key-process-management-consulting/`, nav and footer labels, and 301 redirects
-from the old slugs. What I cannot do is invent the page content.
+Per "recreate, don't redirect", the pages are converted in place on post IDs 32 and 33. The
+content was rewritten into this site's voice and rebuilt with this design system rather than
+transplanted as markup. The FAQs page already carried KPMC and BEG groups, so nothing
+changed there.
+
+Slugs are handled separately by `wp-build/premier-slugs.txt`: Elementor's `save_builder`
+writes the title and content but never `post_name`, so without it both pages would keep
+their old URLs while every link on the site pointed at the new ones.
 
 ### "Schedule a call" → "Let's Talk about the Future"
 
@@ -175,8 +178,8 @@ genuinely helps. Happy to build the full slider if you would rather.
 
 ## What I need
 
-1. Body copy for **Key Process Management Consulting** and **Building Effective Governance**
-2. **LinkedIn URLs** for the consultants who should have them
+1. ~~Body copy for KPMC and BEG~~ — fetched and built in v12
+2. **LinkedIn URLs** for the consultants who should have them (on hold until after the meeting)
 3. **Sir Jon's family photo** for the hero
 4. **HubSpot meeting links** for Jon, Neil and Theresa
 5. **Partners and affiliates** — full list and logos
@@ -194,3 +197,27 @@ genuinely helps. Happy to build the full slider if you would rather.
 3. The slider, the circular-avatar team row, the Life at Premier gallery
 4. KPMS and BEG pages once the copy arrives
 5. FAQ restructure, schema updates, redirects from the retired slugs
+
+
+---
+
+# Found while building v12
+
+Three things surfaced from the two source pages that contradict what the new site says.
+
+**The phone numbers differ.** The live site's footer carries `+63.32.254.5763` and
+`+63.920.922.5581`. The new site carries `0917 316 9881` and `+63 32 252 3504`, which came
+from the archived contact page. Two of these four numbers appear nowhere in the other set.
+Which pair is current? They are in the footer, the contact page, the schema and now the
+`tel:` links, so it is worth getting right once.
+
+**Two FAQ answers are empty at source.** "How Long Does the KPMC Process Take?" and "How
+Long Does the BEG Process Take?" both have a heading and no answer on the live pages. Those
+are the questions people actually search for. FEP already answers its equivalent with a real
+figure (196 hours, about 24.5 days). Both are left out rather than guessed.
+
+**The live site uses different service names again.** Its menu reads Family Enterprise
+Planning, Organizational Systems Effectiveness, Key Process Management Consulting, Building
+Effective Governance — which matches the deck. It also lists **Family Biz Buzz** and
+**Publishing** as resources, and **Our Partners** under About. None of those exist on the new
+site. Worth deciding whether they should.

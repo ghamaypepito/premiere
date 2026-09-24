@@ -1,0 +1,40 @@
+/**
+ * Renames the two converted pages' slugs.
+ *
+ * Elementor's save_builder writes the title and the content but never touches
+ * post_name, so posts 32 and 33 would keep /premier-idea/ and
+ * /premier-leadership-institute/ while every link on the site points at the new
+ * paths. This closes that gap through the REST API.
+ *
+ * Paste into the browser console on any wp-admin page, logged in as an
+ * administrator, AFTER running the page build.
+ */
+(async () => {
+const WANT = {
+  32: {slug:'key-process-management-consulting', title:'Key Process Management Consulting'},
+  33: {slug:'building-effective-governance',     title:'Building Effective Governance'}
+};
+
+// The REST nonce is printed into wp-admin as wpApiSettings; fall back to
+// scraping it out of the page source when the global is not exposed.
+let nonce = (window.wpApiSettings && window.wpApiSettings.nonce) || null;
+if (!nonce) {
+  const html = await (await fetch('/wp-admin/post-new.php?post_type=page', {credentials:'same-origin'})).text();
+  nonce = (html.match(/"nonce":"([a-f0-9]{8,12})"/) || html.match(/wpApiSettings[^}]*?"nonce":"([a-f0-9]+)"/) || [])[1] || null;
+}
+if (!nonce) return 'no REST nonce found - rename the two slugs by hand in Pages > Quick Edit';
+
+const out = [];
+for (const [id, want] of Object.entries(WANT)) {
+  const before = await (await fetch('/wp-json/wp/v2/pages/' + id + '?context=edit', {credentials:'same-origin', headers:{'X-WP-Nonce':nonce}})).json();
+  if (before.slug === want.slug) { out.push(id + ': already ' + want.slug); continue; }
+  const r = await fetch('/wp-json/wp/v2/pages/' + id, {
+    method:'POST', credentials:'same-origin',
+    headers:{'Content-Type':'application/json', 'X-WP-Nonce':nonce},
+    body: JSON.stringify({slug: want.slug, title: want.title})
+  });
+  const j = await r.json();
+  out.push(id + ': ' + (j.slug === want.slug ? (before.slug + ' -> ' + j.slug + '  (' + j.link + ')') : 'FAIL ' + JSON.stringify(j).slice(0, 180)));
+}
+return out.join('\n');
+})()
