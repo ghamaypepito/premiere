@@ -31,3 +31,6 @@ wp-build/legacy/*.xml
 wp-build/legacy/*.svg
 wp-build/legacy/DSC_*.jpg
 wp-build/legacy/about-*.jpg
+
+# Generated preview screenshots
+wp-build/preview/_shot-*.png
