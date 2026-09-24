@@ -207,7 +207,6 @@ const home = [
       EB('Why it matters', {align:'center'}),
       H('Roughly a third of family businesses reach the second generation. Around one in eight reach the third.', 'h2', 50, {align:'center', lh:1.15, t:40, m:30}),
       T('<p>The ones that survive decided early, and in writing, who leads, who owns, and how the family will handle disagreement.</p>', {align:'center', size:18}),
-      T('<p>[Source to be cited before launch]</p>', {align:'center', size:12, c:'#6B7280'})
     ])
   ]),
   S({pt:144, pb:144, gap:60}, [
