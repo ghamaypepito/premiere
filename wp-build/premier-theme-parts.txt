@@ -28,7 +28,9 @@ const LINK = { home:'/', who:'/who-we-are/', what:'/what-we-do/', fep:'/what-we-
   ose:'/what-we-do/organizational-systems-effectiveness/', idea:'/what-we-do/premier-idea/',
   pli:'/what-we-do/premier-leadership-institute/', events:'/events/', res:'/resources/', contact:'/get-in-touch/',
   cal:'https://meetings.hubspot.com/premier-family-business-consulting/exploratory-meeting', lia:'/legacy-in-action/',
-  book:'https://www.paypal.com/ncp/payment/2JKJ26FS4KHJ2', yt:'https://www.youtube.com/@legacyinactionpodcast' };
+  book:'https://www.paypal.com/ncp/payment/2JKJ26FS4KHJ2',
+  form:'https://docs.google.com/forms/d/e/1FAIpQLSeLpaR-2YZ-k-Utkm6H72Uk69qtyfwGYok9Ip8ylHFpw-yCjg/viewform', yt:'https://www.youtube.com/@legacyinactionpodcast' };
+const TALK = 'Let&rsquo;s Talk about the Future';
 const G='#F2AF11', N='#193153', B='#3E4756', M='#5F6674', W='#FFFFFF', P='#F7F6F2', R='#E6E2D9', L='#DCE3EE';
 const SERIF='Newsreader', SANS='Poppins';
 
@@ -90,6 +92,8 @@ const BTN = (text, url, kind = 'p', o = {}) => Wd('button', Object.assign({text,
   : {button_text_color:N, background_color:'rgba(0,0,0,0)', button_background_background:'classic', button_background_color:'rgba(0,0,0,0)',
       hover_color:'#0F2340', border_border:'solid', border_width:bx(0,0,1.5,0), border_color:N, border_radius:bx(0,0,0,0), text_padding:bx(4,0,4,0)},
   o.s || {}));
+const REEL = id => Wd('video', {video_type:'youtube', youtube_url:'https://www.youtube.com/shorts/' + id,
+  yt_privacy:'yes', lazy_load:'yes', modestbranding:'yes', aspect_ratio:'916', controls:'yes'});
 const DIV = (color = R, w = 1) => Wd('divider', {color, weight:px(w), gap:px(0)});
 const SP = h => Wd('spacer', {space:px(h), space_mobile:px(Math.round(h / 2))});
 const q = s => '“' + s + '”';
@@ -99,7 +103,7 @@ const q = s => '“' + s + '”';
 const BOOKING = () => Wd('html', {html:`<dialog id="pfb-book" class="pfb-modal" aria-labelledby="pfb-book-title">
 <div class="pfb-modal__panel">
 <div class="pfb-modal__head">
-<div><p class="pfb-modal__eb">Exploratory meeting</p><h2 id="pfb-book-title" class="pfb-modal__title">Schedule a call with a senior consultant</h2></div>
+<div><p class="pfb-modal__eb">With a senior family business consultant</p><h2 id="pfb-book-title" class="pfb-modal__title">Let&rsquo;s talk about the future</h2></div>
 <button type="button" class="pfb-modal__close" aria-label="Close the calendar">&times;</button>
 </div>
 <div class="pfb-modal__body"><p class="pfb-modal__loading">Loading the calendar&hellip;</p></div>
@@ -192,8 +196,7 @@ const FOOTER = () => S({bg:N, pt:96, pb:48, ptm:56, pbm:40, gap:48, s:{css_class
     ]),
     Col(28, {gap:12}, [
       EB('Get in touch', {c:'#D9DEE7'}),
-      T('<p><a href="mailto:info@premierfamilybusiness.com">info@premierfamilybusiness.com</a><br>0917 316 9881<br>35F Cebu Exchange Tower, Salinas Drive, Cebu City</p>', {c:L, size:14, lh:1.9}),
-      BTN('Schedule a call', LINK.cal, 'p')
+      T('<p><a href="mailto:info@premierfamilybusiness.com">info@premierfamilybusiness.com</a><br><a href="tel:+639173169881">0917 316 9881</a><br>35F Cebu Exchange Tower, Salinas Drive, Cebu City</p>', {c:L, size:14, lh:1.9})
     ])
   ]),
   DIV('#34507A', 1),
