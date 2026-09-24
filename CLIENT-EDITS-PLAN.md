@@ -205,19 +205,17 @@ genuinely helps. Happy to build the full slider if you would rather.
 
 Three things surfaced from the two source pages that contradict what the new site says.
 
-**The phone numbers differ.** The live site's footer carries `+63.32.254.5763` and
-`+63.920.922.5581`. The new site carries `0917 316 9881` and `+63 32 252 3504`, which came
-from the archived contact page. Two of these four numbers appear nowhere in the other set.
-Which pair is current? They are in the footer, the contact page, the schema and now the
-`tel:` links, so it is worth getting right once.
+**The phone numbers differ.** ~~Which pair is current?~~ **Resolved in v13:** Premier
+confirmed the live site's numbers. `+63 32 254 5763` and `+63 920 922 5581` now appear in
+the footer, the contact page, the privacy policy and the schema, and both dial. The archived
+`0917 316 9881` and `+63 32 252 3504` are gone.
 
 **Two FAQ answers are empty at source.** "How Long Does the KPMC Process Take?" and "How
 Long Does the BEG Process Take?" both have a heading and no answer on the live pages. Those
 are the questions people actually search for. FEP already answers its equivalent with a real
-figure (196 hours, about 24.5 days). Both are left out rather than guessed.
+figure (196 hours, about 24.5 days). **Left out pending the meeting**, on Premier's
+instruction — to be filled in once the durations are confirmed, not guessed.
 
-**The live site uses different service names again.** Its menu reads Family Enterprise
-Planning, Organizational Systems Effectiveness, Key Process Management Consulting, Building
-Effective Governance — which matches the deck. It also lists **Family Biz Buzz** and
-**Publishing** as resources, and **Our Partners** under About. None of those exist on the new
-site. Worth deciding whether they should.
+**The live site has sections the new one does not** — **Family Biz Buzz** and
+**Publishing** under Resources, and **Our Partners** under About. **Deliberately left out**
+on Premier's instruction; they get added only if the client raises them.

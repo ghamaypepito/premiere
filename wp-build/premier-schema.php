@@ -55,7 +55,7 @@ if ( ! function_exists( 'pfb_schema_emit' ) ) {
 			'alternateName' => 'Premier Family Business',
 			'url'         => home_url( '/' ),
 			'email'       => 'info@premierfamilybusiness.com',
-			'telephone'   => '+63 917 316 9881',
+			'telephone'   => array( '+63 32 254 5763', '+63 920 922 5581' ),
 			'description' => 'Family business consulting in the Philippines: succession and ownership planning, family governance, and professionalizing family-owned companies so they last across generations.',
 			'logo'        => array(
 				'@type' => 'ImageObject',
@@ -83,7 +83,7 @@ if ( ! function_exists( 'pfb_schema_emit' ) ) {
 			'name'        => 'Premier Family Business Consulting, Inc.',
 			'url'         => home_url( '/' ),
 			'email'       => 'info@premierfamilybusiness.com',
-			'telephone'   => '+63 917 316 9881',
+			'telephone'   => array( '+63 32 254 5763', '+63 920 922 5581' ),
 			'image'       => array( '@id' => pfb_schema_id( 'logo' ) ),
 			'parentOrganization' => array( '@id' => pfb_schema_id( 'organization' ) ),
 			'address'     => pfb_schema_address(),

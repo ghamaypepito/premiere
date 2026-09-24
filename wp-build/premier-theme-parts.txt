@@ -196,7 +196,7 @@ const FOOTER = () => S({bg:N, pt:96, pb:48, ptm:56, pbm:40, gap:48, s:{css_class
     ]),
     Col(28, {gap:12}, [
       EB('Get in touch', {c:'#D9DEE7'}),
-      T('<p><a href="mailto:info@premierfamilybusiness.com">info@premierfamilybusiness.com</a><br><a href="tel:+639173169881">0917 316 9881</a><br>35F Cebu Exchange Tower, Salinas Drive, Cebu City</p>', {c:L, size:14, lh:1.9})
+      T('<p><a href="mailto:info@premierfamilybusiness.com">info@premierfamilybusiness.com</a><br><a href="tel:+63322545763">+63 32 254 5763</a> &middot; <a href="tel:+639209225581">+63 920 922 5581</a><br>35F Cebu Exchange Tower, Salinas Drive, Cebu City</p>', {c:L, size:14, lh:1.9})
     ])
   ]),
   DIV('#34507A', 1),
