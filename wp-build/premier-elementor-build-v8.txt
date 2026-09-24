@@ -117,8 +117,8 @@ const BOOKING = () => Wd('html', {html:`<dialog id="pfb-book" class="pfb-modal" 
 .pfb-modal__close{flex:none;width:44px;height:44px;display:grid;place-items:center;border:1px solid #E6E2D9;background:#fff;color:#193153;font-size:24px;line-height:1;cursor:pointer;border-radius:0;padding:0;transition:background-color .15s ease-out}
 .pfb-modal__close:hover{background:#F7F6F2}
 .pfb-modal__close:focus-visible{outline:2px solid #193153;outline-offset:2px}
-.pfb-modal__body{flex:1;position:relative;min-height:0}
-.pfb-modal__body iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:transparent}
+.pfb-modal__body{flex:1;position:relative;min-height:0;background:#F7F6F2;overflow:hidden}
+.pfb-modal__body iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:transparent;opacity:0;visibility:hidden;transition:opacity .15s ease-out}.pfb-modal__body.is-loaded iframe{opacity:1;visibility:visible}.pfb-modal__body.is-loaded .pfb-modal__loading{opacity:0;visibility:hidden;transition:opacity .15s ease-out}
 .pfb-modal__loading{position:absolute;inset:0;display:grid;place-items:center;margin:0;font:400 14px Poppins,sans-serif;color:#5F6674}
 .pfb-modal__foot{margin:0;padding:14px 32px;border-top:1px solid #E6E2D9;font:400 13px/1.5 Poppins,sans-serif;color:#5F6674}
 .pfb-modal__foot a{color:#193153;text-decoration:underline;text-underline-offset:2px}
@@ -127,6 +127,13 @@ html.pfb-modal-open{overflow:hidden}
 @keyframes pfbFade{from{opacity:0}to{opacity:1}}
 @media (max-width:767px){.pfb-modal__panel{width:100vw;height:100dvh}.pfb-modal__head{padding:20px 20px 14px}.pfb-modal__title{font-size:24px}.pfb-modal__foot{padding:12px 20px}}
 @media (prefers-reduced-motion:reduce){.pfb-modal__panel,.pfb-modal::backdrop{animation:none}}
+/* Mobile nav: avoid Hello Elementor's scaleY/max-height clipping during open. */
+@media (max-width:992px){
+.site-navigation-dropdown{transition:none!important;transform:none!important}
+.site-navigation-toggle-holder:not(.elementor-active)+.site-navigation-dropdown{visibility:hidden;max-height:0!important}
+.site-navigation-toggle-holder.elementor-active+.site-navigation-dropdown{visibility:visible;max-height:none!important}
+}
+
 </style>
 <script>
 (function(){
@@ -139,7 +146,9 @@ html.pfb-modal-open{overflow:hidden}
     if (!d.querySelector('iframe')) {
       var f = document.createElement('iframe');
       f.src = SRC; f.title = 'Schedule an exploratory meeting with Premier';
-      d.querySelector('.pfb-modal__body').appendChild(f);
+      var body = d.querySelector('.pfb-modal__body');
+      f.addEventListener('load', function(){ body.classList.add('is-loaded'); });
+      body.appendChild(f);
     }
     last = document.activeElement;
     d.showModal();
@@ -301,7 +310,6 @@ const home = [
       EB('Why it matters', {align:'center'}),
       H('Roughly a third of family businesses reach the second generation. Around one in eight reach the third.', 'h2', 50, {align:'center', lh:1.15, t:40, m:30}),
       T('<p>The ones that survive decided early, and in writing, who leads, who owns, and how the family will handle disagreement.</p>', {align:'center', size:18}),
-      T('<p>[Source to be cited before launch]</p>', {align:'center', size:12, c:'#6B7280'})
     ])
   ]),
   S({pt:144, pb:144, gap:60}, [
