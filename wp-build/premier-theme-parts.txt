@@ -249,10 +249,10 @@ const HEADERCSS = () => Wd('html', {html:`<style>
    by Pro version - so size and rhythm are set here, where they are certain. */
 .pfb-header .pfb-nav .elementor-item{font-size:14px;font-weight:500;letter-spacing:.1px;white-space:nowrap;padding:8px 12px}
 .pfb-header .pfb-nav .elementor-nav-menu--main > ul{flex-wrap:nowrap}
-/* Let the menu shrink instead of overflowing under the button. */
-.pfb-header .pfb-nav{min-width:0;flex:0 1 auto}
-.pfb-header .pfb-nav .elementor-widget-container{min-width:0}
-.pfb-header .pfb-headcta{flex:0 0 auto}
+/* The menu fills its own column and aligns right; no shrinking box to collapse. */
+.pfb-header .pfb-navcol{min-width:0}
+.pfb-header .pfb-nav{width:100%}
+.pfb-header .pfb-nav .elementor-nav-menu--main > ul{justify-content:flex-end}
 .pfb-header .pfb-headcta .elementor-button{font-size:14px;padding:13px 20px;white-space:nowrap}
 @media(max-width:1300px){.pfb-header .pfb-nav .elementor-item{font-size:13px;padding:8px 9px}}
 .pfb-nav .elementor-nav-menu--dropdown a{border-radius:0}
@@ -279,14 +279,18 @@ const HEADER = () => C({
     sticky:'top', sticky_on:['desktop','tablet','mobile'], sticky_offset:0, z_index:60,
     css_classes:'pfb-header'
   }, [
-    C({width:pct(19), width_mobile:pct(52), flex_direction:'row', flex_align_items:'center', flex_gap:gp(0),
-       html_tag:'a', link:lnk(LINK.home)}, [LOGO('logow', 168)]),
-    C({width:pct(79), width_mobile:pct(44), flex_direction:'row', flex_align_items:'center',
-       flex_justify_content:'flex-end', flex_wrap:'nowrap', flex_gap:gp(20)}, [
-      NAVMENU(),
-      C({flex_direction:'row', flex_gap:gp(0), css_classes:'pfb-headcta'}, [
-        BTN(TALK, LINK.cal, 'p', {s:{text_padding:bx(13,22,13,22)}})
-      ])
+    /* Three explicit columns. Nesting the menu and the button inside one
+       shrinking column let the menu box collapse, and its item list then
+       overflowed out of the box and under the button. */
+    C({width:pct(18), width_mobile:pct(50), flex_direction:'row', flex_align_items:'center', flex_gap:gp(0),
+       html_tag:'a', link:lnk(LINK.home)}, [LOGO('logow', 164)]),
+    C({width:pct(58), width_mobile:pct(44), flex_direction:'row', flex_align_items:'center',
+       flex_justify_content:'flex-end', flex_wrap:'nowrap', flex_gap:gp(0), css_classes:'pfb-navcol'}, [
+      NAVMENU()
+    ]),
+    C({width:pct(22), width_mobile:pct(1), flex_direction:'row', flex_align_items:'center',
+       flex_justify_content:'flex-end', flex_gap:gp(0), css_classes:'pfb-headcta'}, [
+      BTN(TALK, LINK.cal, 'p', {s:{text_padding:bx(13,20,13,20)}})
     ]),
     HEADERCSS()
   ], false);
