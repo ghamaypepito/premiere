@@ -12,7 +12,9 @@
 (async () => {
 const WANT = {
   32: {slug:'key-process-management-consulting', title:'Key Process Management Consulting'},
-  33: {slug:'building-effective-governance',     title:'Building Effective Governance'}
+  33: {slug:'building-effective-governance',     title:'Building Effective Governance'},
+  // Premier confirmed the bio deck's spelling, so Neil's profile URL moves too.
+  157:{slug:'neil-arnold-montesclaros',          title:'Neil Arnold Montesclaros'}
 };
 
 // The REST nonce is printed into wp-admin as wpApiSettings; fall back to

@@ -112,8 +112,12 @@ These are factual and I will not guess:
 | Atty. Lagundi | Atty. Domingo Lagundi, CPA | Atty. Domingo Lagundi **Jr.**, CPA, **JD** |
 | JR Hernandez | Relationship Manager, Luzon | Parenting and Relationship Coach / Brand Development Consultant |
 
-RODC vs RODP looks like a typo on the live site and the deck is probably right. Auman's is a
-large title change, not a correction. JR Hernandez's two descriptions are different jobs.
+**Resolved (v18): Premier confirmed the bio deck wins on all six.** Neil's surname changes
+throughout, including his profile URL, which `premier-slugs.txt` now handles alongside the two
+service pages. "Arnold" is kept — the deck's slide title drops the middle name, which reads as
+title style rather than a correction. Atty. Auman's is a substantial promotion rather than a
+typo fix, and JR Hernandez moves from Relationship Manager to Parenting and Relationship
+Coach / Brand Development Consultant, which is a different job, not a reworded one.
 
 ---
 
