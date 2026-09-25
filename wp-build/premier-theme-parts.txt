@@ -277,7 +277,7 @@ const HEADER = () => C({
        flex_justify_content:'flex-end', flex_wrap:'nowrap', flex_gap:gp(28)}, [
       NAVMENU(),
       C({flex_direction:'row', flex_gap:gp(0), css_classes:'pfb-headcta'}, [
-        BTN('Schedule a call', LINK.cal, 'p', {s:{text_padding:bx(13,22,13,22)}})
+        BTN(TALK, LINK.cal, 'p', {s:{text_padding:bx(13,22,13,22)}})
       ])
     ]),
     HEADERCSS()
