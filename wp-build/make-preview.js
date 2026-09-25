@@ -14,13 +14,25 @@
 const fs = require('fs');
 const path = require('path');
 
+(async () => {
+
 const src = fs.readFileSync('premier-elementor-build.txt', 'utf8');
 const cut = src.indexOf('const only = window.__onlyPages;');
 if (cut < 0) throw new Error('save boundary moved');
 
 // Keep everything up to the save loop, then hand back what we want to render.
-const body = src.slice(src.indexOf('{') + 1, cut) + '\n return {PAGES, MEDIA, U, FOOTER, FOOTER_ON_PAGES};';
-const {PAGES, MEDIA, U, FOOTER, FOOTER_ON_PAGES} = new Function('window', body)({});
+// The build resolves attachment IDs with a top-level await against WordPress.
+// Off-site there is no WordPress, so: build an async function, stub fetch to
+// find nothing, and drop the early return that would otherwise abort. Partner
+// logos then report as unresolved and are skipped — which is exactly what the
+// live build does until their files are uploaded.
+let body = src.slice(src.indexOf('{') + 1, cut);
+body = body.replace(/if \(missingRequired\.length\) return [^;]+;/, '');
+body += '\n return {PAGES, MEDIA, U, FOOTER, FOOTER_ON_PAGES};';
+const AsyncFunction = Object.getPrototypeOf(async () => {}).constructor;
+const stubFetch = async () => ({json: async () => []});
+const {PAGES, MEDIA, U, FOOTER, FOOTER_ON_PAGES} =
+  await new AsyncFunction('window', 'fetch', body)({}, stubFetch);
 
 const esc = t => String(t).replace(/&(?![a-z#0-9]+;)/gi, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const unit = v => v && typeof v === 'object' && v.size !== undefined && v.size !== '' ? v.size + (v.unit === 'custom' ? '' : v.unit) : null;
@@ -154,3 +166,4 @@ fs.writeFileSync(path.join('preview', 'index.html'), SHELL('All pages',
    <ul style="line-height:2.2;padding-left:18px">${PAGES.map(([id, t]) => `<li><a href="${slug(t)}.html" style="color:#193153">${esc(t)}</a> <span style="color:#5F6674;font-size:13px">post ${id}</span></li>`).join('')}</ul></div>`, ''));
 
 console.log('rendered', n, 'pages into wp-build/preview/');
+})();
