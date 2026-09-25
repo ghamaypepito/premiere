@@ -279,15 +279,29 @@ const HEADER = () => C({
   ], false);
 
 /* ---------- find the two Theme Builder templates ---------- */
+/* Matches on the template title first, then the type column. The previous
+   version only looked for one markup pattern and returned null both when the
+   templates were missing and when parsing failed, which made a real absence
+   indistinguishable from a bad regex. */
 const findTemplate = async (type) => {
   const override = type === 'header' ? window.__pfbHeaderId : window.__pfbFooterId;
   if (override) return override;
-  const html = await (await fetch('/wp-admin/edit.php?post_type=elementor_library&elementor_library_type=' + type,
+
+  const html = await (await fetch('/wp-admin/edit.php?post_type=elementor_library&posts_per_page=200',
     {credentials:'same-origin'})).text();
-  const ids = [...html.matchAll(/id="post-(\d+)"/g)].map(m => Number(m[1]));
-  const unique = [...new Set(ids)];
-  if (!unique.length) return null;
-  return unique[0];
+  const rows = [...html.matchAll(/<tr[^>]*\sid=["']post-(\d+)["'][\s\S]*?<\/tr>/g)];
+
+  const want = type === 'header' ? /premier\s*header/i : /premier\s*footer/i;
+  const typeRe = new RegExp('>\\s*' + type + '\\s*<', 'i');
+
+  for (const r of rows) {
+    const title = (r[0].match(/class="row-title"[^>]*>([\s\S]*?)<\/a>/) || [])[1] || '';
+    if (want.test(title.replace(/<[^>]*>/g, ''))) return Number(r[1]);
+  }
+  for (const r of rows) {
+    if (typeRe.test(r[0])) return Number(r[1]);
+  }
+  return null;
 };
 
 /* ---------- save ---------- */

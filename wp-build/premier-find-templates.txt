@@ -1,0 +1,42 @@
+/**
+ * Diagnostic: lists every Elementor template on the site with its ID, title
+ * and type, so we can tell "the templates do not exist" apart from "the script
+ * could not parse the admin list".
+ *
+ * Paste into the browser console on any wp-admin page. Read-only - it changes
+ * nothing.
+ */
+(async () => {
+const grab = async (url) => (await fetch(url, {credentials:'same-origin'})).text();
+const out = [];
+
+const listing = await grab('/wp-admin/edit.php?post_type=elementor_library&posts_per_page=200');
+
+if (/Sorry, you are not allowed/i.test(listing)) return 'Not permitted - are you logged in as an administrator?';
+if (/invalid post type/i.test(listing)) return 'elementor_library post type missing - is Elementor active?';
+
+// WP list tables put the id on the row; match single or double quotes.
+const rows = [...listing.matchAll(/<tr[^>]*\sid=["']post-(\d+)["'][\s\S]*?<\/tr>/g)];
+
+for (const r of rows) {
+  const id = Number(r[1]);
+  const row = r[0];
+  const title = (row.match(/class="row-title"[^>]*>([\s\S]*?)<\/a>/) || [])[1];
+  // The type column is a plain cell; grab every cell and keep the short ones.
+  const cells = [...row.matchAll(/<td[^>]*class="([^"]*?)\s*column-([a-z_]+)[^"]*"[^>]*>([\s\S]*?)<\/td>/g)]
+    .map(c => [c[2], c[3].replace(/<[^>]*>/g, '').trim()]);
+  const type = (cells.find(c => /type/.test(c[0])) || [])[1] || '';
+  out.push({id, title: (title || '').replace(/<[^>]*>/g, '').trim(), type});
+}
+
+if (!out.length) {
+  const empty = /No templates found|no-items/i.test(listing);
+  return empty
+    ? 'The Elementor template library is EMPTY - the two templates have not been created yet.'
+    : 'Could not parse the template list, but it is not empty. Listing length: ' + listing.length;
+}
+
+return out.map(t => `${t.id}\t${t.type || '(type?)'}\t${t.title}`).join('\n')
+  + `\n\n${out.length} template(s). Pass the header and footer IDs to the build like this:\n`
+  + `window.__pfbHeaderId = <id>; window.__pfbFooterId = <id>;`;
+})()
