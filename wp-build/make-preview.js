@@ -19,8 +19,8 @@ const cut = src.indexOf('const only = window.__onlyPages;');
 if (cut < 0) throw new Error('save boundary moved');
 
 // Keep everything up to the save loop, then hand back what we want to render.
-const body = src.slice(src.indexOf('{') + 1, cut) + '\n return {PAGES, MEDIA, U};';
-const {PAGES, MEDIA, U} = new Function('window', body)({});
+const body = src.slice(src.indexOf('{') + 1, cut) + '\n return {PAGES, MEDIA, U, FOOTER};';
+const {PAGES, MEDIA, U, FOOTER} = new Function('window', body)({});
 
 const esc = t => String(t).replace(/&(?![a-z#0-9]+;)/gi, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const unit = v => v && typeof v === 'object' && v.size !== undefined && v.size !== '' ? v.size + (v.unit === 'custom' ? '' : v.unit) : null;
@@ -112,8 +112,9 @@ function render(el) {
   if (w === 'social-icons') return `<div style="display:flex;gap:10px">${(s.social_icon_list || []).map(() => `<span style="width:34px;height:34px;border-radius:50%;background:${s.icon_primary_color};display:inline-block"></span>`).join('')}</div>`;
   if (w === 'nav-menu') return `<nav style="display:flex;gap:26px;font:500 14.5px Poppins,sans-serif;color:#fff">${['Who we are','What we do','Events','Resources','FAQs'].map(t => `<span>${t}</span>`).join('')}</nav>`;
   if (w === 'html') {
-    const h = s.html || '';
-    return /<script[\s>]/i.test(h) && !/ld\+json/i.test(h) ? '' : h.replace(/<script[\s\S]*?<\/script>/gi, '');
+    // Keep the markup, drop only the scripts. Dropping the whole widget hid
+    // the booking dialog, which is markup plus a script in one block.
+    return (s.html || '').replace(/<script[\s\S]*?<\/script>/gi, '');
   }
   return '';
 }
@@ -140,7 +141,8 @@ const nav = PAGES.map(([, t]) => `<a href="${slug(t)}.html">${esc(t)}</a>`).join
 
 let n = 0;
 for (const [id, title, elements] of PAGES) {
-  const html = elements.filter(Boolean).map(render).join('');
+  // The build appends the footer at save time, so the preview must too.
+  const html = [...elements.filter(Boolean), FOOTER()].map(render).join('');
   fs.writeFileSync(path.join('preview', slug(title) + '.html'), SHELL(title + ' (post ' + id + ')', html, nav));
   n++;
 }

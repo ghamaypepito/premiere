@@ -172,7 +172,27 @@ Three deliverables were added after the page build. **Run them in this order.** 
 publishes pages that no longer carry their own footer, so if step 1 has not been
 confirmed working, every page ships without one.
 
-## 1. Header and footer as Theme Builder templates
+## 1. Header and footer — BLOCKED, see below
+
+**The staging site does not have Elementor Pro.** It runs Elementor 4.3.1 free on the
+Hello Elementor theme. Theme Builder is a Pro feature, so the two templates this step
+needs cannot be created at all, and the build reported `Found header=null footer=null`
+because the library held nothing but Elementor's Default Kit.
+
+**v14 works around it:** the footer is appended to every page at save time instead, in the
+build's save loop rather than across seventeen page arrays. The booking dialog rides along
+inside it. That restores the footer everywhere without Pro.
+
+What is still missing without Pro:
+
+- The designed header. The site falls back to Hello Elementor's own header and the
+  WordPress menu. The `nav-menu` widget the designed header uses is also Pro-only.
+- Popups, if any are wanted later.
+
+If Elementor Pro is bought, reverting v14 is one line in `patch-v14.js` and the Theme
+Builder route below becomes available again. The original instructions are kept for that.
+
+### Original Theme Builder instructions (needs Pro)
 
 Until now the footer was appended to all 15 page arrays — a footer change meant
 re-saving 15 pages. It now ships once, site-wide. The booking dialog lives inside the
