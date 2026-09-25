@@ -55,10 +55,16 @@ const NAVMENU = () => Wd('nav-menu', Object.assign({
 const HEADERCSS = () => Wd('html', {html:\`<style>
 .pfb-header{transition:background-color .28s ease-out,backdrop-filter .28s ease-out,border-color .28s ease-out;border-bottom:1px solid rgba(143,166,201,0)}
 .pfb-header.pfb-solid{border-bottom-color:rgba(143,166,201,.18)}
-.pfb-nav .elementor-item{letter-spacing:.1px;white-space:nowrap}
+/* The widget's typography and spacing controls did not take - their names vary
+   by Pro version - so size and rhythm are set here, where they are certain. */
+.pfb-header .pfb-nav .elementor-item{font-size:14px;font-weight:500;letter-spacing:.1px;white-space:nowrap;padding:8px 12px}
 .pfb-header .pfb-nav .elementor-nav-menu--main > ul{flex-wrap:nowrap}
-.pfb-header .pfb-nav .elementor-nav-menu--main .elementor-item{padding-left:14px;padding-right:14px}
-@media(max-width:1200px){.pfb-header .pfb-nav .elementor-item{font-size:13.5px;padding-left:10px;padding-right:10px}}
+/* Let the menu shrink instead of overflowing under the button. */
+.pfb-header .pfb-nav{min-width:0;flex:0 1 auto}
+.pfb-header .pfb-nav .elementor-widget-container{min-width:0}
+.pfb-header .pfb-headcta{flex:0 0 auto}
+.pfb-header .pfb-headcta .elementor-button{font-size:14px;padding:13px 20px;white-space:nowrap}
+@media(max-width:1300px){.pfb-header .pfb-nav .elementor-item{font-size:13px;padding:8px 9px}}
 .pfb-nav .elementor-nav-menu--dropdown a{border-radius:0}
 .pfb-header .elementor-button{border-radius:0}
 @media(max-width:1024px){.pfb-header .pfb-headcta{display:none}}
