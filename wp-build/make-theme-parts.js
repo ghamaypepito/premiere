@@ -32,8 +32,7 @@ const NAVMENU = () => Wd('nav-menu', Object.assign({
     pointer:'underline', animation_line:'fade',
     color_menu_item:W, color_menu_item_hover:G, pointer_color_menu_item_hover:G,
     color_menu_item_active:G, pointer_color_menu_item_active:G,
-    space_between:{unit:'px', size:26},
-    padding_horizontal_menu_item:{unit:'px', size:0},
+    padding_horizontal_menu_item:{unit:'px', size:14},
     padding_vertical_menu_item:{unit:'px', size:8},
     toggle:'burger', toggle_size:{unit:'px', size:20},
     toggle_color:W, toggle_color_hover:G,
@@ -56,7 +55,10 @@ const NAVMENU = () => Wd('nav-menu', Object.assign({
 const HEADERCSS = () => Wd('html', {html:\`<style>
 .pfb-header{transition:background-color .28s ease-out,backdrop-filter .28s ease-out,border-color .28s ease-out;border-bottom:1px solid rgba(143,166,201,0)}
 .pfb-header.pfb-solid{border-bottom-color:rgba(143,166,201,.18)}
-.pfb-nav .elementor-item{letter-spacing:.1px}
+.pfb-nav .elementor-item{letter-spacing:.1px;white-space:nowrap}
+.pfb-header .pfb-nav .elementor-nav-menu--main > ul{flex-wrap:nowrap}
+.pfb-header .pfb-nav .elementor-nav-menu--main .elementor-item{padding-left:14px;padding-right:14px}
+@media(max-width:1200px){.pfb-header .pfb-nav .elementor-item{font-size:13.5px;padding-left:10px;padding-right:10px}}
 .pfb-nav .elementor-nav-menu--dropdown a{border-radius:0}
 .pfb-header .elementor-button{border-radius:0}
 @media(max-width:1024px){.pfb-header .pfb-headcta{display:none}}
@@ -81,10 +83,10 @@ const HEADER = () => C({
     sticky:'top', sticky_on:['desktop','tablet','mobile'], sticky_offset:0, z_index:60,
     css_classes:'pfb-header'
   }, [
-    C({width:pct(24), width_mobile:pct(52), flex_direction:'row', flex_align_items:'center', flex_gap:gp(0),
-       html_tag:'a', link:lnk(LINK.home)}, [LOGO('logow', 196)]),
-    C({width:pct(72), width_mobile:pct(44), flex_direction:'row', flex_align_items:'center',
-       flex_justify_content:'flex-end', flex_wrap:'nowrap', flex_gap:gp(28)}, [
+    C({width:pct(19), width_mobile:pct(52), flex_direction:'row', flex_align_items:'center', flex_gap:gp(0),
+       html_tag:'a', link:lnk(LINK.home)}, [LOGO('logow', 168)]),
+    C({width:pct(79), width_mobile:pct(44), flex_direction:'row', flex_align_items:'center',
+       flex_justify_content:'flex-end', flex_wrap:'nowrap', flex_gap:gp(20)}, [
       NAVMENU(),
       C({flex_direction:'row', flex_gap:gp(0), css_classes:'pfb-headcta'}, [
         BTN(TALK, LINK.cal, 'p', {s:{text_padding:bx(13,22,13,22)}})
