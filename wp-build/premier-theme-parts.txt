@@ -30,6 +30,11 @@ const LINK = { home:'/', who:'/who-we-are/', what:'/what-we-do/', fep:'/what-we-
   cal:'https://meetings.hubspot.com/premier-family-business-consulting/exploratory-meeting', lia:'/legacy-in-action/',
   book:'https://www.paypal.com/ncp/payment/2JKJ26FS4KHJ2',
   form:'https://docs.google.com/forms/d/e/1FAIpQLSeLpaR-2YZ-k-Utkm6H72Uk69qtyfwGYok9Ip8ylHFpw-yCjg/viewform', yt:'https://www.youtube.com/@legacyinactionpodcast' };
+/* true  = no Elementor Pro; each page carries its own footer.
+   false = Pro installed; the footer comes from the Theme Builder template
+           published by premier-theme-parts.txt. Run that first and confirm
+           the footer renders before switching this off. */
+const FOOTER_ON_PAGES = true;
 const TALK = 'Let&rsquo;s Talk about the Future';
 const G='#F2AF11', N='#193153', B='#3E4756', M='#5F6674', W='#FFFFFF', P='#F7F6F2', R='#E6E2D9', L='#DCE3EE';
 const SERIF='Newsreader', SANS='Poppins';
@@ -337,3 +342,5 @@ for (const [pid, title, elements] of TEMPLATES) {
 
 return out.join(' | ');
 })()
+  .then(r => console.log('%c' + r, 'font-size:13px;line-height:1.6'))
+  .catch(e => console.error('SCRIPT FAILED:', e));

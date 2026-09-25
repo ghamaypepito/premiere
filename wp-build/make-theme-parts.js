@@ -152,6 +152,8 @@ for (const [pid, title, elements] of TEMPLATES) {
 
 return out.join(' | ');
 })()
+  .then(r => console.log('%c' + r, 'font-size:13px;line-height:1.6'))
+  .catch(e => console.error('SCRIPT FAILED:', e));
 `;
 
 const script = prelude + tail;

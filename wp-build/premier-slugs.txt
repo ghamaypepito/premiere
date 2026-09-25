@@ -38,3 +38,5 @@ for (const [id, want] of Object.entries(WANT)) {
 }
 return out.join('\n');
 })()
+  .then(r => console.log('%c' + r, 'font-size:13px;line-height:1.6'))
+  .catch(e => console.error('SCRIPT FAILED:', e));
