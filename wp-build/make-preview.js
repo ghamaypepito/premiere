@@ -19,8 +19,8 @@ const cut = src.indexOf('const only = window.__onlyPages;');
 if (cut < 0) throw new Error('save boundary moved');
 
 // Keep everything up to the save loop, then hand back what we want to render.
-const body = src.slice(src.indexOf('{') + 1, cut) + '\n return {PAGES, MEDIA, U, FOOTER};';
-const {PAGES, MEDIA, U, FOOTER} = new Function('window', body)({});
+const body = src.slice(src.indexOf('{') + 1, cut) + '\n return {PAGES, MEDIA, U, FOOTER, FOOTER_ON_PAGES};';
+const {PAGES, MEDIA, U, FOOTER, FOOTER_ON_PAGES} = new Function('window', body)({});
 
 const esc = t => String(t).replace(/&(?![a-z#0-9]+;)/gi, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const unit = v => v && typeof v === 'object' && v.size !== undefined && v.size !== '' ? v.size + (v.unit === 'custom' ? '' : v.unit) : null;
@@ -141,8 +141,9 @@ const nav = PAGES.map(([, t]) => `<a href="${slug(t)}.html">${esc(t)}</a>`).join
 
 let n = 0;
 for (const [id, title, elements] of PAGES) {
-  // The build appends the footer at save time, so the preview must too.
-  const html = [...elements.filter(Boolean), FOOTER()].map(render).join('');
+  // Mirror the build's FOOTER_ON_PAGES flag so the preview matches what ships.
+  const els = elements.filter(Boolean);
+  const html = (FOOTER_ON_PAGES ? [...els, FOOTER()] : els).map(render).join('');
   fs.writeFileSync(path.join('preview', slug(title) + '.html'), SHELL(title + ' (post ' + id + ')', html, nav));
   n++;
 }
