@@ -50,7 +50,7 @@ sections (p24: "Let's Talk About the Future — Together."). **Ready.**
 | p6 | Replace hero photo with Sir Jon's family | Needs input — asset |
 | p7 | "senior family business consultant" wording | Ready |
 | p10 | Remove eyebrow "HOW WE CAN HELP" | Ready — but see Flag 1 |
-| p10, p12 | Four program cards become a horizontal **slider** with arrows | Ready |
+| p10, p12 | Four program cards become a horizontal **slider** with arrows | **Done (v17)** — behind `PROGRAM_SLIDER`, set false for the 2×2 grid |
 | p13 | Team section: keep the heading and paragraph, restyle as a row of **circular avatars**, each linking to that person's LinkedIn | Needs input — LinkedIn URLs |
 | p14, p42 | "It Starts with a Conversation" section | Ready |
 | p16 | Free Resource section — remove an element | Needs input — see Q4 |
@@ -66,7 +66,7 @@ The footer email is already a `mailto:` link, so that request is satisfied.
 | # | Change | Status |
 |---|---|---|
 | p19 | Mission and vision copy as supplied | Ready |
-| p21 | Life at Premier: drop the captions, show a **photo gallery / collage** instead | Ready |
+| p21 | Life at Premier: drop the captions, show a **photo gallery / collage** instead | **Done (v17)** — seven-image gallery |
 | p23 | Partnership & Strategic Alliances, plus an **Affiliates** group | Needs input — logos and the full list |
 | p24 | Exploratory call → "Let's Talk About the Future — Together." | Ready |
 
@@ -219,3 +219,28 @@ instruction — to be filled in once the durations are confirmed, not guessed.
 **The live site has sections the new one does not** — **Family Biz Buzz** and
 **Publishing** under Resources, and **Our Partners** under About. **Deliberately left out**
 on Premier's instruction; they get added only if the client raises them.
+
+
+---
+
+# Correction: the team page was never flat
+
+My earlier plan listed "regroup the team into departments" as outstanding. It was not.
+The Our Team page already grouped people under Administration and executive, Client relations
+and consulting, Finance and accounting, Legal and compliance, and Marketing and
+communications. The deck's pages 26-37 are screenshots of that existing page, annotated for
+LinkedIn buttons — not a request to restructure it.
+
+What was genuinely missing were the two consultants. **v17 adds them** to Legal and
+compliance:
+
+- **Atty. Darlon Serenio** — CPA, CMA, MBA, CFBA. Taxation, asset protection, estate planning.
+- **Atty. Leandro Atienza** — JD. Estate settlement, corporate governance, data privacy.
+
+Both are attorneys whose work is legal and financial rather than client-facing consulting,
+which is why they sit with Legal and compliance rather than Client relations. **Worth
+confirming with Premier** — either could reasonably sit with the consultants instead.
+
+Their portraits must be uploaded to the media library before the build runs. The build
+resolves attachment IDs by filename at run time and refuses to publish, naming the missing
+files, rather than writing broken images into seventeen pages.
