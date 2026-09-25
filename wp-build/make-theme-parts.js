@@ -55,16 +55,18 @@ const NAVMENU = () => Wd('nav-menu', Object.assign({
 const HEADERCSS = () => Wd('html', {html:\`<style>
 .pfb-header{transition:background-color .28s ease-out,backdrop-filter .28s ease-out,border-color .28s ease-out;border-bottom:1px solid rgba(143,166,201,0)}
 .pfb-header.pfb-solid{border-bottom-color:rgba(143,166,201,.18)}
-/* The widget's typography and spacing controls did not take - their names vary
-   by Pro version - so size and rhythm are set here, where they are certain. */
-.pfb-header .pfb-nav .elementor-item{font-size:14px;font-weight:500;letter-spacing:.1px;white-space:nowrap;padding:8px 12px}
-.pfb-header .pfb-nav .elementor-nav-menu--main > ul{flex-wrap:nowrap}
-/* The menu fills its own column and aligns right; no shrinking box to collapse. */
+/* Elementor emits per-element selectors that outrank plain class rules, which
+   is why every earlier sizing rule here was ignored and the menu kept
+   rendering at its default size. These carry !important deliberately. */
+.pfb-header .pfb-nav .elementor-item{font-size:14px!important;font-weight:500!important;letter-spacing:.1px;white-space:nowrap;padding:8px 11px!important}
+.pfb-header .pfb-nav .elementor-nav-menu--main{width:100%}
+.pfb-header .pfb-nav .elementor-nav-menu--main > ul{justify-content:flex-end!important;flex-wrap:nowrap!important}
 .pfb-header .pfb-navcol{min-width:0}
 .pfb-header .pfb-nav{width:100%}
-.pfb-header .pfb-nav .elementor-nav-menu--main > ul{justify-content:flex-end}
-.pfb-header .pfb-headcta .elementor-button{font-size:14px;padding:13px 20px;white-space:nowrap}
-@media(max-width:1300px){.pfb-header .pfb-nav .elementor-item{font-size:13px;padding:8px 9px}}
+.pfb-header .pfb-headcta .elementor-button{font-size:14px!important;padding:12px 18px!important;white-space:nowrap}
+.pfb-header .pfb-nav .elementor-nav-menu--main .sub-arrow{margin-left:4px}
+@media(max-width:1440px){.pfb-header .pfb-nav .elementor-item{font-size:13px!important;padding:8px 8px!important}}
+@media(max-width:1200px){.pfb-header .pfb-nav .elementor-item{font-size:12.5px!important;padding:8px 6px!important}}
 .pfb-nav .elementor-nav-menu--dropdown a{border-radius:0}
 .pfb-header .elementor-button{border-radius:0}
 @media(max-width:1024px){.pfb-header .pfb-headcta{display:none}}
@@ -92,13 +94,13 @@ const HEADER = () => C({
     /* Three explicit columns. Nesting the menu and the button inside one
        shrinking column let the menu box collapse, and its item list then
        overflowed out of the box and under the button. */
-    C({width:pct(18), width_mobile:pct(50), flex_direction:'row', flex_align_items:'center', flex_gap:gp(0),
+    C({width:pct(16), width_mobile:pct(50), flex_direction:'row', flex_align_items:'center', flex_gap:gp(0),
        html_tag:'a', link:lnk(LINK.home)}, [LOGO('logow', 164)]),
-    C({width:pct(58), width_mobile:pct(44), flex_direction:'row', flex_align_items:'center',
+    C({width:pct(63), width_mobile:pct(44), flex_direction:'row', flex_align_items:'center',
        flex_justify_content:'flex-end', flex_wrap:'nowrap', flex_gap:gp(0), css_classes:'pfb-navcol'}, [
       NAVMENU()
     ]),
-    C({width:pct(22), width_mobile:pct(1), flex_direction:'row', flex_align_items:'center',
+    C({width:pct(20), width_mobile:pct(1), flex_direction:'row', flex_align_items:'center',
        flex_justify_content:'flex-end', flex_gap:gp(0), css_classes:'pfb-headcta'}, [
       BTN(TALK, LINK.cal, 'p', {s:{text_padding:bx(13,20,13,20)}})
     ]),
