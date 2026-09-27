@@ -45,6 +45,7 @@ const LINK = { home:'/', who:'/who-we-are/', what:'/what-we-do/', fep:'/what-we-
            Only set this if the Theme Builder footer is gone, or the site
            renders two footers. */
 const FOOTER_ON_PAGES = false;
+const BUILD_ID = 'v23 2026-09-27 07:33 UTC (37e2c44)';
 const TALK = 'Let&rsquo;s Talk about the Future';
 const G='#F2AF11', N='#193153', B='#3E4756', M='#5F6674', W='#FFFFFF', P='#F7F6F2', R='#E6E2D9', L='#DCE3EE';
 const SERIF='Newsreader', SANS='Poppins';
@@ -1268,6 +1269,7 @@ for (const [pid, title, elements] of PAGES) {
   out.push(pid + ':' + (ok ? 'ok' : 'FAIL ' + t.slice(0, 160)));
 }
 if (missingOptional.length) out.push('\nlogos not yet uploaded, left out: ' + missingOptional.join(', '));
+out.push('\nbuild ' + BUILD_ID + ' | footer on pages: ' + FOOTER_ON_PAGES);
 return out.join(' | ');
 })()
   .then(r => console.log('%c' + r, 'font-size:13px;line-height:1.6'))
