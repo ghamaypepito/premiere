@@ -34,3 +34,6 @@ wp-build/legacy/about-*.jpg
 
 # Generated preview screenshots
 wp-build/preview/_shot-*.png
+
+# Pulled Elementor data lands here; commit real pulls, not scratch
+wp-build/sync/pulled/*.tmp
