@@ -1,0 +1,19 @@
+{
+  "name": "premier-visibility",
+  "version": "1.0.0",
+  "private": true,
+  "description": "SEO/AEO change tracking, uptime, maintenance and plugin updates for premierfamilybusiness.com",
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "dev": "node dev.js",
+    "build": "node scripts/copy-playbook.js",
+    "test": "node --test test/*.test.js"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^1.0.0"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.3.0"
+  }
+}
