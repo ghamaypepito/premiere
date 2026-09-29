@@ -1,4 +1,4 @@
 node_modules/
 .data/
-.vercel/
-.env*
+public/app/config.php
+*.db

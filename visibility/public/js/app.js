@@ -1,5 +1,5 @@
 // Premier Visibility front end: hash router + views. No framework.
-import { esc, FIELD_LABELS, TYPE_LABEL, briefMd } from "./rules.js";
+import { esc, FIELD_LABELS, TYPE_LABEL, briefMd, blank, evaluate, scoreOf, TEMPL } from "./rules.js";
 import { mountBrief, copyText } from "./brief.js";
 import { lineChart, uptimeBars } from "./charts.js";
 
@@ -8,7 +8,7 @@ let me = null, dirty = false, badges = { incidents: 0, updates: 0 };
 
 /* ---------- utilities ---------- */
 async function api(method, path, body) {
-  const r = await fetch("/api" + path, { method, headers: body ? { "content-type": "application/json" } : {}, body: body ? JSON.stringify(body) : undefined, credentials: "same-origin" });
+  const r = await fetch("api/index.php?r=" + encodeURIComponent(path), { method, headers: body ? { "content-type": "application/json" } : {}, body: body ? JSON.stringify(body) : undefined, credentials: "same-origin" });
   let data = null; try { data = await r.json(); } catch {}
   if (r.status === 401 && path !== "/login") { me = null; renderLogin(); throw new Error("signed out"); }
   if (!r.ok) { const e = new Error(data?.error || `Request failed (${r.status})`); e.status = r.status; e.data = data; throw e; }
@@ -26,7 +26,7 @@ const scoreColor = (s, f) => (s >= 80 && !f ? "var(--good)" : s >= 50 ? "var(--a
 const meter = (s, f) => `<span class="meter"><span class="bar"><i style="width:${s}%;background:${scoreColor(s, f)}"></i></span><span class="score">${s}%</span></span>`;
 const sevDot = (s) => `<span class="dot ${s === "critical" ? "critical" : s === "warn" ? "warn" : s === "good" ? "good" : ""}" title="${s}"></span>`;
 const statusPill = (s) => `<span class="pill ${s === "Published" || s === "Ready" ? "good" : s === "Drafting" || s === "In review" ? "warn" : ""}">${esc(s || "Not started")}</span>`;
-const livePill = (p) => !p.live_at ? `<span class="pill">Not checked</span>` : p.live_status >= 400 || !p.live_status ? `<span class="pill bad">HTTP ${p.live_status || "none"}</span>` : (p.live_noindex === true || p.live_noindex === "true") ? `<span class="pill bad">noindex</span>` : `<span class="pill good">Live ${p.live_status}</span>`;
+const livePill = (p) => p.no_live ? `<span class="pill info">Template</span>` : !p.live_at ? `<span class="pill">Not checked</span>` : p.live_status >= 400 || !p.live_status ? `<span class="pill bad">HTTP ${p.live_status || "none"}</span>` : (p.live_noindex === true || p.live_noindex === "true") ? `<span class="pill bad">noindex</span>` : `<span class="pill good">Live ${p.live_status}</span>`;
 const canEdit = () => me && me.role !== "viewer";
 const isAdmin = () => me && me.role === "admin";
 const busy = async (btn, fn) => { const txt = btn.textContent; btn.disabled = true; btn.textContent = "Working…"; try { return await fn(); } catch (e) { if (e.message !== "signed out") toast(e.message); } finally { btn.disabled = false; btn.textContent = txt; } };
@@ -48,7 +48,7 @@ function renderLogin(err = "") {
 const NAV = [["#/", "Dashboard"], ["#/pages", "Pages"], ["#/activity", "Activity"], null, ["#/uptime", "Uptime", "incidents"], ["#/maintenance", "Maintenance"], ["#/plugins", "Plugins & updates", "updates"], null, ["#/playbook", "Playbook"], ["#/settings", "Settings"]];
 function shell() {
   app.innerHTML = `<div class="topbar"><b>Premier Visibility</b><button type="button" id="menuBtn" aria-controls="side" aria-expanded="false">Menu</button></div>
-  <div class="shell"><aside class="side" id="side"><div class="brand"><b>Premier <em>Visibility</em></b><span>premierfamilybusiness.com</span></div>
+  <div class="shell"><aside class="side" id="side"><div class="brand"><b>Premier <em>Visibility</em></b><span>${esc(new URL(me.site).hostname)}</span></div>
     <nav class="nav" id="nav"></nav>
     <div class="who"><span>${esc(me.name)} · ${esc(me.role)}</span><button type="button" id="logoutBtn">Sign out</button></div></aside>
     <div class="content" id="view"></div></div>`;
@@ -176,7 +176,7 @@ async function vPages() {
     const form = document.getElementById("addForm");
     document.getElementById("addPage").onclick = () => { form.hidden = false; npName.focus(); };
     document.getElementById("npCancel").onclick = () => (form.hidden = true);
-    form.addEventListener("submit", async (e) => { e.preventDefault(); try { const r = await api("POST", "/pages", { name: npName.value, type: npType.value, url: npUrl.value }); location.hash = `#/page/${encodeURIComponent(r.id)}`; } catch (x) { toast(x.message); } });
+    form.addEventListener("submit", async (e) => { e.preventDefault(); try { const b = blank({ ...TEMPL.article, id: "new", name: npName.value, url: npUrl.value, type: npType.value, p: "", custom: true, noLive: false }); const sc = scoreOf(evaluate(b)); const r = await api("POST", "/pages", { name: npName.value, type: npType.value, url: npUrl.value, brief: b, score: sc.total, fails: sc.fails }); location.hash = `#/page/${encodeURIComponent(r.id)}`; } catch (x) { toast(x.message); } });
     const aa = document.getElementById("auditAll");
     aa.onclick = () => busy(aa, async () => { await api("POST", "/run/daily"); toast("Live pages checked"); route(); });
   }
@@ -211,7 +211,8 @@ function pageBrief(body, p, d) {
   document.getElementById("mdBtn")?.addEventListener("click", () => copyText(briefMd(ed.get()), "Brief"));
   saveBtn?.addEventListener("click", () => busy(saveBtn, async () => {
     try {
-      const r = await api("PUT", `/pages/${encodeURIComponent(p.id)}`, { brief: current, baseVersion: base, note: document.getElementById("saveNote").value });
+      const sc = scoreOf(evaluate(current));
+      const r = await api("PUT", `/pages/${encodeURIComponent(p.id)}`, { brief: current, baseVersion: base, note: document.getElementById("saveNote").value, score: sc.total, fails: sc.fails });
       if (r.unchanged) { toast("Nothing changed since the last version"); setDirty(false); return; }
       base = r.page.version; setDirty(false); document.getElementById("saveNote").value = "";
       toast(`Saved version ${base} · score ${r.page.score}%`);
@@ -418,7 +419,7 @@ async function vPlugins() {
 
 /* ---------- playbook ---------- */
 async function vPlaybook() {
-  const md = await (await fetch("/playbook.md")).text();
+  const md = (await api("GET", "/playbook")).markdown || "The playbook file is missing from app/playbook.md.";
   view().innerHTML = `<article class="md card" id="pb"></article>`;
   const pb = document.getElementById("pb");
   pb.innerHTML = window.marked ? window.marked.parse(md) : `<pre style="white-space:pre-wrap">${esc(md)}</pre>`;
@@ -434,8 +435,8 @@ async function vSettings() {
     <div class="cols">
       <section class="card"><header><h2>Alerts</h2></header>
         <div class="tbl"><table><tbody>
-          ${ch(s.channels.slack, "Slack", "SLACK_WEBHOOK_URL")}${ch(s.channels.email, "Email (Resend)", "RESEND_API_KEY and ALERT_FROM")}
-          ${ch(s.channels.connector, "WordPress connector", "WP_CONNECTOR_KEY")}${ch(s.channels.cron, "Scheduled checks", "CRON_SECRET")}${ch(s.channels.database, "Database", "DATABASE_URL")}
+          ${ch(s.channels.slack, "Slack", "SLACK_WEBHOOK_URL")}${ch(s.channels.email, "Email", "RESEND_API_KEY or USE_PHP_MAIL")}
+          ${ch(s.channels.connector, "WordPress connector", "WP_CONNECTOR_KEY in app/config.php")}${ch(s.channels.cron, "Uptime cron job", s.lastCron.uptime ? `last ran ${ago(s.lastCron.uptime)}` : "hPanel → Cron Jobs → app/cron.php uptime")}${ch(!!s.lastCron.daily, "Daily cron job", s.lastCron.daily ? `last ran ${ago(s.lastCron.daily)}` : "hPanel → Cron Jobs → app/cron.php daily")}${ch(s.channels.heartbeat, "Outside heartbeat", "HEARTBEAT_URL (healthchecks.io)")}
         </tbody></table></div>
         ${isAdmin() ? `<form id="setForm" class="grid"><div class="field full"><label for="sEmails">Alert emails</label><input type="text" id="sEmails" value="${esc(s.alertEmails.join(", "))}" placeholder="jon@…, it@…"><span class="hint">Comma separated. Used when email alerts are configured.</span></div>
           <div class="field"><label for="sSsl">Warn when SSL expires within (days)</label><input type="text" id="sSsl" value="${s.sslWarnDays}" inputmode="numeric"></div>

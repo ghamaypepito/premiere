@@ -1,19 +1,13 @@
 {
   "name": "premier-visibility",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
-  "description": "SEO/AEO change tracking, uptime, maintenance and plugin updates for premierfamilybusiness.com",
+  "description": "SEO/AEO change tracking, uptime, maintenance and plugin updates for the Premier WordPress site. PHP + MySQL, built for Hostinger.",
   "type": "module",
-  "engines": { "node": ">=20" },
   "scripts": {
-    "dev": "node dev.js",
-    "build": "node scripts/copy-playbook.js",
-    "test": "node --test test/*.test.js"
-  },
-  "dependencies": {
-    "@neondatabase/serverless": "^1.0.0"
-  },
-  "devDependencies": {
-    "@electric-sql/pglite": "^0.3.0"
+    "build": "node scripts/build.mjs",
+    "package": "node scripts/build.mjs --zip",
+    "dev": "npm run build && sh scripts/dev.sh",
+    "test": "npm run build && node --test test/*.test.mjs"
   }
 }

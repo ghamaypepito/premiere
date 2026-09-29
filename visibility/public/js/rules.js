@@ -36,23 +36,29 @@ const PAGES = [
   s:["family business succession planning","family governance","professionalizing a family business","next generation leadership","family business advisory services"],
   q:["What services do family business consultants offer?","Which family business service do I need first?"],
   e:[...GLOBAL_ENT]},
- {id:"succession",name:"Succession & Continuity",url:"/what-we-do/succession-planning/",type:"service",intent:"Commercial investigation",schema:["Service","FAQPage","BreadcrumbList","WebPage"],
-  note:"Flagship pillar. Every other page links here. The highest-value brief on the site.",
+ {id:"succession",name:"Succession & Continuity",url:"/what-we-do/family-enterprise-planning/",type:"service",intent:"Commercial investigation",schema:["Service","FAQPage","BreadcrumbList","WebPage"],
+  note:"Flagship pillar. Live today as Family Enterprise Planning. Every other page links here: the highest-value brief on the site.",
   p:"family business succession planning",
   s:["succession plan for family business","family business transition planning","ownership succession","leadership succession in family business","succession planning consultant","family business succession in Asia","business succession planning Philippines","estate and succession planning"],
   q:["How do you create a succession plan for a family business?","When should a family business start succession planning?","How long does family business succession planning take?","How much does succession planning cost?","What percentage of family businesses survive to the third generation?","What happens if a family business has no succession plan?"],
   e:[...GLOBAL_ENT,"Certified Family Business Advisor (CFBA)","Certified Family Wealth Advisor (CFWA)"]},
- {id:"governance",name:"Family Governance",url:"/what-we-do/family-governance/",type:"service",intent:"Commercial investigation",schema:["Service","FAQPage","BreadcrumbList","WebPage"],
+ {id:"governance",name:"Family Governance",url:"/what-we-do/building-effective-governance/",type:"service",intent:"Commercial investigation",schema:["Service","FAQPage","BreadcrumbList","WebPage"],
   note:"Owns the family constitution and family council terms.",
   p:"family governance",
   s:["family constitution","family charter","family council","family business governance structure","family assembly","family employment policy","board of directors for family business","family governance consultant"],
   q:["What is a family constitution?","What should a family constitution include?","What is the difference between a family council and a board of directors?","How do you resolve conflict in a family business?","How often should a family council meet?"],
   e:[...GLOBAL_ENT]},
- {id:"professionalizing",name:"Professionalizing the Business",url:"/what-we-do/professionalizing-family-business/",type:"service",intent:"Commercial investigation",schema:["Service","FAQPage","BreadcrumbList","WebPage"],
+ {id:"professionalizing",name:"Professionalizing the Business",url:"/what-we-do/organizational-systems-effectiveness/",type:"service",intent:"Commercial investigation",schema:["Service","FAQPage","BreadcrumbList","WebPage"],
   note:"Replaces the old 'Organizational Systems Effectiveness' and 'Key Process Management' pages. Redirect both here.",
   p:"professionalizing a family business",
   s:["family business management systems","organizational structure of a family business","hiring non-family executives","family business KPIs","separating family and business finances","independent directors family business","Premier IDEA"],
   q:["What does it mean to professionalize a family business?","How do you bring non-family managers into a family business?","When should a family business create an independent board?"],
+  e:[...GLOBAL_ENT]},
+ {id:"key-process",name:"Key Process Management",url:"/what-we-do/key-process-management-consulting/",type:"service",intent:"Commercial investigation",schema:["Service","BreadcrumbList","WebPage"],
+  note:"Live on staging. The redesign merges it into Professionalizing the Business: when that happens, 301-redirect this URL and archive this brief.",
+  p:"business process management for family businesses",
+  s:["process improvement consulting","standard operating procedures family business","business process management consulting Philippines","operational excellence family business"],
+  q:["Why do family businesses need documented processes?","How do you write SOPs for a family business?"],
   e:[...GLOBAL_ENT]},
  {id:"nextgen",name:"Next-Gen Leadership",url:"/what-we-do/next-generation-leadership/",type:"service",intent:"Commercial investigation",schema:["Service","FAQPage","BreadcrumbList","WebPage"],
   note:"Replaces 'Premier IDEA' as a service name. Speaks to both parents and successors.",
@@ -84,6 +90,14 @@ const PAGES = [
   s:["Jonathan Ramos family business consultant","Jon Ramos FFI Fellow","Legacy in Action author","family business speaker Philippines"],
   q:["Who is Jon Ramos?","What is Jon Ramos known for?"],
   e:["Jonathan \"Jon\" A. Ramos","Family Firm Institute (FFI)","FFI Board of Directors","Legacy in Action","Premier Family Business Consulting"]},
+ {id:"profile-neil",name:"Profile · Neil Arnold Montesclaros",url:"/who-we-are/our-team/neil-arnold-montesclaros/",type:"profile",intent:"Navigational",schema:["Person","WebPage","BreadcrumbList"],
+  note:"Leader profile. Person schema with sameAs links to LinkedIn.",
+  p:"Neil Arnold Montesclaros",s:["Premier COO","family business consultant Philippines"],q:["Who is Neil Arnold Montesclaros?"],
+  e:["Neil Arnold Montesclaros","Premier Family Business Consulting"]},
+ {id:"profile-theresa",name:"Profile · Ma. Theresa B. Ramos",url:"/who-we-are/our-team/ma-theresa-ramos/",type:"profile",intent:"Navigational",schema:["Person","WebPage","BreadcrumbList"],
+  note:"Leader profile. Person schema with sameAs links to LinkedIn.",
+  p:"Ma. Theresa Ramos",s:["family business consultant Philippines","Premier senior consultant"],q:["Who is Ma. Theresa Ramos?"],
+  e:["Ma. Theresa B. Ramos","Premier Family Business Consulting"]},
  {id:"legacy",name:"Legacy in Action",url:"/legacy-in-action/",type:"hub",intent:"Informational",schema:["Book","PodcastSeries","WebPage","BreadcrumbList"],
   note:"Book and podcast. Give each episode its own page with a full transcript: transcripts are what AI engines quote.",
   p:"Legacy in Action",
@@ -96,7 +110,7 @@ const PAGES = [
   s:["family business articles","family business insights","family business succession articles","family governance guides"],
   q:["Where can I learn about running a family business?"],
   e:[...GLOBAL_ENT]},
- {id:"article",name:"Article template",url:"/resources/how-to-create-a-family-business-succession-plan/",type:"article",intent:"Informational",schema:["Article","FAQPage","BreadcrumbList","Person"],
+ {id:"article",name:"Article template",url:"/resources/how-to-create-a-family-business-succession-plan/",type:"article",noLive:true,intent:"Informational",schema:["Article","FAQPage","BreadcrumbList","Person"],
   note:"Duplicate this brief for every article. Target one long-tail question and link up to its pillar.",
   p:"how to create a succession plan for a family business",
   s:["succession plan template","succession planning steps","family business successor","succession timeline"],
@@ -114,7 +128,7 @@ const PAGES = [
   s:["family business questions","succession planning FAQ","family governance FAQ"],
   q:["How long does a family business engagement take?","Do you work with family businesses outside the Philippines?","Is everything we discuss confidential?","How much does it cost?"],
   e:[...GLOBAL_ENT]},
- {id:"contact",name:"Book a Family Business Review",url:"/contact/",type:"contact",intent:"Transactional",schema:["ContactPage","ProfessionalService","BreadcrumbList"],
+ {id:"contact",name:"Book a Family Business Review",url:"/get-in-touch/",type:"contact",intent:"Transactional",schema:["ContactPage","ProfessionalService","BreadcrumbList"],
   note:"Local on purpose. Name, address and phone must match Google Business Profile exactly.",
   p:"book a family business review",
   s:["family business consultant Cebu","family business consultant Manila","contact family business consultant","family business consultation"],
@@ -132,7 +146,7 @@ function blank(t){
     primary:t.p||"",volume:"",competitor:"",secondary:"",questions:"",entities:"",
     seoTitle:"",metaDesc:"",ogImage:"",ogAlt:"",h1:"",answer:"",outline:"",body:"",
     faqs:[],takeaways:"",proof:"",author:"",creds:"",reviewer:"",reviewed:"",
-    internal:"",external:"",images:"",schema:[...(t.schema||["WebPage"])],tech:{},custom:!!t.custom,updatedAt:0};
+    internal:"",external:"",images:"",schema:[...(t.schema||["WebPage"])],tech:{},custom:!!t.custom,noLive:!!t.noLive,updatedAt:0};
 }
 function tmplFor(b){ return TEMPL[b.id] || {id:b.id,name:b.name,url:b.url,type:b.type,p:"",s:[],q:[],e:GLOBAL_ENT,schema:["Article","BreadcrumbList"],note:"Custom page. Pick keywords from the playbook's content calendar or your keyword tool."}; }
 
@@ -346,6 +360,6 @@ export const FIELD_LABELS = {
 };
 export function changedFields(a, b) {
   const keys = new Set([...Object.keys(a || {}), ...Object.keys(b || {})]);
-  keys.delete("updatedAt"); keys.delete("id"); keys.delete("custom");
+  keys.delete("updatedAt"); keys.delete("id"); keys.delete("custom"); keys.delete("noLive");
   return [...keys].filter(k => JSON.stringify(a?.[k] ?? "") !== JSON.stringify(b?.[k] ?? ""));
 }
