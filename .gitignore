@@ -37,3 +37,8 @@ wp-build/preview/_shot-*.png
 
 # Pulled Elementor data lands here; commit real pulls, not scratch
 wp-build/sync/pulled/*.tmp
+
+# Installed only to run the local tooling (preview renderer, WXR parser).
+# Nothing here is part of the deliverable.
+node_modules/
+package-lock.json
