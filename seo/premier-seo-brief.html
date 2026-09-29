@@ -1,0 +1,1029 @@
+<title>Premier Page SEO Brief</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400&family=Poppins:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: navy masthead; page rail | brief form | sticky readiness panel. Collapses to one column on phones. */
+:root{
+  --bg:#F6F5F1; --surface:#FFFFFF; --sunk:#EFEDE7; --ink:#1B2230; --muted:#5E6573; --line:#DCD9D0;
+  --navy:#193153; --navy-ink:#FFFFFF; --gold:#F2AF11; --gold-soft:#FDF1D3; --accent:#193153; --btn:#193153; --btn-ink:#FFFFFF;
+  --good:#2F7A4F; --good-bg:#E4F2E9; --warn:#9A6207; --warn-bg:#FCF0D6; --bad:#B3261E; --bad-bg:#FBE4E2;
+  --f-display:"Newsreader",Georgia,"Times New Roman",serif;
+  --f-body:"Poppins","Helvetica Neue",Arial,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0E1726; --surface:#152238; --sunk:#101B2D; --ink:#E7EAF0; --muted:#9BA5B6; --line:#2A3A55;
+  --navy:#0A1322; --navy-ink:#F2F4F8; --gold:#F2AF11; --gold-soft:#3A2E10; --accent:#F2AF11; --btn:#F2AF11; --btn-ink:#193153;
+  --good:#6FD39A; --good-bg:#15372A; --warn:#F5C451; --warn-bg:#3A2E10; --bad:#F59A92; --bad-bg:#3D1C1C; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1726; --surface:#152238; --sunk:#101B2D; --ink:#E7EAF0; --muted:#9BA5B6; --line:#2A3A55;
+  --navy:#0A1322; --navy-ink:#F2F4F8; --gold:#F2AF11; --gold-soft:#3A2E10; --accent:#F2AF11; --btn:#F2AF11; --btn-ink:#193153;
+  --good:#6FD39A; --good-bg:#15372A; --warn:#F5C451; --warn-bg:#3A2E10; --bad:#F59A92; --bad-bg:#3D1C1C; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:14px;line-height:1.55;margin:0}
+h1,h2,h3{text-wrap:balance;margin:0}
+a{color:var(--accent)}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+.mast{background:var(--navy);color:var(--navy-ink);padding:18px 24px;display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justify-content:space-between;border-bottom:3px solid var(--gold)}
+.mast h1{font-family:var(--f-display);font-weight:500;font-size:26px;letter-spacing:-.01em}
+.mast h1 em{color:var(--gold);font-style:italic}
+.mast .sub{font-size:12px;opacity:.75;letter-spacing:.04em}
+.tabs{display:flex;gap:4px}
+.tabs button{background:transparent;border:1px solid rgba(255,255,255,.28);color:var(--navy-ink);padding:8px 14px;cursor:pointer;font-size:13px;font-weight:500}
+.tabs button[aria-selected="true"]{background:var(--gold);border-color:var(--gold);color:#193153}
+.sync{font-size:12px;opacity:.85;display:flex;align-items:center;gap:6px}
+.sync i{width:8px;height:8px;border-radius:50%;background:var(--gold);display:inline-block}
+.sync.ok i{background:#6FD39A}
+
+.wrap{display:grid;grid-template-columns:230px minmax(0,1fr) 310px;gap:24px;padding:24px;max-width:1500px;margin:0 auto;align-items:start}
+.rail{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px);display:flex;flex-direction:column;gap:2px;max-height:calc(100vh - 24px);overflow:auto}
+.rail h2{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;padding:0 10px 8px}
+.pg{display:grid;grid-template-columns:1fr auto;gap:2px 8px;text-align:left;background:transparent;border:0;border-left:3px solid transparent;padding:8px 10px;cursor:pointer;width:100%}
+.pg:hover{background:var(--sunk)}
+.pg[aria-current="true"]{background:var(--surface);border-left-color:var(--gold)}
+.pg b{font-weight:500;font-size:13px}
+.pg small{grid-column:1/-1;font-size:11px;color:var(--muted)}
+.pg .sc{font-family:var(--f-mono);font-size:12px;font-variant-numeric:tabular-nums}
+.add{margin-top:10px;display:flex;gap:6px;padding:0 10px}
+.add input{flex:1;min-width:0}
+.pagesel.field{display:none}
+
+main{min-width:0;display:flex;flex-direction:column;gap:20px}
+.head{display:flex;flex-direction:column;gap:6px}
+.head .eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.head h2{font-family:var(--f-display);font-weight:500;font-size:34px;line-height:1.1;letter-spacing:-.015em}
+.head p{margin:0;color:var(--muted);max-width:68ch}
+
+section.card{background:var(--surface);border:1px solid var(--line);padding:22px;display:flex;flex-direction:column;gap:16px}
+section.card>header{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:12px}
+section.card>header h3{font-family:var(--f-display);font-size:21px;font-weight:500}
+section.card>header span{font-size:12px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 18px}
+.full{grid-column:1/-1}
+.field{display:flex;flex-direction:column;gap:5px;min-width:0}
+.field label,.lbl{font-size:12px;font-weight:600;letter-spacing:.02em}
+.field .hint{font-size:12px;color:var(--muted)}
+.cnt{font-family:var(--f-mono);font-size:11px;font-variant-numeric:tabular-nums;color:var(--muted);align-self:flex-end}
+.cnt.good{color:var(--good)} .cnt.warn{color:var(--warn)} .cnt.bad{color:var(--bad)}
+input[type=text],input[type=url],input[type=date],select,textarea{background:var(--bg);border:1px solid var(--line);padding:9px 11px;width:100%;border-radius:0}
+textarea{resize:vertical;min-height:84px;line-height:1.5}
+textarea.tall{min-height:260px}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);outline:none}
+.checks{display:flex;flex-wrap:wrap;gap:8px}
+.checks label{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;background:var(--bg);border:1px solid var(--line);padding:6px 10px;cursor:pointer}
+.checks.col{flex-direction:column;align-items:stretch}
+
+.sugg{background:var(--gold-soft);border:1px dashed var(--gold);padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.sugg .lbl{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{background:var(--surface);border:1px solid var(--line);padding:4px 10px;font-size:12px;cursor:pointer}
+.chip:hover{border-color:var(--accent)}
+.chip.used{opacity:.45;text-decoration:line-through;cursor:default}
+.btn{background:var(--btn);color:var(--btn-ink);border:1px solid var(--btn);padding:8px 14px;font-weight:500;font-size:13px;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.sm{padding:4px 10px;font-size:12px}
+
+.serp{background:var(--bg);border:1px solid var(--line);padding:14px 16px;display:flex;flex-direction:column;gap:2px;font-family:Arial,Helvetica,sans-serif}
+.serp .u{font-size:12px;color:var(--muted);overflow-wrap:anywhere}
+.serp .t{font-size:19px;color:#1a0dab;line-height:1.3}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .serp .t{color:#99c3ff}}
+:root[data-theme="dark"] .serp .t{color:#99c3ff}
+.serp .d{font-size:13px;color:var(--muted)}
+
+.faq{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;border-top:1px solid var(--line);padding-top:12px}
+.faq textarea{min-height:64px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.stat{background:var(--bg);border:1px solid var(--line);padding:10px 12px}
+.stat b{display:block;font-family:var(--f-mono);font-size:18px;font-variant-numeric:tabular-nums;font-weight:500}
+.stat span{font-size:11px;color:var(--muted)}
+pre.code{background:var(--sunk);border:1px solid var(--line);padding:14px;font-family:var(--f-mono);font-size:12px;line-height:1.5;overflow:auto;max-height:460px;margin:0;white-space:pre}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+
+aside.score{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px);background:var(--surface);border:1px solid var(--line);display:flex;flex-direction:column;max-height:calc(100vh - 24px)}
+.score .top{padding:18px;border-bottom:1px solid var(--line);display:flex;gap:16px;align-items:center}
+.dial{width:84px;height:84px;flex:none}
+.dial text{font-family:var(--f-mono);font-variant-numeric:tabular-nums;fill:var(--ink)}
+.score .verdict b{display:block;font-family:var(--f-display);font-size:20px;font-weight:500}
+.score .verdict span{font-size:12px;color:var(--muted)}
+.groups{padding:12px 18px;display:flex;flex-direction:column;gap:8px;border-bottom:1px solid var(--line)}
+.gr{display:grid;grid-template-columns:96px minmax(0,1fr) 38px;gap:8px;align-items:center;font-size:12px}
+.bar{height:6px;background:var(--sunk)}
+.bar i{display:block;height:100%;background:var(--accent)}
+.gr .v{font-family:var(--f-mono);text-align:right;font-variant-numeric:tabular-nums}
+.issues{overflow:auto;padding:10px 18px 18px;display:flex;flex-direction:column;gap:6px}
+.issues h4{margin:8px 0 2px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.is{display:grid;grid-template-columns:18px minmax(0,1fr);gap:8px;font-size:12.5px;line-height:1.4;padding:6px 8px}
+.is .ic{font-weight:700;text-align:center}
+.is.fail{background:var(--bad-bg)} .is.fail .ic{color:var(--bad)}
+.is.warn{background:var(--warn-bg)} .is.warn .ic{color:var(--warn)}
+.is.pass .ic{color:var(--good)}
+.is small{display:block;color:var(--muted);font-size:11.5px}
+.pill{display:inline-block;font-size:11px;padding:1px 8px;border:1px solid var(--line);white-space:nowrap}
+.pill.s-Published{background:var(--good-bg);color:var(--good);border-color:transparent}
+.pill.s-Ready{background:var(--good-bg);color:var(--good);border-color:transparent}
+.pill.s-In-review,.pill.s-Drafting{background:var(--warn-bg);color:var(--warn);border-color:transparent}
+
+.overview table{width:100%;border-collapse:collapse;font-size:13px}
+.overview th,.overview td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+.overview th{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.overview td.n{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.tbl{overflow-x:auto}
+
+.playbook{max-width:900px;margin:0 auto;padding:32px 24px 64px}
+.md h1{font-family:var(--f-display);font-weight:500;font-size:40px;letter-spacing:-.015em;margin:0 0 12px}
+.md h2{font-family:var(--f-display);font-weight:500;font-size:26px;margin:40px 0 12px;padding-top:16px;border-top:2px solid var(--gold)}
+.md h3{font-size:16px;margin:24px 0 8px}
+.md p,.md li{max-width:72ch;line-height:1.65}
+.md blockquote{margin:16px 0;padding:12px 16px;background:var(--gold-soft);border-left:3px solid var(--gold)}
+.md blockquote p{margin:0}
+.md table{border-collapse:collapse;font-size:13px;margin:12px 0;width:100%}
+.md .tw{overflow-x:auto}
+.md th,.md td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.md th{background:var(--sunk);font-weight:600}
+.md code{font-family:var(--f-mono);font-size:12px;background:var(--sunk);padding:1px 5px}
+.md hr{border:0;border-top:1px solid var(--line);margin:28px 0}
+.toast{position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 16px);left:50%;transform:translateX(-50%);background:var(--navy);color:var(--navy-ink);padding:10px 16px;font-size:13px;border:1px solid var(--gold);z-index:10}
+
+@media (max-width:1180px){
+  .wrap{grid-template-columns:200px minmax(0,1fr)}
+  aside.score{grid-column:2;grid-row:1;position:static;max-height:none}
+  .issues{max-height:280px}
+}
+@media (max-width:820px){
+  .wrap{grid-template-columns:minmax(0,1fr);padding:16px}
+  .rail{display:none}
+  .pagesel.field{display:flex}
+  aside.score{grid-column:1}
+  .grid{grid-template-columns:minmax(0,1fr)}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .mast{padding:14px 16px}
+  .head h2{font-size:27px}
+  .playbook{padding:24px 16px 48px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<header class="mast">
+  <div>
+    <h1>Premier <em>Page SEO Brief</em></h1>
+    <div class="sub">SEO + AEO readiness for every page of premierfamilybusiness.com</div>
+  </div>
+  <div class="tabs" role="tablist">
+    <button role="tab" id="tab-briefs" aria-selected="true" data-view="briefs">Page briefs</button>
+    <button role="tab" id="tab-overview" aria-selected="false" data-view="overview">All pages</button>
+    <button role="tab" id="tab-playbook" aria-selected="false" data-view="playbook">Playbook</button>
+  </div>
+  <div class="sync" id="sync"><i></i><span>Saved on this device</span></div>
+</header>
+
+<div id="view-briefs" class="wrap">
+  <nav class="rail" aria-label="Pages">
+    <h2>Pages</h2>
+    <div id="rail"></div>
+    <form class="add" id="addForm"><input type="text" id="addName" placeholder="New page or article" aria-label="New page name"><button class="btn sm" type="submit">Add</button></form>
+  </nav>
+
+  <main id="form">
+    <div class="pagesel field"><label for="pageSelect">Page</label><select id="pageSelect"></select></div>
+    <div class="head">
+      <span class="eyebrow" id="hEyebrow">Service pillar</span>
+      <h2 id="hTitle">Home</h2>
+      <p id="hNote"></p>
+    </div>
+
+    <section class="card" id="s-setup">
+      <header><h3>1 · Page setup</h3><span>Who owns it, where it lives, who it is for</span></header>
+      <div class="grid">
+        <div class="field"><label for="f-name">Page name</label><input type="text" id="f-name" data-f="name"></div>
+        <div class="field"><label for="f-url">URL</label><input type="text" id="f-url" data-f="url" placeholder="/what-we-do/succession-planning/"></div>
+        <div class="field"><label for="f-type">Page type</label>
+          <select id="f-type" data-f="type">
+            <option value="home">Home</option><option value="service">Service pillar</option><option value="about">About / team</option>
+            <option value="profile">Person profile</option><option value="hub">Hub / listing</option><option value="article">Article (cluster)</option>
+            <option value="event">Event</option><option value="faq">FAQ</option><option value="contact">Contact / booking</option><option value="legal">Legal</option>
+          </select></div>
+        <div class="field"><label for="f-status">Status</label>
+          <select id="f-status" data-f="status"><option>Not started</option><option>Drafting</option><option>In review</option><option>Ready</option><option>Published</option></select></div>
+        <div class="field"><label for="f-owner">Content owner</label><input type="text" id="f-owner" data-f="owner" placeholder="Who writes it"></div>
+        <div class="field"><label for="f-intent">Search intent</label>
+          <select id="f-intent" data-f="intent"><option value="">Choose…</option><option>Informational</option><option>Commercial investigation</option><option>Transactional</option><option>Navigational</option></select>
+          <span class="hint">What the searcher wants: learn, compare, act, or find Premier.</span></div>
+        <div class="field full"><span class="lbl">Target markets</span>
+          <div class="checks" id="markets"></div>
+          <span class="hint">Primary keyword stays country-free so the page can rank anywhere. Put the geography in secondary keywords and schema.</span></div>
+      </div>
+    </section>
+
+    <section class="card" id="s-kw">
+      <header><h3>2 · Keywords</h3><span>One primary, a handful of secondary, the questions people ask</span></header>
+      <div class="sugg" id="sugg"></div>
+      <div class="grid">
+        <div class="field full"><label for="f-primary">Primary keyword</label><input type="text" id="f-primary" data-f="primary"><span class="hint">Check its volume in Keyword Planner or Semrush before you lock it, and note it below.</span></div>
+        <div class="field"><label for="f-volume">Monthly volume (global / PH)</label><input type="text" id="f-volume" data-f="volume" placeholder="e.g. 1,900 / 170 (Semrush, Oct 2026)"></div>
+        <div class="field"><label for="f-competitor">Top-ranking competitor for it</label><input type="text" id="f-competitor" data-f="competitor" placeholder="URL in position 1 today"></div>
+        <div class="field"><label for="f-secondary">Secondary keywords · one per line</label><textarea id="f-secondary" data-f="secondary"></textarea></div>
+        <div class="field"><label for="f-questions">Questions to answer (AEO) · one per line</label><textarea id="f-questions" data-f="questions"></textarea></div>
+        <div class="field full"><label for="f-entities">Entities to mention · one per line</label><textarea id="f-entities" data-f="entities" style="min-height:64px"></textarea><span class="hint">Names search engines and LLMs should connect to Premier: people, credentials, places, organisations.</span></div>
+      </div>
+    </section>
+
+    <section class="card" id="s-meta">
+      <header><h3>3 · Search appearance</h3><span>Title, description, URL, social card</span></header>
+      <div class="serp" aria-label="Search result preview"><span class="u" id="pvU"></span><span class="t" id="pvT"></span><span class="d" id="pvD"></span></div>
+      <div class="grid">
+        <div class="field full"><label for="f-seoTitle">SEO title</label><input type="text" id="f-seoTitle" data-f="seoTitle"><span class="cnt" id="c-seoTitle"></span></div>
+        <div class="field full"><label for="f-metaDesc">Meta description</label><textarea id="f-metaDesc" data-f="metaDesc" style="min-height:64px"></textarea><span class="cnt" id="c-metaDesc"></span></div>
+        <div class="field"><label for="f-ogImage">Social / OG image file name</label><input type="text" id="f-ogImage" data-f="ogImage" placeholder="family-council-meeting.jpg"></div>
+        <div class="field"><label for="f-ogAlt">OG image alt text</label><input type="text" id="f-ogAlt" data-f="ogAlt"></div>
+      </div>
+    </section>
+
+    <section class="card" id="s-content">
+      <header><h3>4 · Content</h3><span>H1, outline and the copy itself</span></header>
+      <div class="grid">
+        <div class="field full"><label for="f-h1">H1</label><input type="text" id="f-h1" data-f="h1"></div>
+        <div class="field full"><label for="f-answer">Direct answer · the first 40–60 words under the H1</label><textarea id="f-answer" data-f="answer"></textarea><span class="cnt" id="c-answer"></span><span class="hint">Write it so it still makes sense when an AI engine quotes it alone.</span></div>
+        <div class="field full"><label for="f-outline">Outline · "## " for H2, "### " for H3</label><textarea id="f-outline" data-f="outline" placeholder="## How long does family business succession take?&#10;### Year 1: assessment"></textarea></div>
+        <div class="field full"><label for="f-body">Body copy · paste the draft here to score it</label><textarea class="tall" id="f-body" data-f="body"></textarea></div>
+      </div>
+      <div class="stats" id="stats"></div>
+    </section>
+
+    <section class="card" id="s-aeo">
+      <header><h3>5 · Answer-engine readiness</h3><span>FAQs, proof and who stands behind the page</span></header>
+      <div class="field"><span class="lbl">FAQs · become FAQPage schema</span><div id="faqs" class="checks col" style="gap:12px"></div>
+        <div class="row"><button class="btn sm ghost" type="button" id="addFaq">Add FAQ</button><button class="btn sm ghost" type="button" id="faqFromQ">Add FAQs from question list</button></div></div>
+      <div class="grid">
+        <div class="field"><label for="f-takeaways">Key takeaways · one per line</label><textarea id="f-takeaways" data-f="takeaways"></textarea></div>
+        <div class="field"><label for="f-proof">Stats and sources · "claim | source URL"</label><textarea id="f-proof" data-f="proof" placeholder="30% of family businesses reach the 2nd generation | https://…"></textarea></div>
+        <div class="field"><label for="f-author">Author</label><input type="text" id="f-author" data-f="author" placeholder="Jonathan A. Ramos"></div>
+        <div class="field"><label for="f-creds">Author credentials</label><input type="text" id="f-creds" data-f="creds" placeholder="RFC, CFWA · FFI Fellow"></div>
+        <div class="field"><label for="f-reviewer">Expert reviewer</label><input type="text" id="f-reviewer" data-f="reviewer"></div>
+        <div class="field"><label for="f-reviewed">Last reviewed</label><input type="date" id="f-reviewed" data-f="reviewed"></div>
+      </div>
+    </section>
+
+    <section class="card" id="s-links">
+      <header><h3>6 · Links and media</h3><span>"anchor text | URL" and "file-name.jpg | alt text"</span></header>
+      <div class="grid">
+        <div class="field"><label for="f-internal">Internal links</label><textarea id="f-internal" data-f="internal" placeholder="family governance consulting | /what-we-do/family-governance/"></textarea></div>
+        <div class="field"><label for="f-external">External sources</label><textarea id="f-external" data-f="external" placeholder="Family Firm Institute | https://www.ffi.org/"></textarea></div>
+        <div class="field full"><label for="f-images">Images</label><textarea id="f-images" data-f="images" placeholder="family-business-succession-handover.jpg | Founder handing keys to his daughter in the family warehouse"></textarea></div>
+      </div>
+    </section>
+
+    <section class="card" id="s-tech">
+      <header><h3>7 · Schema and technical</h3><span>Tick when done on the live page</span></header>
+      <div class="field"><span class="lbl">Structured data on this page</span><div class="checks" id="schemaChecks"></div></div>
+      <div class="field"><span class="lbl">Technical checklist</span><div class="checks col" id="techChecks"></div></div>
+      <div class="field"><div class="row" style="justify-content:space-between"><span class="lbl">Generated JSON-LD · paste into Elementor custom code or Rank Math</span><button class="btn sm" type="button" id="copyLd">Copy JSON-LD</button></div><pre class="code" id="ld"></pre></div>
+    </section>
+
+    <section class="card">
+      <header><h3>Hand-off</h3><span>Copy the brief into Google Docs, Asana or Slack</span></header>
+      <div class="row"><button class="btn" type="button" id="copyMd">Copy brief as Markdown</button><button class="btn ghost" type="button" id="resetPage">Reset this page</button><span id="resetConfirm" hidden class="row"><span>Clear every field on this page?</span><button class="btn sm" type="button" id="resetYes">Clear it</button><button class="btn sm ghost" type="button" id="resetNo">Keep</button></span></div>
+    </section>
+  </main>
+
+  <aside class="score" aria-label="Readiness score">
+    <div class="top">
+      <svg class="dial" viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="36" fill="none" stroke="var(--sunk)" stroke-width="8"></circle><circle id="dialArc" cx="42" cy="42" r="36" fill="none" stroke="var(--accent)" stroke-width="8" stroke-dasharray="0 999" transform="rotate(-90 42 42)"></circle><text id="dialTxt" x="42" y="48" text-anchor="middle" font-size="19">0</text></svg>
+      <div class="verdict"><b id="verdict">Not ready</b><span id="verdictSub">80% with no red items is ready to publish</span></div>
+    </div>
+    <div class="groups" id="groups"></div>
+    <div class="issues" id="issues"></div>
+  </aside>
+</div>
+
+<div id="view-overview" hidden>
+  <div class="playbook overview" style="max-width:1200px">
+    <div class="head" style="margin-bottom:16px"><span class="eyebrow">Site readiness</span><h2>All pages</h2><p>Every brief with its primary keyword, status and score. Select a row to open it.</p></div>
+    <div class="tbl"><table><thead><tr><th>Page</th><th>URL</th><th>Primary keyword</th><th>Owner</th><th>Status</th><th>Score</th><th>Red items</th></tr></thead><tbody id="ovBody"></tbody></table></div>
+  </div>
+</div>
+
+<div id="view-playbook" hidden><article class="playbook md" id="playbook"></article></div>
+<div class="toast" id="toast" hidden></div>
+
+<script type="text/markdown" id="playbook-md">
+# Premier: Global SEO & AEO Playbook
+
+What Premier needs to do, in order, to rank outside the Philippines. It covers both classic search (Google, Bing) and answer engines (Google AI Overviews and AI Mode, ChatGPT search, Perplexity, Copilot, Gemini). Every page brief in the form follows the rules on this page.
+
+> **Keyword numbers.** None of the keywords here come with volume or difficulty figures. Nothing was measured, so we won't make numbers up. Check each primary keyword in Google Keyword Planner or Semrush/Ahrefs (see **Tools**) before a page is locked, and record the volume in the brief.
+
+---
+
+## 1. Fix these before anything else
+
+1. **The live site is down.** `premierfamilybusiness.com` returns a WordPress critical error. Every day it is down, Google re-crawls a broken page and slowly drops existing rankings. Fix it or put a static holding page up now (see `WORDPRESS-SETUP.md` §0).
+2. **Keep the rankings the old site already has.** Before launch, export every old URL (Search Console > Pages, plus a Screaming Frog crawl of the Wayback snapshot) and 301-redirect each one to its new home. Examples: `/family-enterprise-planning/` → Succession, `/building-effective-governance/` → Family Governance, `/family-biz-buzz/...` → the same article under Resources.
+3. **Search Console and Bing Webmaster Tools** verified on the new domain on launch day, with the XML sitemap submitted to both. Bing matters more than it used to because its index feeds ChatGPT search and Microsoft Copilot.
+4. **One SEO plugin.** Use **Rank Math** (or Yoast, but not both). It handles titles, meta, canonicals, sitemap, breadcrumbs, redirects, IndexNow and most schema.
+
+---
+
+## 2. How Premier can realistically win globally
+
+"Family business consulting" on its own is a crowded global head term. The Family Business Consulting Group, Cambridge Family Enterprise Group, the Big Four family-business practices and many university centres already hold it. Premier won't outrank them head-on in year one. It can win three ways:
+
+| Angle | Why it works | Example targets |
+|---|---|---|
+| **Asia specificity** | Few global firms write seriously about Asian, Filipino and Filipino-Chinese family enterprises. That is a gap Premier can own. | family business succession in Asia · Filipino-Chinese family business succession · family governance in Southeast Asia |
+| **Question-level content** | Long, specific questions have weak competition and are exactly what AI answer engines quote. | how to write a family constitution · when should a founder start succession planning · how to pay family members in a family business |
+| **Named expertise** | Jon Ramos is an FFI Fellow and the first Filipino on the FFI Board. The team holds CFBA/CFWA credentials, and there is the *Legacy in Action* book and podcast. Search engines and LLMs rank named, credentialed experts. | Jon Ramos family business · Legacy in Action book · family business podcast Asia |
+
+**Rule of thumb for "global":** write primary keywords **without** a country, so the page can rank anywhere. Put the geography (Philippines, Southeast Asia, Asia) in **secondary** keywords, the body copy and the schema's `areaServed`. The Contact page and Google Business Profile are the exception: they are local on purpose (Cebu, Manila).
+
+---
+
+## 3. Keyword architecture (pillar and cluster)
+
+Each service page is a **pillar**. Each article under Resources is a **cluster** page that answers one narrower question and links back up to its pillar with a descriptive anchor.
+
+| Pillar (page) | Primary keyword | Cluster article ideas (each one is a brief) |
+|---|---|---|
+| Succession & Continuity | family business succession planning | How to choose a successor in a family business · Succession planning timeline: what happens in years 1–5 · Why most family businesses don't survive the third generation · Founder's guide to letting go · Selling to family vs outside buyer · Estate planning vs succession planning |
+| Family Governance | family governance | How to write a family constitution (with template outline) · Family council vs board of directors · Family employment policy: who can work in the business · How to run a family meeting · Resolving sibling conflict in a family business |
+| Professionalizing the Business | professionalizing a family business | Hiring your first non-family CEO · Separating family and business finances · Setting up an independent board · KPIs every family business should track |
+| Next-Gen Leadership | next generation leadership in family business | Should the next generation work outside the business first? · Building a next-gen development plan · Preparing heirs for ownership, not just management |
+| Legacy in Action | Legacy in Action book / family business podcast | Episode pages with full transcripts · Book chapter summaries · Guest Q&A pages |
+
+**Publishing rate:** two cluster articles a month at minimum, each 1,200 words or more and each with its own brief in the form. Twelve good articles beat forty thin ones.
+
+---
+
+## 4. AEO: being the answer
+
+Answer engines pull passages, not pages. They favour content that is **easy to extract, clearly attributed, and repeated by other sources**. The form checks every item below.
+
+1. **Answer first.** Put a 40–60 word direct answer right under the H1 or under each question-style H2. Write it so it still makes sense quoted alone, with no "as mentioned above".
+2. **Headings phrased as the question people ask.** "How long does family business succession take?" beats "Timeline".
+3. **An FAQ block on every service page**, marked up with FAQPage schema. Use real questions from sales calls, People Also Ask, AlsoAsked and AnswerThePublic.
+4. **Lists, steps and tables.** Engines lift structured passages more reliably than long paragraphs. Use HowTo on the Approach page.
+5. **Stats with sources.** A claim like "Only X% of family businesses reach the third generation" must link to its source. Original data is better still (see §7, the annual survey).
+6. **Consistent entities.** Write the firm name, founder, credentials, city and partner organisations exactly the same way everywhere: site, schema, LinkedIn, Google Business Profile, directories. LLMs build their picture of Premier from that consistency. Use `sameAs` links in Organization and Person schema.
+7. **A named author and reviewer on every page.** Byline, credentials, a link to the person's profile page and a "Last reviewed" date. Refresh key pages every 6–12 months and update the date only when content really changed.
+8. **Be mentioned off-site.** AI answers lean heavily on third-party sources: LinkedIn articles, podcast show notes, industry publications, Reddit and Quora threads, directories. See §7.
+9. **Let AI crawlers in.** In `robots.txt`, allow `OAI-SearchBot`, `ChatGPT-User`, `PerplexityBot`, `Google-Extended` (Gemini), `Bingbot` and `ClaudeBot`. Blocking them removes Premier from those answers. An `llms.txt` file is cheap to add, but no major engine has confirmed it uses one, so treat it as optional.
+10. **Track it.** Once a month, ask ChatGPT, Perplexity, Gemini and Google AI Mode the 20 target questions and log whether Premier is cited. Automate this later with an AI-visibility tool (§9).
+
+---
+
+## 5. On-page standard (what the form scores)
+
+| Element | Standard |
+|---|---|
+| SEO title | 30–60 characters, primary keyword near the start, brand at the end: `Family Business Succession Planning \| Premier` |
+| Meta description | 120–160 characters, includes the primary keyword and a reason to click. Written by hand for every page. |
+| URL | Short, lowercase, hyphenated, contains the core of the primary keyword, no dates |
+| H1 | One per page, contains the primary keyword, reads naturally |
+| First 100 words | Contain the primary keyword and the direct answer |
+| Body length | Home/About 600+, service pillars 1,200+, articles 1,200+, contact 300+ |
+| Keyword use | Primary at about 0.5–2.5% density, never stuffed. Work in secondary keywords and entities naturally. |
+| Readability | Average sentence 22 words or fewer, no paragraph over 120 words |
+| Internal links | 3 or more, descriptive anchors (never "click here"), always one to Book a Family Business Review |
+| External links | 1 or more authoritative sources (FFI, academic, government statistics) |
+| Images | Descriptive file names (`family-council-meeting.jpg`, never `hf_20260909_...`), written alt text, WebP, lazy-loaded below the fold |
+| Schema | Organization + ProfessionalService site-wide, plus the page type (Service, FAQPage, Article, HowTo, Person, Event, Book) |
+
+---
+
+## 6. Technical SEO for the WordPress/Elementor build
+
+- **Speed:** targets are mobile PageSpeed 70+, LCP under 2.5 s, CLS under 0.1, INP under 200 ms. Elementor is heavy, so enable its performance experiments (Optimized DOM output, Improved asset loading and CSS loading, Lazy-load background images). Serve the hero film with a lightweight poster frame and never autoplay it on mobile data. Add a caching plugin (WP Rocket, or the host's built-in cache) and **Cloudflare** in front for a global CDN, which matters because visitors abroad are far from a Philippine server.
+- **Hosting:** use a managed host with data centres or CDN edge in Singapore/Asia **and** the US/EU (Kinsta, WP Engine, Cloudways).
+- **International setup:** keep one English `.com` site. Don't set a country target and don't geo-redirect visitors. Add `hreflang` only when a real translated version exists (e.g. Traditional Chinese or Bahasa later). Hreflang on a single-language site does nothing.
+- **Indexing:** thin pages (tag archives, author archives with one post, attachment pages) get `noindex`. Every page has a self-referencing canonical. Breadcrumbs are on, with BreadcrumbList schema.
+- **Validate:** run every template through the Rich Results Test and the Schema Markup Validator before launch, then crawl the whole staging site with Screaming Frog.
+
+---
+
+## 7. Authority: links and mentions from outside the site
+
+| Source | What to do |
+|---|---|
+| **Family Firm Institute** | Make sure Jon's and each certified consultant's FFI profiles link to the site. Pitch articles to FFI Practitioner. |
+| **FBN Asia, UA&P and other partners** | Ask for a partner/member listing with a link. Co-author one resource a year. |
+| **Industry publications** | Pitch bylined articles to Tharawat Magazine, Campden FB, Family Business Magazine and the *Asian Family Business* sections of regional outlets. |
+| **Philippine and Asian business press** | BusinessWorld, Philippine Daily Inquirer, Philstar, SunStar Cebu, Rappler, Nikkei Asia, The Business Times (SG). Offer Jon as the expert on succession stories. |
+| **Journalist request platforms** | Qwoted, Featured.com and Source of Sources: answer family business and succession queries weekly. |
+| **Podcasts** | Guest on family business, wealth and entrepreneurship podcasts. Every appearance earns a show-notes link and more mentions for AI answers to draw on. |
+| **Linkable asset** | An annual **"State of Family Business in the Philippines / Southeast Asia"** survey. Original data is the single strongest way to earn links and AI citations. Publish the results page with charts, a methodology section and a downloadable PDF. |
+| **Events** | Every roadshow, forum and webinar gets its own page with Event schema, and a recap article with photos afterwards. Ask hosts and co-organisers to link to it. |
+| **Directories and profiles** | Google Business Profile (Cebu HQ, and Manila if there is a real office), LinkedIn company page, Clutch/Sortlist-style consulting directories, chamber of commerce listings (PCCI, Cebu Chamber, and FFCCCII given the Filipino-Chinese audience). Keep name, address and phone identical everywhere. |
+| **LinkedIn** | Jon and the senior consultants republish each article's key idea as a native LinkedIn post that links back. LinkedIn content is heavily cited by AI answer engines. |
+| **Reviews** | Ask satisfied families (with permission and discretion) for Google reviews and a written testimonial. Add Review schema only for reviews shown on the page. |
+
+---
+
+## 8. Content calendar starter (first 12 briefs after launch)
+
+| # | Working title | Primary keyword | Pillar |
+|---|---|---|---|
+| 1 | How to Create a Family Business Succession Plan: A Step-by-Step Guide | how to create a succession plan for a family business | Succession |
+| 2 | What Is a Family Constitution? Structure, Examples and How to Write One | family constitution | Governance |
+| 3 | Family Council vs Board of Directors: What Each One Does | family council vs board of directors | Governance |
+| 4 | Why Most Family Businesses Don't Survive to the Third Generation | family business third generation | Succession |
+| 5 | When Should a Founder Start Succession Planning? | when to start succession planning | Succession |
+| 6 | How to Prepare the Next Generation to Lead the Family Business | preparing next generation family business | Next-Gen |
+| 7 | Hiring a Non-Family CEO: A Guide for Family Business Owners | non-family CEO family business | Professionalizing |
+| 8 | Succession in Filipino-Chinese Family Businesses: What Is Different | Filipino-Chinese family business succession | Succession |
+| 9 | Family Employment Policy: Rules for Hiring Relatives | family employment policy | Governance |
+| 10 | How Much Does Family Business Consulting Cost? | family business consultant cost | Home/Approach |
+| 11 | How to Run a Productive Family Meeting (Agenda Template) | family meeting agenda | Governance |
+| 12 | Separating Family and Business Finances | separating family and business finances | Professionalizing |
+
+Once a real fee range is approved, #10 answers the category's most-asked question. Don't dodge it.
+
+---
+
+## 9. Tools
+
+| Job | Free | Paid (pick one per row) |
+|---|---|---|
+| Rankings, clicks and indexing | Google Search Console, Bing Webmaster Tools | n/a |
+| Traffic and conversions | Google Analytics 4, Microsoft Clarity (heatmaps, recordings) | n/a |
+| Keyword research | Google Keyword Planner, Google Trends, AnswerThePublic (limited), AlsoAsked (limited), Ahrefs Webmaster Tools | Semrush or Ahrefs, the main all-in-one choice |
+| Content optimisation | Hemingway Editor, this form | Surfer, Clearscope or Frase |
+| On-site SEO plugin | Rank Math (free) | Rank Math Pro (adds schema templates, multiple focus keywords and a keyword tracker) |
+| Technical crawl | Screaming Frog (free up to 500 URLs) | Screaming Frog licence, Sitebulb |
+| Speed | PageSpeed Insights, Chrome Lighthouse | WP Rocket, Cloudflare Pro/APO |
+| Schema | Rich Results Test, Schema Markup Validator | Rank Math Pro |
+| AI answer visibility | Manual monthly check (§4.10), Bing Webmaster Tools AI performance report | Semrush AI Toolkit, Ahrefs Brand Radar, Otterly.ai, Profound or Peec AI |
+| PR and mentions | Google Alerts, Qwoted (free tier) | Featured.com, Muck Rack |
+| Local | Google Business Profile | BrightLocal |
+
+A lean stack to start: **Search Console + Bing Webmaster Tools + GA4 + Clarity + Rank Math Pro + Semrush (or Ahrefs) + Screaming Frog**. Add an AI-visibility tracker once there are 20 or more published articles.
+
+---
+
+## 10. Workflow: brief → write → publish
+
+1. **Strategist** opens the page in the SEO brief form, confirms the primary keyword (after checking volume) and fills in Keywords, Search appearance and the outline.
+2. **Writer** drafts in Google Docs against the brief. They paste the draft into *Body copy* and fix everything the score panel flags until it shows **80% or more** with no red items.
+3. **Expert reviewer** (Jon or a senior consultant) checks the facts and signs off. Their name and date go in the *Author & review* fields.
+4. **Web editor** builds the page in Elementor, pastes the title and meta into Rank Math, adds the JSON-LD from the form's *Schema* tab (or enables the matching Rank Math schema), and ticks the Technical checklist.
+5. **After publish:** request indexing in Search Console, submit to Bing via IndexNow, share on LinkedIn, and set the brief status to *Published*.
+6. **Monthly:** review Search Console queries for each page, and add any new questions people are searching to that page's FAQ.
+
+---
+
+## 11. What to measure
+
+These are directional targets to calibrate after the first three months of real data.
+
+| KPI | Month 3 | Month 6 | Month 12 |
+|---|---|---|---|
+| Pages with brief score 80% or more | all launch pages | all pages | all pages |
+| Published cluster articles | 6 | 12 | 24+ |
+| Search Console: queries with impressions | baseline | 2× baseline | 5× baseline |
+| Non-Philippine share of organic clicks | baseline | +10 pts | +20 pts |
+| Referring domains (Ahrefs/Semrush) | baseline | +15 | +40 |
+| Target questions where an AI engine cites Premier (of 20) | baseline | 3 | 8 |
+| Book a Review form submissions from organic | baseline | up | up |
+
+---
+
+## 12. 90-day roadmap
+
+**Days 1–30 (foundation):** fix or replace the broken live site · redirect map · Search Console + Bing + GA4 + Clarity · Rank Math configured · Organization/ProfessionalService schema · Google Business Profile claimed and completed · briefs filled in for Home, Succession and the three other service pages.
+
+**Days 31–60 (launch and content):** launch the new site from staging · validate schema and speed · briefs for every remaining page · first four cluster articles · author profile pages live · partner and FFI profile links requested.
+
+**Days 61–90 (authority):** four more articles · two bylined external articles pitched · two podcast guest spots · design the annual survey · first monthly AI-visibility check logged · review Search Console and update FAQs.
+
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+<script>
+(function(){
+"use strict";
+const SITE = "https://premierfamilybusiness.com";
+const ORG = {name:"Premier Family Business Consulting, Inc.", phone:"+63 32 252 3504", email:"info@premierfamilybusiness.com",
+  street:"35F Cebu Exchange Tower, Salinas Drive", city:"Cebu City", country:"PH",
+  sameAs:["https://www.linkedin.com/company/premier-family-business-consulting-inc","https://www.facebook.com/PremierFamilyBusiness","https://www.instagram.com/premier.fbc"]};
+const MARKETS = ["Global (English)","Philippines","Southeast Asia","Greater China / Chinese diaspora","Middle East","North America","Europe / UK","Australia / NZ"];
+const SCHEMAS = ["Organization","ProfessionalService","WebPage","BreadcrumbList","Service","FAQPage","HowTo","Article","Person","Event","Book","PodcastSeries","ContactPage","CollectionPage"];
+const TECH = [
+  ["index","Indexable: no noindex, allowed in robots.txt, in the XML sitemap"],
+  ["canon","Self-referencing canonical tag"],
+  ["redirect","Old URL(s) from the previous site 301-redirect here"],
+  ["mobile","Checked on a phone: no horizontal scroll, tap targets fine"],
+  ["psi","PageSpeed Insights mobile 70+ (LCP < 2.5 s, CLS < 0.1, INP < 200 ms)"],
+  ["img","Images WebP, sized, lazy-loaded below the fold"],
+  ["rich","JSON-LD passes the Rich Results Test"],
+  ["crumbs","Breadcrumbs visible and marked up"],
+  ["gsc","Indexing requested in Search Console and submitted to Bing (IndexNow)"],
+  ["ai","AI crawlers allowed (OAI-SearchBot, PerplexityBot, Google-Extended, Bingbot)"]
+];
+const GLOBAL_ENT = ["Premier Family Business Consulting","Jonathan \"Jon\" A. Ramos","Family Firm Institute (FFI)","Cebu City, Philippines"];
+const TARGET_WORDS = {home:600,service:1200,about:600,profile:350,hub:300,article:1200,event:400,faq:800,contact:300,legal:0};
+const TYPE_LABEL = {home:"Home",service:"Service pillar",about:"About / team",profile:"Person profile",hub:"Hub / listing",article:"Article (cluster)",event:"Event",faq:"FAQ",contact:"Contact / booking",legal:"Legal"};
+
+/* Recommended keywords per page. Volumes are not included on purpose: verify each primary before locking it. */
+const PAGES = [
+ {id:"home",name:"Home",url:"/",type:"home",intent:"Commercial investigation",schema:["Organization","ProfessionalService","WebPage"],
+  note:"Ranks for the category and routes visitors to Succession. Keep it short and let the pillars carry depth.",
+  p:"family business consulting",
+  s:["family business consultants","family business advisory firm","family enterprise consulting","family business consulting Philippines","family business advisors Southeast Asia","succession planning for family businesses","family governance consulting"],
+  q:["What does a family business consultant do?","When should a family business hire a consultant?","How is family business consulting different from management consulting?","How much does family business consulting cost?"],
+  e:[...GLOBAL_ENT,"FBN Asia","University of Asia and the Pacific"]},
+ {id:"what-we-do",name:"What We Do",url:"/what-we-do/",type:"hub",intent:"Commercial investigation",schema:["WebPage","BreadcrumbList","CollectionPage"],
+  note:"Hub for the four practices. Each card links down with a keyword-rich anchor.",
+  p:"family business consulting services",
+  s:["family business succession planning","family governance","professionalizing a family business","next generation leadership","family business advisory services"],
+  q:["What services do family business consultants offer?","Which family business service do I need first?"],
+  e:[...GLOBAL_ENT]},
+ {id:"succession",name:"Succession & Continuity",url:"/what-we-do/succession-planning/",type:"service",intent:"Commercial investigation",schema:["Service","FAQPage","BreadcrumbList","WebPage"],
+  note:"Flagship pillar. Every other page links here. The highest-value brief on the site.",
+  p:"family business succession planning",
+  s:["succession plan for family business","family business transition planning","ownership succession","leadership succession in family business","succession planning consultant","family business succession in Asia","business succession planning Philippines","estate and succession planning"],
+  q:["How do you create a succession plan for a family business?","When should a family business start succession planning?","How long does family business succession planning take?","How much does succession planning cost?","What percentage of family businesses survive to the third generation?","What happens if a family business has no succession plan?"],
+  e:[...GLOBAL_ENT,"Certified Family Business Advisor (CFBA)","Certified Family Wealth Advisor (CFWA)"]},
+ {id:"governance",name:"Family Governance",url:"/what-we-do/family-governance/",type:"service",intent:"Commercial investigation",schema:["Service","FAQPage","BreadcrumbList","WebPage"],
+  note:"Owns the family constitution and family council terms.",
+  p:"family governance",
+  s:["family constitution","family charter","family council","family business governance structure","family assembly","family employment policy","board of directors for family business","family governance consultant"],
+  q:["What is a family constitution?","What should a family constitution include?","What is the difference between a family council and a board of directors?","How do you resolve conflict in a family business?","How often should a family council meet?"],
+  e:[...GLOBAL_ENT]},
+ {id:"professionalizing",name:"Professionalizing the Business",url:"/what-we-do/professionalizing-family-business/",type:"service",intent:"Commercial investigation",schema:["Service","FAQPage","BreadcrumbList","WebPage"],
+  note:"Replaces the old 'Organizational Systems Effectiveness' and 'Key Process Management' pages. Redirect both here.",
+  p:"professionalizing a family business",
+  s:["family business management systems","organizational structure of a family business","hiring non-family executives","family business KPIs","separating family and business finances","independent directors family business","Premier IDEA"],
+  q:["What does it mean to professionalize a family business?","How do you bring non-family managers into a family business?","When should a family business create an independent board?"],
+  e:[...GLOBAL_ENT]},
+ {id:"nextgen",name:"Next-Gen Leadership",url:"/what-we-do/next-generation-leadership/",type:"service",intent:"Commercial investigation",schema:["Service","FAQPage","BreadcrumbList","WebPage"],
+  note:"Replaces 'Premier IDEA' as a service name. Speaks to both parents and successors.",
+  p:"next generation leadership in family business",
+  s:["next-gen leadership program","successor development","preparing heirs to lead the family business","family business leadership development","Premier Leadership Institute","next generation family business Philippines"],
+  q:["How do you prepare the next generation to lead a family business?","Should the next generation work outside the family business first?","At what age should children join the family business?"],
+  e:[...GLOBAL_ENT,"Premier Leadership Institute"]},
+ {id:"approach",name:"Our Approach",url:"/our-approach/",type:"service",intent:"Commercial investigation",schema:["HowTo","WebPage","BreadcrumbList","FAQPage"],
+  note:"Explains the method step by step. Mark it up as HowTo using the outline's H2s.",
+  p:"family business consulting process",
+  s:["family business review","family business assessment","how family business consulting works","family business engagement timeline","family business consulting fees"],
+  q:["What happens in a family business review?","What are the steps in a family business consulting engagement?","How long does a family business consulting engagement take?"],
+  e:[...GLOBAL_ENT]},
+ {id:"who-we-are",name:"Who We Are",url:"/who-we-are/",type:"about",intent:"Navigational",schema:["Organization","WebPage","BreadcrumbList"],
+  note:"Founding story, proof, partners. Carries most of the E-E-A-T weight.",
+  p:"family business consulting firm",
+  s:["Premier Family Business Consulting","family business consulting firm Philippines","family business advisors in Asia","Family Firm Institute Fellow","family business consultants Cebu"],
+  q:["Who is Premier Family Business Consulting?","Who founded Premier Family Business Consulting?"],
+  e:[...GLOBAL_ENT,"FBN Asia","University of Asia and the Pacific"]},
+ {id:"team",name:"Our Team",url:"/who-we-are/our-team/",type:"about",intent:"Navigational",schema:["WebPage","BreadcrumbList","Person"],
+  note:"Every consultant gets a name, credential, photo with alt text and a link to their profile.",
+  p:"family business consultants",
+  s:["certified family business advisors","family wealth advisors","family business consultant Philippines","FFI certified consultants"],
+  q:["Who are Premier's family business consultants?","What credentials should a family business consultant have?"],
+  e:[...GLOBAL_ENT,"Certified Family Business Advisor (CFBA)","Certified Family Wealth Advisor (CFWA)"]},
+ {id:"profile-jon",name:"Profile · Jon Ramos",url:"/who-we-are/our-team/jon-ramos/",type:"profile",intent:"Navigational",schema:["Person","WebPage","BreadcrumbList"],
+  note:"Template for every leader profile. Person schema with sameAs to LinkedIn and FFI.",
+  p:"Jon Ramos family business",
+  s:["Jonathan Ramos family business consultant","Jon Ramos FFI Fellow","Legacy in Action author","family business speaker Philippines"],
+  q:["Who is Jon Ramos?","What is Jon Ramos known for?"],
+  e:["Jonathan \"Jon\" A. Ramos","Family Firm Institute (FFI)","FFI Board of Directors","Legacy in Action","Premier Family Business Consulting"]},
+ {id:"legacy",name:"Legacy in Action",url:"/legacy-in-action/",type:"hub",intent:"Informational",schema:["Book","PodcastSeries","WebPage","BreadcrumbList"],
+  note:"Book and podcast. Give each episode its own page with a full transcript: transcripts are what AI engines quote.",
+  p:"Legacy in Action",
+  s:["Legacy in Action book","Jon Ramos book","family business book","family business podcast","family legacy podcast Asia","3Ms of family business"],
+  q:["What is Legacy in Action about?","Who should read Legacy in Action?","Where can I listen to the Legacy in Action podcast?"],
+  e:["Legacy in Action","Jonathan \"Jon\" A. Ramos","Premier Family Business Consulting"]},
+ {id:"resources",name:"Resources",url:"/resources/",type:"hub",intent:"Informational",schema:["CollectionPage","BreadcrumbList"],
+  note:"Article hub. Group articles by pillar so internal links flow to the service pages.",
+  p:"family business resources",
+  s:["family business articles","family business insights","family business succession articles","family governance guides"],
+  q:["Where can I learn about running a family business?"],
+  e:[...GLOBAL_ENT]},
+ {id:"article",name:"Article template",url:"/resources/how-to-create-a-family-business-succession-plan/",type:"article",intent:"Informational",schema:["Article","FAQPage","BreadcrumbList","Person"],
+  note:"Duplicate this brief for every article. Target one long-tail question and link up to its pillar.",
+  p:"how to create a succession plan for a family business",
+  s:["succession plan template","succession planning steps","family business successor","succession timeline"],
+  q:["What are the steps in succession planning?","Who should be involved in a family business succession plan?","What should a succession plan include?"],
+  e:[...GLOBAL_ENT]},
+ {id:"events",name:"Events",url:"/events/",type:"event",intent:"Informational",schema:["Event","BreadcrumbList","WebPage"],
+  note:"One page per event with Event schema, then a recap article afterwards.",
+  p:"family business events",
+  s:["family business conference Asia","family enterprise roadshow","family business forum Philippines","family business webinar"],
+  q:["Are there family business conferences in the Philippines?"],
+  e:[...GLOBAL_ENT,"Family Enterprise Roadshow"]},
+ {id:"faqs",name:"FAQs",url:"/faqs/",type:"faq",intent:"Informational",schema:["FAQPage","BreadcrumbList","WebPage"],
+  note:"Keep answers here short and link each one to the page that answers it in full.",
+  p:"family business consulting FAQ",
+  s:["family business questions","succession planning FAQ","family governance FAQ"],
+  q:["How long does a family business engagement take?","Do you work with family businesses outside the Philippines?","Is everything we discuss confidential?","How much does it cost?"],
+  e:[...GLOBAL_ENT]},
+ {id:"contact",name:"Book a Family Business Review",url:"/contact/",type:"contact",intent:"Transactional",schema:["ContactPage","ProfessionalService","BreadcrumbList"],
+  note:"Local on purpose. Name, address and phone must match Google Business Profile exactly.",
+  p:"book a family business review",
+  s:["family business consultant Cebu","family business consultant Manila","contact family business consultant","family business consultation"],
+  q:["How do I book a consultation?","How quickly will Premier respond?"],
+  e:[...GLOBAL_ENT,"Cebu Exchange Tower"]},
+ {id:"privacy",name:"Privacy Policy",url:"/privacy-policy/",type:"legal",intent:"Navigational",schema:["WebPage"],
+  note:"Indexable but low priority. Needs a title, meta and canonical only.",
+  p:"Premier privacy policy",s:[],q:[],e:["Premier Family Business Consulting","Data Privacy Act of 2012 (Philippines)"]}
+];
+
+const TEMPL = Object.fromEntries(PAGES.map(p=>[p.id,p]));
+const LS_KEY = "premier-seo-briefs-v1";
+let briefs = {};       // id -> brief
+let order = PAGES.map(p=>p.id);
+let current = "succession";
+let db = null, col = null;
+let saveTimer = null, lastEdit = 0, pendingIds = new Set();
+
+function blank(t){
+  return {id:t.id,name:t.name,url:t.url,type:t.type,status:"Not started",owner:"",intent:t.intent||"",markets:["Global (English)","Philippines","Southeast Asia"],
+    primary:t.p||"",volume:"",competitor:"",secondary:"",questions:"",entities:"",
+    seoTitle:"",metaDesc:"",ogImage:"",ogAlt:"",h1:"",answer:"",outline:"",body:"",
+    faqs:[],takeaways:"",proof:"",author:"",creds:"",reviewer:"",reviewed:"",
+    internal:"",external:"",images:"",schema:[...(t.schema||["WebPage"])],tech:{},custom:!!t.custom,updatedAt:0};
+}
+function tmplFor(b){ return TEMPL[b.id] || {id:b.id,name:b.name,url:b.url,type:b.type,p:"",s:[],q:[],e:GLOBAL_ENT,schema:["Article","BreadcrumbList"],note:"Custom page. Pick keywords from the playbook's content calendar or your keyword tool."}; }
+function get(id){ if(!briefs[id]){ const t = TEMPL[id]; briefs[id] = blank(t || {id,name:id,url:"/",type:"article"}); } return briefs[id]; }
+
+/* ---------- storage ---------- */
+function lsLoad(){ try{ const raw = localStorage.getItem(LS_KEY); if(raw){ const o = JSON.parse(raw); briefs = o.briefs||{}; if(o.current) current = o.current; } }catch(e){} }
+function lsSave(){ try{ localStorage.setItem(LS_KEY, JSON.stringify({briefs,current})); }catch(e){} }
+function setSync(txt, ok){ const s = document.getElementById("sync"); s.classList.toggle("ok", !!ok); s.lastElementChild.textContent = txt; }
+
+async function flush(){
+  saveTimer = null; lsSave();
+  if(!col){ setSync("Saved on this device", false); return; }
+  const ids = [...pendingIds]; pendingIds.clear();
+  setSync("Saving…", false);
+  try{
+    for(const id of ids){ await col.doc(id).set(JSON.parse(JSON.stringify(briefs[id]))); }
+    setSync("Saved · shared with your team", true);
+  }catch(e){
+    ids.forEach(i=>pendingIds.add(i));
+    if(e && e.code==="invalid_argument"){ setSync("View only: changes stay on this device", false); col = null; }
+    else if(e && e.code==="quota_exceeded"){ setSync("Storage full: delete unused custom pages", false); }
+    else { setSync("Not saved yet, retrying", false); setTimeout(()=>{ if(!saveTimer) saveTimer = setTimeout(flush, 1500); }, 3000); }
+  }
+}
+function touch(id){ briefs[id].updatedAt = Date.now(); lastEdit = Date.now(); pendingIds.add(id); clearTimeout(saveTimer); saveTimer = setTimeout(flush, 1200); setSync("Editing…", false); }
+
+async function connect(){
+  if(!window.claude || !window.claude.use) return;
+  try{ db = await window.claude.use("db"); }catch(e){ db = null; }
+  if(!db) return;
+  col = db.collection("briefs");
+  setSync("Connected · shared with your team", true);
+  col.onSnapshot(snap=>{
+    let touchedCurrent = false;
+    snap.docs.forEach(d=>{
+      const data = d.data(); if(!data) return;
+      const local = briefs[d.id];
+      const editingThis = d.id===current && (saveTimer || Date.now()-lastEdit < 4000);
+      if(editingThis || pendingIds.has(d.id)) return;
+      if(!local || (data.updatedAt||0) >= (local.updatedAt||0)){ briefs[d.id] = JSON.parse(JSON.stringify(data)); if(d.id===current) touchedCurrent = true; }
+      if(data.custom && !order.includes(d.id)) order.push(d.id);
+    });
+    lsSave(); renderRail();
+    if(touchedCurrent) fill(); else analyse();
+    if(!document.getElementById("view-overview").hidden) renderOverview();
+  }, err=>{ setSync("Live sync stopped: changes stay on this device", false); col = null; });
+}
+
+/* ---------- text helpers ---------- */
+const lines = s => (s||"").split(/\n/).map(x=>x.trim()).filter(Boolean);
+const words = s => (s||"").toLowerCase().match(/[a-z0-9À-ɏ'’-]+/g) || [];
+const esc = s => String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
+const norm = s => (s||"").toLowerCase().replace(/[’']/g,"").replace(/[^a-z0-9À-ɏ]+/g," ").trim();
+function countPhrase(text, phrase){ const t = " "+norm(text)+" ", p = norm(phrase); if(!p) return 0; let n=0,i=0; const needle=" "+p+" "; while((i=t.indexOf(needle,i))>-1){n++; i+=needle.length-1;} return n; }
+function hasAllWords(text, phrase){ const t = new Set(words(norm(text))); const stop = new Set(["a","an","the","of","for","in","to","and","how","do","you","is"]); return words(norm(phrase)).filter(w=>!stop.has(w)).every(w=>t.has(w) || t.has(w.replace(/s$/,"")) || t.has(w+"s")); }
+function syll(w){ w=w.toLowerCase().replace(/[^a-z]/g,""); if(w.length<=3) return 1; w=w.replace(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/,"").replace(/^y/,""); const m=w.match(/[aeiouy]{1,2}/g); return m?m.length:1; }
+function textStats(body){
+  const w = words(body), wc = w.length;
+  const sentences = (body||"").split(/[.!?]+(?:\s|$)/).map(s=>s.trim()).filter(s=>words(s).length>2);
+  const sc = Math.max(1, sentences.length);
+  const sy = w.reduce((a,x)=>a+syll(x),0);
+  const flesch = wc ? Math.round(206.835 - 1.015*(wc/sc) - 84.6*(sy/Math.max(1,wc))) : 0;
+  const paras = (body||"").split(/\n\s*\n|\n/).map(p=>words(p).length).filter(n=>n>0);
+  return {wc, avgSent: wc? +(wc/sc).toFixed(1):0, flesch, longPara: paras.filter(n=>n>120).length, paraCount: paras.length};
+}
+const days = iso => iso ? (Date.now()-new Date(iso+"T00:00:00").getTime())/864e5 : Infinity;
+
+/* ---------- rules ---------- */
+function evaluate(b){
+  const t = tmplFor(b), type = b.type, legal = type==="legal";
+  const R = [];
+  const add = (g,label,state,hint) => R.push({g,label,state,hint});
+  const P = b.primary.trim(), sec = lines(b.secondary), qs = lines(b.questions), ents = lines(b.entities);
+  const st = textStats(b.body), target = TARGET_WORDS[type] ?? 600;
+  const outline = lines(b.outline), h2 = outline.filter(l=>/^##\s/.test(l)&&!/^###/.test(l));
+  const faqs = (b.faqs||[]).filter(f=>f.q && f.a);
+  const internal = lines(b.internal), external = lines(b.external), imgs = lines(b.images);
+
+  // Keywords
+  add("Keywords","Primary keyword set", P?"pass":"fail","Pick one phrase the page should own.");
+  add("Keywords","Search volume checked", b.volume.trim()?"pass":"warn","Record the volume from Keyword Planner or Semrush.");
+  if(!legal){
+    add("Keywords","2–8 secondary keywords", sec.length>=2&&sec.length<=8?"pass":sec.length?"warn":"fail", `You have ${sec.length}. Use the suggestions above.`);
+    add("Keywords","3+ questions to answer", qs.length>=3?"pass":qs.length?"warn":"fail","Questions become H2s and FAQs: the core of AEO.");
+    add("Keywords","Search intent chosen", b.intent?"pass":"warn","Tells the writer whether to teach, compare or convert.");
+    add("Keywords","3+ entities listed", ents.length>=3?"pass":"warn","People, credentials, places and organisations.");
+  }
+  // Search appearance
+  const tl = b.seoTitle.length, ml = b.metaDesc.length;
+  add("Search appearance","SEO title 30–60 characters", tl>=30&&tl<=60?"pass":tl&&tl<=65?"warn":"fail", tl?`${tl} characters.`:"Write the title.");
+  if(P){ const pos = norm(b.seoTitle).indexOf(norm(P)); add("Search appearance","Primary keyword in title, near the start", pos>-1&&pos<=25?"pass":(pos>-1||hasAllWords(b.seoTitle,P))?"warn":"fail","Lead with it; put \"| Premier\" at the end."); }
+  add("Search appearance","Meta description 120–160 characters", ml>=120&&ml<=160?"pass":ml>=90&&ml<=175?"warn":"fail", ml?`${ml} characters.`:"Write the description.");
+  if(P) add("Search appearance","Primary keyword in meta description", countPhrase(b.metaDesc,P)?"pass":hasAllWords(b.metaDesc,P)?"warn":"fail","Google bolds it in results.");
+  const slug = (b.url||"").replace(/^https?:\/\/[^/]+/,"");
+  const slugOk = /^\/[a-z0-9\/-]*$/.test(slug) && (slug.split("/").pop()||slug.split("/").slice(-2)[0]||"").split("-").length<=6;
+  add("Search appearance","Clean URL: lowercase, hyphens, short", slug && slugOk?"pass":"warn","Example: /what-we-do/family-governance/");
+  if(!legal) add("Search appearance","Social image and alt text", b.ogImage&&b.ogAlt?"pass":"warn","1200×630 image, descriptive file name.");
+  // Content
+  if(P && !legal) add("Content","H1 contains the primary keyword", b.h1 && (countPhrase(b.h1,P)||hasAllWords(b.h1,P))?"pass":b.h1?"warn":"fail","One H1, natural phrasing.");
+  if(!legal){
+    add("Content","3+ H2 sections in the outline", h2.length>=3?"pass":h2.length?"warn":"fail",`${h2.length} H2s so far.`);
+    add("Content","At least one H2 phrased as a question", h2.some(l=>/\?\s*$/.test(l))?"pass":"warn","\"How long does succession take?\" is what people type.");
+    add("Content",`Body ${target}+ words`, st.wc>=target?"pass":st.wc>=target*0.6?"warn":"fail",`${st.wc} words.`);
+    if(P) add("Content","Primary keyword in the first 100 words", st.wc && (countPhrase(words(b.body).slice(0,100).join(" "),P) || hasAllWords(words(b.body).slice(0,100).join(" "),P))?"pass":"fail","Say what the page is about straight away.");
+    if(P && st.wc){ const d = countPhrase(b.body,P)*words(P).length/st.wc*100; add("Content","Primary keyword density 0.5–2.5%", d>=0.5&&d<=2.5?"pass":d>2.5?"fail":"warn",`${d.toFixed(2)}%${d>2.5?": reads as stuffing":""}.`); }
+    if(sec.length){ const used = sec.filter(s=>countPhrase(b.body,s)||hasAllWords(b.body,s)).length; add("Content","Half the secondary keywords used", used>=Math.ceil(sec.length/2)?"pass":used?"warn":"fail",`${used} of ${sec.length} appear in the body.`); }
+    if(st.wc) add("Content","Sentences average 22 words or fewer", st.avgSent<=22?"pass":st.avgSent<=26?"warn":"fail",`Average ${st.avgSent}. Reading ease ${st.flesch}.`);
+    if(st.wc) add("Content","No paragraph over 120 words", st.longPara===0?"pass":"warn",`${st.longPara} long paragraph${st.longPara===1?"":"s"}.`);
+  }
+  // AEO
+  if(!legal){
+    const aw = words(b.answer).length;
+    add("Answer engines","Direct answer 40–60 words", aw>=40&&aw<=60?"pass":aw>=25&&aw<=80?"warn":"fail", aw?`${aw} words.`:"Write the answer that sits under the H1.");
+    if(P) add("Answer engines","Direct answer names the topic", aw && (countPhrase(b.answer,P)||hasAllWords(b.answer,P))?"pass":"warn","Quoted alone, it must still say what it is about.");
+    const needFaq = ["service","faq","article","home"].includes(type);
+    add("Answer engines", needFaq?"3+ FAQs with answers":"FAQs (optional here)", faqs.length>=3?"pass":needFaq?(faqs.length?"warn":"fail"):"pass",`${faqs.length} complete.`);
+    if(faqs.length){ const bad = faqs.filter(f=>{const n=words(f.a).length; return n<20||n>100;}).length; add("Answer engines","FAQ answers 20–100 words", bad?"warn":"pass", bad?`${bad} outside the range.`:"Good length for rich results."); }
+    if(qs.length){ const hay = b.outline+"\n"+faqs.map(f=>f.q).join("\n")+"\n"+b.body; const cov = qs.filter(q=>hasAllWords(hay,q)).length; add("Answer engines","Target questions answered on the page", cov>=qs.length?"pass":cov>=Math.ceil(qs.length/2)?"warn":"fail",`${cov} of ${qs.length} covered in H2s, FAQs or body.`); }
+    add("Answer engines","Author named with credentials", b.author&&b.creds?"pass":b.author?"warn":"fail","E-E-A-T: who wrote it and why they know.");
+    add("Answer engines","Expert review within 12 months", b.reviewer&&days(b.reviewed)<=366?"pass":b.reviewed?"warn":"fail","Show \"Reviewed by … on …\" on the page.");
+    if(["service","article","home","faq"].includes(type)) add("Answer engines","A stat with its source", lines(b.proof).some(l=>/\|\s*https?:\/\//.test(l))?"pass":"warn","\"claim | https://source\". Engines cite pages that cite.");
+    add("Answer engines","3+ key takeaways", lines(b.takeaways).length>=3?"pass":"warn","Short list near the top or end: easy to extract.");
+    if(ents.length && st.wc){ const m = ents.filter(e=>hasAllWords(b.body+" "+b.answer, e.replace(/\(.*?\)/g,""))).length; add("Answer engines","Entities mentioned in the copy", m>=Math.ceil(ents.length/2)?"pass":"warn",`${m} of ${ents.length}.`); }
+  }
+  // Links & media
+  if(!legal){
+    const vague = internal.filter(l=>/^(click here|here|read more|learn more|more)\s*\|/i.test(l)).length;
+    add("Links & media","3+ internal links", internal.length>=3?(vague?"warn":"pass"):internal.length?"warn":"fail", vague?`${vague} vague anchor${vague>1?"s":""}. Describe the destination.`:`${internal.length} planned.`);
+    if(type!=="contact") add("Links & media","Links to Book a Family Business Review", internal.some(l=>/contact|book/i.test(l))?"pass":"warn","Every page ends with the booking CTA.");
+    if(["service","article","faq"].includes(type)) add("Links & media","1+ authoritative external source", external.length?"pass":"warn","FFI, academic research, government statistics.");
+    const badImg = imgs.filter(l=>{const [f,a]=l.split("|").map(x=>(x||"").trim()); return !a || !/^[a-z0-9-]+\.(jpe?g|png|webp|avif|gif|svg)$/.test(f) || /^(img|dsc|hf_|image|photo|screenshot)[-_0-9]/i.test(f);}).length;
+    add("Links & media","Images: descriptive file names and alt text", imgs.length? (badImg?"warn":"pass"):"warn", imgs.length? (badImg?`${badImg} need work.`:`${imgs.length} ready.`):"List every image on the page.");
+  }
+  // Schema & technical
+  add("Schema & tech","Schema types selected", (b.schema||[]).length?"pass":"fail","See the suggestions for this page type.");
+  if(faqs.length) add("Schema & tech","FAQPage schema for the FAQs", b.schema.includes("FAQPage")?"pass":"warn","Tick FAQPage below.");
+  const tk = TECH.filter(([k])=>b.tech&&b.tech[k]).length;
+  add("Schema & tech","Technical checklist", tk===TECH.length?"pass":tk>=6?"warn":"fail",`${tk} of ${TECH.length} done.`);
+  return R;
+}
+const WEIGHTS = {"Keywords":15,"Search appearance":20,"Content":25,"Answer engines":20,"Links & media":10,"Schema & tech":10};
+function scoreOf(R){
+  const g = {};
+  R.forEach(r=>{ (g[r.g]=g[r.g]||{p:0,n:0}); g[r.g].n++; g[r.g].p += r.state==="pass"?1:r.state==="warn"?.5:0; });
+  let tot=0, wsum=0; Object.entries(g).forEach(([k,v])=>{ const w = WEIGHTS[k]||10; tot += w*v.p/v.n; wsum += w; });
+  return {groups:g, total: wsum? Math.round(tot/wsum*100):0, fails: R.filter(r=>r.state==="fail").length};
+}
+
+/* ---------- rendering ---------- */
+const $ = id => document.getElementById(id);
+function renderRail(){
+  const rail = $("rail"), sel = $("pageSelect");
+  rail.innerHTML = ""; sel.innerHTML = "";
+  order.forEach(id=>{
+    const b = get(id), sc = scoreOf(evaluate(b));
+    const btn = document.createElement("button");
+    btn.className = "pg"; btn.type = "button"; btn.setAttribute("aria-current", id===current);
+    btn.innerHTML = `<b>${esc(b.name)}</b><span class="sc">${sc.total}%</span><small>${esc(b.status)} · ${esc(b.primary||"no keyword yet")}</small>`;
+    btn.onclick = ()=>open(id);
+    rail.appendChild(btn);
+    const o = document.createElement("option"); o.value = id; o.textContent = `${b.name} · ${sc.total}%`; o.selected = id===current; sel.appendChild(o);
+  });
+}
+function open(id){ if(saveTimer){ clearTimeout(saveTimer); flush(); } current = id; lsSave(); fill(); renderRail(); window.scrollTo({top:0}); }
+
+function fill(){
+  const b = get(current), t = tmplFor(b);
+  $("hEyebrow").textContent = TYPE_LABEL[b.type]||"Page";
+  $("hTitle").textContent = b.name;
+  $("hNote").textContent = t.note||"";
+  document.querySelectorAll("[data-f]").forEach(el=>{ el.value = b[el.dataset.f] ?? ""; });
+  $("markets").innerHTML = MARKETS.map((m,i)=>`<label><input type="checkbox" id="mk-${i}" data-m="${esc(m)}" ${b.markets.includes(m)?"checked":""}>${esc(m)}</label>`).join("");
+  $("schemaChecks").innerHTML = SCHEMAS.map(s=>`<label><input type="checkbox" id="sc-${s}" data-s="${s}" ${b.schema.includes(s)?"checked":""}>${s}${(t.schema||[]).includes(s)?" ★":""}</label>`).join("");
+  $("techChecks").innerHTML = TECH.map(([k,l])=>`<label><input type="checkbox" id="tc-${k}" data-t="${k}" ${b.tech&&b.tech[k]?"checked":""}>${esc(l)}</label>`).join("");
+  renderFaqs(); renderSugg(); analyse();
+}
+function renderSugg(){
+  const b = get(current), t = tmplFor(b);
+  const sec = lines(b.secondary).map(norm), qs = lines(b.questions).map(norm), en = lines(b.entities).map(norm);
+  const chip = (txt, kind, used) => `<button type="button" class="chip${used?" used":""}" data-kind="${kind}" data-v="${esc(txt)}" ${used?"disabled":""}>${esc(txt)}</button>`;
+  let h = `<div class="lbl"><span>Suggested for this page · select to add</span>${t.p && norm(b.primary)!==norm(t.p)?`<button type="button" class="chip" data-kind="primary" data-v="${esc(t.p)}">Use primary: ${esc(t.p)}</button>`:""}</div>`;
+  if(t.s&&t.s.length) h += `<div class="hint">Secondary</div><div class="chips">${t.s.map(s=>chip(s,"secondary",sec.includes(norm(s)))).join("")}</div>`;
+  if(t.q&&t.q.length) h += `<div class="hint">Questions</div><div class="chips">${t.q.map(s=>chip(s,"questions",qs.includes(norm(s)))).join("")}</div>`;
+  if(t.e&&t.e.length) h += `<div class="hint">Entities</div><div class="chips">${t.e.map(s=>chip(s,"entities",en.includes(norm(s)))).join("")}</div>`;
+  if(t.s&&t.s.length) h += `<div class="row"><button type="button" class="btn sm" id="addAllSugg">Add all suggestions</button></div>`;
+  $("sugg").innerHTML = h;
+}
+function renderFaqs(){
+  const b = get(current);
+  $("faqs").innerHTML = (b.faqs||[]).map((f,i)=>`<div class="faq"><div class="field"><label for="fq-${i}">Question ${i+1}</label><input type="text" id="fq-${i}" data-faq="${i}" data-k="q" value="${esc(f.q)}"><label for="fa-${i}">Answer</label><textarea id="fa-${i}" data-faq="${i}" data-k="a">${esc(f.a)}</textarea><span class="cnt" id="fc-${i}"></span></div><button type="button" class="btn sm ghost" data-delfaq="${i}" aria-label="Remove question ${i+1}">Remove</button></div>`).join("") || `<span class="hint">No FAQs yet. Service pages and articles need three or more.</span>`;
+  updateFaqCounts();
+}
+function updateFaqCounts(){ (get(current).faqs||[]).forEach((f,i)=>{ const el=$("fc-"+i); if(el){ const n=words(f.a).length; el.textContent=`${n} words · aim 20–100`; el.className="cnt "+(n>=20&&n<=100?"good":n?"warn":""); } }); }
+
+function counter(id, n, lo, hi, unit){ const el=$(id); el.textContent = `${n} ${unit} · aim ${lo}–${hi}`; el.className = "cnt "+(n>=lo&&n<=hi?"good":n?"warn":""); }
+function analyse(){
+  const b = get(current);
+  counter("c-seoTitle", b.seoTitle.length, 30, 60, "characters");
+  counter("c-metaDesc", b.metaDesc.length, 120, 160, "characters");
+  counter("c-answer", words(b.answer).length, 40, 60, "words");
+  $("pvU").textContent = "premierfamilybusiness.com" + (b.url||"/").replace(/\/$/,"").replace(/\//g," › ").replace(/^ › $/,"");
+  $("pvT").textContent = b.seoTitle ? (b.seoTitle.length>60? b.seoTitle.slice(0,58)+"…" : b.seoTitle) : "Your SEO title shows here";
+  $("pvD").textContent = b.metaDesc ? (b.metaDesc.length>160? b.metaDesc.slice(0,157)+"…" : b.metaDesc) : "Your meta description shows here. Without one, Google picks a sentence from the page.";
+  const st = textStats(b.body), P = b.primary.trim();
+  const dens = P && st.wc ? (countPhrase(b.body,P)*words(P).length/st.wc*100).toFixed(2)+"%" : "–";
+  $("stats").innerHTML = [[st.wc,"words (target "+(TARGET_WORDS[b.type]??600)+")"],[P?countPhrase(b.body,P):"–","primary keyword uses"],[dens,"keyword density"],[st.wc?st.flesch:"–","reading ease (60+ is plain English)"]]
+    .map(([v,l])=>`<div class="stat"><b>${v}</b><span>${l}</span></div>`).join("");
+  const R = evaluate(b), sc = scoreOf(R);
+  const C = 2*Math.PI*36; $("dialArc").setAttribute("stroke-dasharray", `${C*sc.total/100} ${C}`);
+  $("dialArc").setAttribute("stroke", sc.total>=80&&!sc.fails?"var(--good)":sc.total>=50?"var(--accent)":"var(--bad)");
+  $("dialTxt").textContent = sc.total+"%";
+  $("verdict").textContent = sc.total>=80&&!sc.fails ? "Ready to publish" : sc.total>=50 ? "Getting there" : "Not ready";
+  $("verdictSub").textContent = sc.fails ? `${sc.fails} red item${sc.fails>1?"s":""} to fix` : "80% with no red items is ready to publish";
+  $("groups").innerHTML = Object.entries(sc.groups).map(([k,v])=>{ const p=Math.round(v.p/v.n*100); return `<div class="gr"><span>${k}</span><span class="bar"><i style="width:${p}%"></i></span><span class="v">${p}%</span></div>`; }).join("");
+  const ord = {fail:0,warn:1,pass:2};
+  const sorted = [...R].sort((a,b)=>ord[a.state]-ord[b.state]);
+  let lastState = null, h = "";
+  sorted.forEach(r=>{ if(r.state!==lastState){ h += `<h4>${r.state==="fail"?"Fix":r.state==="warn"?"Improve":"Done"}</h4>`; lastState=r.state; }
+    h += `<div class="is ${r.state}"><span class="ic">${r.state==="pass"?"✓":r.state==="warn"?"!":"×"}</span><span>${esc(r.label)}<small>${esc(r.g)} · ${esc(r.hint)}</small></span></div>`; });
+  $("issues").innerHTML = h;
+  $("ld").textContent = JSON.stringify(jsonld(b), null, 2);
+}
+
+/* ---------- JSON-LD ---------- */
+function abs(u){ return /^https?:/.test(u||"") ? u : SITE + (u||"/"); }
+function jsonld(b){
+  const url = abs(b.url), g = [];
+  const orgId = SITE+"/#organization";
+  const org = {"@type":"Organization","@id":orgId,name:ORG.name,url:SITE+"/",logo:SITE+"/wp-content/uploads/2026/09/premier-family-business-consulting-logo.png",email:ORG.email,telephone:ORG.phone,sameAs:ORG.sameAs,
+    founder:{"@type":"Person",name:"Jonathan A. Ramos"}};
+  const author = b.author ? {"@type":"Person",name:b.author,...(b.creds?{hasCredential:b.creds}:{}),worksFor:{"@id":orgId}} : undefined;
+  const faqs = (b.faqs||[]).filter(f=>f.q&&f.a);
+  const areas = b.markets.map(m=>m.startsWith("Global")?"Worldwide":m.replace(/ \/.*$/,""));
+  b.schema.forEach(s=>{
+    if(s==="Organization") g.push(org);
+    if(s==="ProfessionalService") g.push({"@type":"ProfessionalService","@id":SITE+"/#localbusiness",name:ORG.name,url:SITE+"/",telephone:ORG.phone,image:org.logo,
+      address:{"@type":"PostalAddress",streetAddress:ORG.street,addressLocality:ORG.city,addressCountry:ORG.country},areaServed:areas,parentOrganization:{"@id":orgId}});
+    if(s==="WebPage"||s==="ContactPage"||s==="CollectionPage") g.push({"@type":s,"@id":url+"#webpage",url,name:b.seoTitle||b.name,description:b.metaDesc||undefined,inLanguage:"en",isPartOf:{"@type":"WebSite",url:SITE+"/",name:"Premier Family Business Consulting"},
+      ...(b.reviewed?{lastReviewed:b.reviewed,dateModified:b.reviewed}:{}),...(b.reviewer?{reviewedBy:{"@type":"Person",name:b.reviewer}}:{}),...(b.primary?{about:b.primary}:{})});
+    if(s==="BreadcrumbList"){ const segs=(b.url||"/").split("/").filter(Boolean); const items=[{"@type":"ListItem",position:1,name:"Home",item:SITE+"/"}];
+      segs.forEach((sg,i)=>items.push({"@type":"ListItem",position:i+2,name:i===segs.length-1?b.name:sg.replace(/-/g," ").replace(/\b\w/g,c=>c.toUpperCase()),item:SITE+"/"+segs.slice(0,i+1).join("/")+"/"}));
+      g.push({"@type":"BreadcrumbList",itemListElement:items}); }
+    if(s==="Service") g.push({"@type":"Service",name:b.h1||b.name,serviceType:b.primary||b.name,description:b.metaDesc||undefined,provider:{"@id":orgId},areaServed:areas,url});
+    if(s==="FAQPage") g.push({"@type":"FAQPage",mainEntity:(faqs.length?faqs:[{q:"Add FAQs in section 5",a:"…"}]).map(f=>({"@type":"Question",name:f.q,acceptedAnswer:{"@type":"Answer",text:f.a}}))});
+    if(s==="HowTo"){ const steps=lines(b.outline).filter(l=>/^##\s/.test(l)&&!/^###/.test(l)).map(l=>l.replace(/^##\s*/,"")); g.push({"@type":"HowTo",name:b.h1||b.name,description:b.answer||undefined,step:(steps.length?steps:["Add H2 steps in the outline"]).map((x,i)=>({"@type":"HowToStep",position:i+1,name:x}))}); }
+    if(s==="Article") g.push({"@type":"Article",headline:b.h1||b.seoTitle||b.name,description:b.metaDesc||undefined,mainEntityOfPage:url,author:author||{"@type":"Person",name:"Author name"},publisher:{"@id":orgId},
+      ...(b.ogImage?{image:SITE+"/wp-content/uploads/"+b.ogImage}:{}),...(b.reviewed?{dateModified:b.reviewed}:{}),datePublished:"YYYY-MM-DD",keywords:[b.primary,...lines(b.secondary)].filter(Boolean).join(", ")});
+    if(s==="Person") g.push(author?{...author,url,sameAs:["https://www.linkedin.com/in/…"]}:{"@type":"Person",name:"Person name",jobTitle:"…",worksFor:{"@id":orgId},sameAs:["https://www.linkedin.com/in/…"]});
+    if(s==="Event") g.push({"@type":"Event",name:"Event name",startDate:"YYYY-MM-DDTHH:MM+08:00",eventAttendanceMode:"https://schema.org/OfflineEventAttendanceMode",location:{"@type":"Place",name:"Venue",address:"City, Philippines"},organizer:{"@id":orgId},url});
+    if(s==="Book") g.push({"@type":"Book",name:"Legacy in Action",author:{"@type":"Person",name:"Jonathan A. Ramos"},publisher:{"@id":orgId},url,isbn:"…"});
+    if(s==="PodcastSeries") g.push({"@type":"PodcastSeries",name:"Legacy in Action Podcast",url,author:{"@type":"Person",name:"Jonathan A. Ramos"},webFeed:"…"});
+  });
+  return {"@context":"https://schema.org","@graph":g};
+}
+
+/* ---------- markdown brief ---------- */
+function briefMd(b){
+  const sc = scoreOf(evaluate(b)), L = s => lines(s).map(x=>"- "+x).join("\n")||"- (none)";
+  return `# SEO brief: ${b.name}
+
+**URL:** ${abs(b.url)}  \n**Type:** ${TYPE_LABEL[b.type]}  ·  **Status:** ${b.status}  ·  **Owner:** ${b.owner||"-"}  ·  **Readiness:** ${sc.total}%
+**Intent:** ${b.intent||"-"}  ·  **Markets:** ${b.markets.join(", ")}
+
+## Keywords
+**Primary:** ${b.primary||"-"}${b.volume?` (${b.volume})`:""}
+**Competitor to beat:** ${b.competitor||"-"}
+
+**Secondary**
+${L(b.secondary)}
+
+**Questions to answer**
+${L(b.questions)}
+
+**Entities**
+${L(b.entities)}
+
+## Search appearance
+**SEO title (${b.seoTitle.length}):** ${b.seoTitle||"-"}
+**Meta description (${b.metaDesc.length}):** ${b.metaDesc||"-"}
+**OG image:** ${b.ogImage||"-"} (alt: ${b.ogAlt||"-"})
+
+## Content
+**H1:** ${b.h1||"-"}
+
+**Direct answer:** ${b.answer||"-"}
+
+**Outline**
+${b.outline||"(none)"}
+
+**Key takeaways**
+${L(b.takeaways)}
+
+## FAQs
+${(b.faqs||[]).map(f=>`**Q: ${f.q}**\n${f.a}`).join("\n\n")||"(none)"}
+
+## Proof and authorship
+${L(b.proof)}
+**Author:** ${b.author||"-"} ${b.creds?`(${b.creds})`:""}  ·  **Reviewer:** ${b.reviewer||"-"}  ·  **Reviewed:** ${b.reviewed||"-"}
+
+## Links and images
+**Internal**
+${L(b.internal)}
+
+**External**
+${L(b.external)}
+
+**Images**
+${L(b.images)}
+
+## Schema
+${b.schema.join(", ")}
+
+\`\`\`json
+${JSON.stringify(jsonld(b),null,2)}
+\`\`\`
+`;
+}
+
+/* ---------- overview ---------- */
+function renderOverview(){
+  $("ovBody").innerHTML = order.map(id=>{ const b=get(id), R=evaluate(b), sc=scoreOf(R);
+    return `<tr data-open="${esc(id)}" style="cursor:pointer"><td><b>${esc(b.name)}</b><br><span class="hint">${esc(TYPE_LABEL[b.type]||"")}</span></td><td>${esc(b.url)}</td><td>${esc(b.primary||"-")}</td><td>${esc(b.owner||"-")}</td><td><span class="pill s-${esc(b.status.replace(/ /g,"-"))}">${esc(b.status)}</span></td><td class="n">${sc.total}%</td><td class="n">${sc.fails}</td></tr>`; }).join("");
+}
+
+/* ---------- events ---------- */
+function toast(msg){ const t=$("toast"); t.textContent=msg; t.hidden=false; clearTimeout(toast._t); toast._t=setTimeout(()=>t.hidden=true,2200); }
+async function copy(text, label){
+  try{ await navigator.clipboard.writeText(text); toast(label+" copied"); }
+  catch(e){ const ta=document.createElement("textarea"); ta.value=text; ta.style.position="fixed"; ta.style.opacity="0"; document.body.appendChild(ta); ta.select(); let ok=false; try{ ok=document.execCommand("copy"); }catch(_){} ta.remove(); toast(ok? label+" copied" : "Copy was blocked. Select the text and copy it by hand."); }
+}
+function appendLine(field, v){ const b=get(current); const ls=lines(b[field]); if(!ls.map(norm).includes(norm(v))){ ls.push(v); b[field]=ls.join("\n"); $("f-"+field).value=b[field]; } }
+
+document.addEventListener("input", e=>{
+  const el = e.target, b = get(current);
+  if(el.dataset.f){ b[el.dataset.f] = el.value; if(["name","status","primary"].includes(el.dataset.f)) renderRail(); if(["type"].includes(el.dataset.f)) fill(); if(["secondary","questions","entities","primary"].includes(el.dataset.f)) renderSugg(); if(el.dataset.f==="name") $("hTitle").textContent=el.value; }
+  else if(el.dataset.faq!==undefined){ b.faqs[+el.dataset.faq][el.dataset.k] = el.value; updateFaqCounts(); }
+  else return;
+  touch(current); analyse(); clearTimeout(renderRail._t); renderRail._t = setTimeout(renderRail, 500);
+});
+document.addEventListener("change", e=>{
+  const el = e.target, b = get(current);
+  if(el.dataset.m!==undefined){ b.markets = [...document.querySelectorAll("[data-m]:checked")].map(x=>x.dataset.m); }
+  else if(el.dataset.s!==undefined){ b.schema = [...document.querySelectorAll("[data-s]:checked")].map(x=>x.dataset.s); }
+  else if(el.dataset.t!==undefined){ b.tech = {...(b.tech||{}), [el.dataset.t]: el.checked}; }
+  else if(el.id==="pageSelect"){ open(el.value); return; }
+  else if(el.dataset.f){ return; }
+  else return;
+  touch(current); analyse(); renderRail();
+});
+document.addEventListener("click", e=>{
+  const el = e.target.closest("button"); if(!el) return;
+  const b = get(current);
+  if(el.dataset.kind){ const k=el.dataset.kind, v=el.dataset.v; if(k==="primary"){ b.primary=v; $("f-primary").value=v; } else appendLine(k,v); touch(current); renderSugg(); analyse(); renderRail(); }
+  else if(el.id==="addAllSugg"){ const t=tmplFor(b); (t.s||[]).forEach(v=>appendLine("secondary",v)); (t.q||[]).forEach(v=>appendLine("questions",v)); (t.e||[]).forEach(v=>appendLine("entities",v)); if(!b.primary&&t.p){b.primary=t.p;$("f-primary").value=t.p;} touch(current); renderSugg(); analyse(); renderRail(); }
+  else if(el.id==="addFaq"){ b.faqs=[...(b.faqs||[]),{q:"",a:""}]; touch(current); renderFaqs(); analyse(); const i=b.faqs.length-1; const q=$("fq-"+i); if(q) q.focus(); }
+  else if(el.id==="faqFromQ"){ const have=(b.faqs||[]).map(f=>norm(f.q)); lines(b.questions).forEach(q=>{ if(!have.includes(norm(q))) b.faqs.push({q,a:""}); }); touch(current); renderFaqs(); analyse(); }
+  else if(el.dataset.delfaq!==undefined){ b.faqs.splice(+el.dataset.delfaq,1); touch(current); renderFaqs(); analyse(); }
+  else if(el.id==="copyLd"){ copy(`<script type="application/ld+json">\n${$("ld").textContent}\n<\/script>`, "JSON-LD"); }
+  else if(el.id==="copyMd"){ copy(briefMd(b), "Brief"); }
+  else if(el.id==="resetPage"){ $("resetConfirm").hidden=false; }
+  else if(el.id==="resetNo"){ $("resetConfirm").hidden=true; }
+  else if(el.id==="resetYes"){ const t=tmplFor(b); const fresh=blank({...t,custom:b.custom,name:b.name,url:b.url,type:b.type}); fresh.id=b.id; briefs[current]=fresh; $("resetConfirm").hidden=true; touch(current); fill(); renderRail(); toast("Page cleared"); }
+  else if(el.dataset.view){ document.querySelectorAll(".tabs button").forEach(x=>x.setAttribute("aria-selected", x===el)); ["briefs","overview","playbook"].forEach(v=>$("view-"+v).hidden = v!==el.dataset.view); if(el.dataset.view==="overview") renderOverview(); try{ history.replaceState(null,"","#"+el.dataset.view); }catch(_){} }
+});
+$("ovBody").addEventListener("click", e=>{ const tr=e.target.closest("tr[data-open]"); if(!tr) return; open(tr.dataset.open); $("tab-briefs").click(); });
+$("addForm").addEventListener("submit", e=>{
+  e.preventDefault(); const name=$("addName").value.trim(); if(!name) return;
+  const slug=name.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,60)||"page";
+  let id="c-"+slug, n=2; while(briefs[id]||TEMPL[id]) id="c-"+slug+"-"+(n++);
+  const t=TEMPL.article; const b=blank({...t,id,name,url:"/resources/"+slug+"/",p:"",custom:true}); b.custom=true; b.id=id;
+  briefs[id]=b; order.push(id); $("addName").value=""; touch(id); open(id);
+});
+
+/* ---------- boot ---------- */
+window.addEventListener("pagehide", ()=>{ lsSave(); if(saveTimer){ clearTimeout(saveTimer); flush(); } });
+document.addEventListener("visibilitychange", ()=>{ if(document.hidden) lsSave(); });
+lsLoad();
+Object.values(briefs).forEach(b=>{ if(b.custom && !order.includes(b.id)) order.push(b.id); });
+if(!order.includes(current)) current = "succession";
+const hash = (location.hash||"").slice(1);
+renderRail(); fill();
+try{ const md = $("playbook-md").textContent; $("playbook").innerHTML = window.marked ? marked.parse(md) : "<pre>"+esc(md)+"</pre>"; $("playbook").querySelectorAll("table").forEach(t=>{ const w=document.createElement("div"); w.className="tw"; t.replaceWith(w); w.appendChild(t); }); $("playbook").querySelectorAll("a[href^='http']").forEach(a=>{a.target="_blank";a.rel="noopener";}); }catch(e){}
+if(["overview","playbook"].includes(hash)) $("tab-"+hash).click();
+connect();
+})();
+</script>
