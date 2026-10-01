@@ -45,7 +45,7 @@ const LINK = { home:'/', who:'/who-we-are/', what:'/what-we-do/', fep:'/what-we-
            Only set this if the Theme Builder footer is gone, or the site
            renders two footers. */
 const FOOTER_ON_PAGES = false;
-const BUILD_ID = 'v26 2026-10-01 21:23 UTC (global positioning)';
+const BUILD_ID = 'v28 2026-10-01 23:00 UTC (cue keeps its own background)';
 const TALK = 'Let&rsquo;s Talk about the Future';
 const G='#F2AF11', N='#193153', B='#3E4756', M='#5F6674', W='#FFFFFF', P='#F7F6F2', R='#E6E2D9', L='#DCE3EE';
 const SERIF='Newsreader', SANS='Poppins';
@@ -368,7 +368,11 @@ const TOTOP = () => Wd('html', {html:`<style>
   opacity:0;visibility:hidden;transform:translateY(10px);
   transition:opacity .24s ease-out,transform .24s ease-out,visibility .24s,background-color .2s ease-out}
 .pfb-top.pfb-top--on{opacity:1;visibility:visible;transform:translateY(0)}
-.pfb-top:hover{background:#193153;color:#F2AF11;box-shadow:0 8px 22px rgba(25,49,83,.38)}
+/* The theme styles bare buttons, and button:focus paints a solid #c36. That
+   reaches this one on keyboard focus, so the resting colours are restated for
+   focus as well as hover. */
+.pfb-top:focus{background:#F2AF11;color:#193153}
+.pfb-top:hover,.pfb-top:focus:hover{background:#193153;color:#F2AF11;box-shadow:0 8px 22px rgba(25,49,83,.38)}
 .pfb-top:focus-visible{outline:2px solid #193153;outline-offset:3px}
 .pfb-top svg{display:block}
 @media(max-width:767px){.pfb-top{right:14px;bottom:14px;width:42px;height:42px}}

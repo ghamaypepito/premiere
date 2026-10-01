@@ -152,7 +152,11 @@ const TOTOP = () => Wd('html', {html:\`<style>
   opacity:0;visibility:hidden;transform:translateY(10px);
   transition:opacity .24s ease-out,transform .24s ease-out,visibility .24s,background-color .2s ease-out}
 .pfb-top.pfb-top--on{opacity:1;visibility:visible;transform:translateY(0)}
-.pfb-top:hover{background:#193153;color:#F2AF11;box-shadow:0 8px 22px rgba(25,49,83,.38)}
+/* The theme styles bare buttons, and button:focus paints a solid #c36. That
+   reaches this one on keyboard focus, so the resting colours are restated for
+   focus as well as hover. */
+.pfb-top:focus{background:#F2AF11;color:#193153}
+.pfb-top:hover,.pfb-top:focus:hover{background:#193153;color:#F2AF11;box-shadow:0 8px 22px rgba(25,49,83,.38)}
 .pfb-top:focus-visible{outline:2px solid #193153;outline-offset:3px}
 .pfb-top svg{display:block}
 @media(max-width:767px){.pfb-top{right:14px;bottom:14px;width:42px;height:42px}}

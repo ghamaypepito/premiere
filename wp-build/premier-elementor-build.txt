@@ -45,7 +45,7 @@ const LINK = { home:'/', who:'/who-we-are/', what:'/what-we-do/', fep:'/what-we-
            Only set this if the Theme Builder footer is gone, or the site
            renders two footers. */
 const FOOTER_ON_PAGES = false;
-const BUILD_ID = 'v27 2026-10-01 21:28 UTC (why-it-matters de-duplicated)';
+const BUILD_ID = 'v28 2026-10-01 23:00 UTC (cue keeps its own background)';
 const TALK = 'Let&rsquo;s Talk about the Future';
 const G='#F2AF11', N='#193153', B='#3E4756', M='#5F6674', W='#FFFFFF', P='#F7F6F2', R='#E6E2D9', L='#DCE3EE';
 const SERIF='Newsreader', SANS='Poppins';
@@ -335,7 +335,11 @@ const SCROLLCUE = () => Wd('html', {html:`<style>
   background:none;border:0;cursor:pointer;padding:10px 14px;
   font:600 11px/1 Poppins,sans-serif;letter-spacing:2.2px;text-transform:uppercase;color:#5F6674;
   transition:color .2s ease-out}
-.pfb-cue__btn:hover{color:#193153}
+/* The theme styles bare buttons, including a solid #c36 on hover and focus,
+   so every state is claimed here rather than only the resting one. */
+.pfb-cue__btn,.pfb-cue__btn:hover,.pfb-cue__btn:focus,.pfb-cue__btn:active,.pfb-cue__btn:focus-visible{
+  background:none;background-color:transparent;border:0;border-radius:0;box-shadow:none;text-decoration:none}
+.pfb-cue__btn:hover,.pfb-cue__btn:focus,.pfb-cue__btn:active{color:#193153}
 .pfb-cue__btn svg{display:block;animation:pfb-nudge 2.4s ease-in-out infinite}
 .pfb-cue__btn:hover svg{animation-play-state:paused}
 .pfb-cue__btn:focus-visible{outline:2px solid #193153;outline-offset:4px}
