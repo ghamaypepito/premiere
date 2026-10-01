@@ -14,7 +14,7 @@ export function mountBrief(root, brief, { readOnly = false, onChange = () => {} 
     else ctl = `<input type="${kind}" id="f-${id}" data-f="${id}" value="${v}" placeholder="${esc(ph)}" ${dis}>`;
     return `<div class="field${full ? " full" : ""}"><label for="f-${id}">${label}</label>${ctl}${counter ? `<span class="cnt" id="c-${id}"></span>` : ""}${hint ? `<span class="hint">${hint}</span>` : ""}</div>`;
   };
-  const card = (title, sub, inner) => `<section class="card"><header><h3>${title}</h3><span>${sub}</span></header>${inner}</section>`;
+  const card = (title, sub, inner) => { const [no, name] = title.split(" · "); return `<section class="card step"><header><h3><span class="no">${no.padStart(2, "0")}</span>${name}</h3><span>${sub}</span></header>${inner}</section>`; };
 
   root.innerHTML = `<div class="editor"><main>
   ${card("1 · Page setup", "Who owns it, where it lives, who it is for", `<div class="grid">
@@ -52,7 +52,7 @@ export function mountBrief(root, brief, { readOnly = false, onChange = () => {} 
   </main>
   <aside class="scorepanel" aria-label="Readiness score">
     <div class="top"><svg class="dial" viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="36" fill="none" stroke="var(--sunk)" stroke-width="8"></circle><circle id="dialArc" cx="42" cy="42" r="36" fill="none" stroke="var(--accent)" stroke-width="8" stroke-dasharray="0 999" transform="rotate(-90 42 42)"></circle><text id="dialTxt" x="42" y="48" text-anchor="middle" font-size="19">0</text></svg>
-    <div><b id="verdict">Not ready</b><span class="small muted" id="verdictSub"></span></div></div>
+    <div><b id="verdict">Not ready</b><span class="small" id="verdictSub"></span></div></div>
     <div class="groups" id="groups"></div><div class="issues" id="issues"></div>
   </aside></div>`;
 

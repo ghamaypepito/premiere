@@ -33,11 +33,19 @@ const busy = async (btn, fn) => { const txt = btn.textContent; btn.disabled = tr
 
 /* ---------- shell ---------- */
 function renderLogin(err = "") {
-  app.innerHTML = `<div class="login"><form id="loginForm" novalidate>
-    <h1>Premier <em>Visibility</em></h1><p class="muted small" style="margin:0">SEO, AEO and site health for premierfamilybusiness.com</p>
-    <div class="field"><label for="lEmail">Email</label><input type="email" id="lEmail" autocomplete="username" required></div>
-    <div class="field"><label for="lPass">Password</label><input type="password" id="lPass" autocomplete="current-password" required></div>
-    <p class="err" id="lErr">${esc(err)}</p><button class="btn" type="submit">Sign in</button></form></div>`;
+  app.innerHTML = `<div class="login"><div class="pane">
+    <img src="img/premier-logo-navy.png" alt="Premier Family Business Consulting" width="174" height="30">
+    <form id="loginForm" novalidate>
+      <span class="eyebrow">Premier Visibility</span>
+      <h1>Every page, <em>accounted for.</em></h1>
+      <p class="lede">SEO and AEO briefs, live-page changes, uptime and updates for the Premier website, in one place for the team.</p>
+      <div class="field"><label for="lEmail">Email</label><input type="email" id="lEmail" autocomplete="username" required></div>
+      <div class="field"><label for="lPass">Password</label><input type="password" id="lPass" autocomplete="current-password" required></div>
+      <p class="err" id="lErr" role="alert">${esc(err)}</p>
+      <button class="btn" type="submit">Sign in</button>
+    </form>
+    <p class="legal">Team access only. Ask an admin for an account.</p></div>
+    <figure class="photo" style="margin:0"><figcaption><span>Premier Family Business Consulting</span>Uniting families in business, across generations.</figcaption></figure></div>`;
   document.getElementById("loginForm").addEventListener("submit", async (e) => {
     e.preventDefault();
     try { const r = await api("POST", "/login", { email: lEmail.value, password: lPass.value }); me = r.user; boot(); }
@@ -45,18 +53,30 @@ function renderLogin(err = "") {
   });
 }
 
-const NAV = [["#/", "Dashboard"], ["#/pages", "Pages"], ["#/activity", "Activity"], null, ["#/uptime", "Uptime", "incidents"], ["#/maintenance", "Maintenance"], ["#/plugins", "Plugins & updates", "updates"], null, ["#/playbook", "Playbook"], ["#/settings", "Settings"]];
+const NAV = [["#/", "Dashboard"], ["#/pages", "Pages"], ["#/activity", "Activity"], null, ["#/uptime", "Uptime", "incidents"], ["#/maintenance", "Maintenance"], ["#/plugins", "Plugins", "updates"], null, ["#/playbook", "Playbook"], ["#/settings", "Settings"]];
+const initials = (n) => String(n || "?").split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join("").toUpperCase();
 function shell() {
-  app.innerHTML = `<div class="topbar"><b>Premier Visibility</b><button type="button" id="menuBtn" aria-controls="side" aria-expanded="false">Menu</button></div>
-  <div class="shell"><aside class="side" id="side"><div class="brand"><b>Premier <em>Visibility</em></b><span>${esc(new URL(me.site).hostname)}</span></div>
-    <nav class="nav" id="nav"></nav>
-    <div class="who"><span>${esc(me.name)} · ${esc(me.role)}</span><button type="button" id="logoutBtn">Sign out</button></div></aside>
-    <div class="content" id="view"></div></div>`;
+  const host = new URL(me.site).hostname;
+  app.innerHTML = `<header class="masthead"><div class="mh">
+      <a class="logo" href="#/" aria-label="Premier Visibility, dashboard"><img src="img/premier-logo-white.png" alt="Premier Family Business Consulting" width="151" height="26"><span>Visibility</span></a>
+      <nav class="nav" id="nav" aria-label="Main"></nav>
+      <div class="mh-right">
+        <details class="who" id="who"><summary aria-label="Account"><span class="nm">${esc(me.name)}</span><span class="avatar" aria-hidden="true">${esc(initials(me.name))}</span></summary>
+          <div class="menu"><div><b>${esc(me.name)}</b><div class="small muted">${esc(me.email)} · ${esc(me.role)}</div></div>
+          <a class="link" href="${esc(me.site)}" target="_blank" rel="noopener">Open ${esc(host)} ↗</a>
+          <a class="link" href="#/settings">Settings and password</a>
+          <button class="btn ghost sm" type="button" id="logoutBtn">Sign out</button></div></details>
+        <button type="button" class="menuBtn" id="menuBtn" aria-controls="nav" aria-expanded="false">Menu</button>
+      </div></div></header>
+    <main class="content" id="view"></main>
+    <footer class="foot"><span>Premier Family Business Consulting · Visibility</span><span>Watching <a href="${esc(me.site)}" target="_blank" rel="noopener">${esc(host)}</a></span></footer>`;
   renderNav();
   document.getElementById("logoutBtn").onclick = async () => { await api("POST", "/logout"); me = null; renderLogin(); };
-  const side = document.getElementById("side"), mb = document.getElementById("menuBtn");
-  mb.onclick = () => { const o = side.classList.toggle("open"); mb.setAttribute("aria-expanded", o); };
-  side.addEventListener("click", (e) => { if (e.target.closest("a")) { side.classList.remove("open"); mb.setAttribute("aria-expanded", "false"); } });
+  const nav = document.getElementById("nav"), mb = document.getElementById("menuBtn"), who = document.getElementById("who");
+  mb.onclick = () => { const o = nav.classList.toggle("open"); mb.setAttribute("aria-expanded", o); };
+  nav.addEventListener("click", (e) => { if (e.target.closest("a")) { nav.classList.remove("open"); mb.setAttribute("aria-expanded", "false"); } });
+  who.addEventListener("click", (e) => { if (e.target.closest(".menu a")) who.open = false; });
+  document.addEventListener("click", (e) => { if (who.open && !who.contains(e.target)) who.open = false; });
 }
 function renderNav() {
   const nav = document.getElementById("nav"); if (!nav) return;
@@ -113,26 +133,26 @@ async function vDashboard() {
   const down = d.monitors.filter((m) => m.state === "down");
   const ssl = d.ssl;
   view().innerHTML = `
-  ${head("Overview", "Site visibility", `Brief quality, live SEO signals, uptime and updates for ${esc(new URL(me.site).hostname)}.`)}
+  ${head("Overview", "Site <em>visibility</em>", `Brief quality, live SEO signals, uptime and updates for ${esc(new URL(me.site).hostname)}.`)}
   ${down.length ? `<div class="banner bad"><span class="dot down"></span><b>${down.map((m) => esc(m.name)).join(", ")} ${down.length > 1 ? "are" : "is"} down.</b> ${esc(down[0].last_error)} · <a href="#/uptime">See uptime</a></div>` : ""}
   ${d.nextWindow ? `<div class="banner info"><b>Maintenance ${new Date(d.nextWindow.starts_at) <= new Date() ? "in progress" : "scheduled"}:</b> ${esc(d.nextWindow.title)} · ${when(d.nextWindow.starts_at)} to ${when(d.nextWindow.ends_at)}. Alerts are muted during the window.</div>` : ""}
   <div class="kpis">
-    <a class="kpi" href="#/uptime"><span class="l">Uptime · 30 days</span><span class="v">${home?.up30 != null ? home.up30 + "%" : "–"}</span><span class="s"><span class="dot ${home?.state || ""}"></span> ${home ? `${esc(home.name)} is ${home.state}` : "No monitors"}</span></a>
-    <a class="kpi" href="#/pages"><span class="l">Average brief score</span><span class="v">${avg}%</span><span class="s">${ready} of ${pages.length} pages ready</span></a>
-    <a class="kpi" href="#/pages"><span class="l">Live SEO issues</span><span class="v">${liveIssues}</span><span class="s">pages with errors or noindex</span></a>
-    <a class="kpi" href="#/plugins"><span class="l">Pending updates</span><span class="v">${d.wp ? d.wp.pending + (d.wp.core?.update ? 1 : 0) + (d.wp.themeUpdate ? 1 : 0) : "–"}</span><span class="s">${d.wp ? `checked ${ago(d.wp.at)}` : "connector not set up"}</span></a>
-    <a class="kpi" href="#/uptime"><span class="l">SSL certificate</span><span class="v">${ssl?.daysLeft != null ? ssl.daysLeft + "d" : "–"}</span><span class="s">${ssl?.daysLeft != null ? `expires ${ssl.validTo.slice(0, 10)}` : ssl?.error ? esc(ssl.error) : "not checked yet"}</span></a>
+    <a class="kpi ${down.length ? "bad" : ""}" href="#/uptime"><span class="l">Uptime · 30 days</span><span class="v">${home?.up30 != null ? `${home.up30}<small>%</small>` : "–"}</span><span class="s"><span class="dot ${home?.state || ""}"></span> ${home ? `${esc(home.name)} is ${home.state}` : "No monitors"}</span></a>
+    <a class="kpi" href="#/pages"><span class="l">Average brief score</span><span class="v">${avg}<small>%</small></span><span class="s">${ready} of ${pages.length} pages ready</span></a>
+    <a class="kpi ${liveIssues ? "warn" : ""}" href="#/pages"><span class="l">Live SEO issues</span><span class="v">${liveIssues}</span><span class="s">pages with errors or noindex</span></a>
+    <a class="kpi ${d.wp && d.wp.pending ? "warn" : ""}" href="#/plugins"><span class="l">Pending updates</span><span class="v">${d.wp ? d.wp.pending + (d.wp.core?.update ? 1 : 0) + (d.wp.themeUpdate ? 1 : 0) : "–"}</span><span class="s">${d.wp ? `checked ${ago(d.wp.at)}` : "connector not set up"}</span></a>
+    <a class="kpi ${ssl?.daysLeft != null && ssl.daysLeft <= 21 ? "warn" : ""}" href="#/uptime"><span class="l">SSL certificate</span><span class="v">${ssl?.daysLeft != null ? `${ssl.daysLeft}<small> days</small>` : "–"}</span><span class="s">${ssl?.daysLeft != null ? `expires ${ssl.validTo.slice(0, 10)}` : ssl?.error ? esc(ssl.error) : "not checked yet"}</span></a>
   </div>
   <div class="cols">
     <section class="card"><header><h2>Average brief score</h2><span>last 90 days, all pages</span></header><div id="trend"></div></section>
     <section class="card"><header><h2>Uptime</h2><span>last 30 days</span></header><div id="ups"></div>
-      <div class="legend"><span><i style="background:var(--good)"></i>99.5%+</span><span><i style="background:var(--warn)"></i>95–99.5%</span><span><i style="background:var(--bad)"></i>below 95%</span><span><i style="background:var(--none)"></i>no checks</span></div></section>
+      <div class="legend"><span><i style="background:var(--good)"></i>99.5%+</span><span><i style="background:var(--gold)"></i>95–99.5%</span><span><i style="background:var(--bad)"></i>below 95%</span><span><i style="background:var(--none)"></i>no checks</span></div></section>
   </div>
   <div class="cols">
-    <section class="card"><header><h2>Pages</h2><a href="#/pages" class="small">All pages</a></header><div class="tbl"><table><thead><tr><th>Page</th><th>Status</th><th>Brief</th><th>Live</th></tr></thead><tbody>
+    <section class="card"><header><h2>Pages</h2><a href="#/pages" class="link">All pages →</a></header><div class="tbl"><table><thead><tr><th>Page</th><th>Status</th><th>Brief</th><th>Live</th></tr></thead><tbody>
       ${[...pages].sort((a, b) => a.score - b.score).slice(0, 8).map((p) => `<tr class="click" data-href="#/page/${encodeURIComponent(p.id)}"><td>${esc(p.name)}</td><td>${statusPill(p.status)}</td><td style="min-width:120px">${meter(p.score, p.fails)}</td><td>${livePill(p)}</td></tr>`).join("")}
     </tbody></table></div><span class="hint">Lowest scores first.</span></section>
-    <section class="card"><header><h2>Recent activity</h2><a href="#/activity" class="small">All activity</a></header><div class="feed">${feed(d.events)}</div></section>
+    <section class="card"><header><h2>Recent activity</h2><a href="#/activity" class="link">All activity →</a></header><div class="feed">${feed(d.events)}</div></section>
   </div>`;
   lineChart(document.getElementById("trend"), d.trend.map((t) => ({ x: new Date(t.day), y: t.avg })), { yMax: 100, yFmt: (v) => v + "%", emptyText: "Scores appear here once briefs are saved." });
   document.getElementById("ups").innerHTML = d.monitors.map((m, i) => `<div class="mon"><div class="h"><span><span class="dot ${m.state}"></span> <b>${esc(m.name)}</b></span><span class="mono small">${m.up30 != null ? m.up30 + "%" : "–"}</span></div><div id="ub-${i}"></div></div>`).join("") || `<div class="empty">No monitors yet.</div>`;
@@ -151,7 +171,7 @@ function bindRows() { view().querySelectorAll("tr[data-href]").forEach((tr) => t
 async function vPages() {
   const pages = await api("GET", "/pages");
   let filter = "all", search = "";
-  view().innerHTML = `${head("SEO & AEO", "Pages", "Every page's brief score, publishing status and what the live page is serving. Select a page to edit its brief, see its history or check it live.",
+  view().innerHTML = `${head("SEO & AEO", "Every page, <em>accounted for</em>", "Every page's brief score, publishing status and what the live page is serving. Select a page to edit its brief, see its history or check it live.",
     canEdit() ? `<button class="btn ghost" id="auditAll" type="button" ${isAdmin() ? "" : "hidden"}>Check all live pages</button><button class="btn" id="addPage" type="button">Add page</button>` : "")}
   <form class="card" id="addForm" hidden><header><h3>Add a page or article</h3></header><div class="grid">
     <div class="field"><label for="npName">Name</label><input type="text" id="npName" required placeholder="How to Write a Family Constitution"></div>
@@ -304,7 +324,7 @@ async function pageLive(body, p, d) {
 async function vActivity() {
   const events = await api("GET", "/events");
   let k = "all";
-  view().innerHTML = `${head("Audit trail", "Activity", "Every brief save, live-page change, outage, update and maintenance note, newest first.")}
+  view().innerHTML = `${head("Audit trail", "What <em>changed</em>, and who changed it", "Every brief save, live-page change, outage, update and maintenance note, newest first.")}
     <div class="chips" id="evFilter">${["all", "brief", "live", "uptime", "plugins", "maintenance", "ssl", "system"].map((x) => `<button type="button" class="chip" data-k="${x}" aria-pressed="${x === "all"}">${x === "all" ? "All" : kindLabel(x)}</button>`).join("")}</div>
     <section class="card"><div class="feed" id="evList"></div></section>`;
   const draw = () => { document.getElementById("evList").innerHTML = feed(events.filter((e) => k === "all" || e.kind === k)); };
@@ -316,7 +336,7 @@ async function vActivity() {
 async function vUptime() {
   const d = await api("GET", "/uptime");
   badges.incidents = d.incidents.filter((i) => !i.resolved_at).length; renderNav();
-  view().innerHTML = `${head("Site health", "Uptime", "Checked every 5 minutes. An incident opens after two failed checks in a row, and alerts go out when a monitor goes down and when it recovers. WordPress critical-error pages count as down even when they return HTTP 200.",
+  view().innerHTML = `${head("Site health", "Uptime and <em>incidents</em>", "Checked every 5 minutes. An incident opens after two failed checks in a row, and alerts go out when a monitor goes down and when it recovers. WordPress critical-error pages count as down even when they return HTTP 200.",
     canEdit() ? `<button class="btn ghost" type="button" id="sslBtn">Check SSL</button><button class="btn" type="button" id="addMon">Add monitor</button>` : "")}
     <form class="card" id="monForm" hidden><header><h3>Add a monitor</h3></header><div class="grid">
       <div class="field"><label for="mName">Name</label><input type="text" id="mName" placeholder="Insights hub"></div>
@@ -330,9 +350,9 @@ async function vUptime() {
         <div class="nums"><span>24 h <b>${m.up24 ?? "–"}${m.up24 != null ? "%" : ""}</b></span><span>7 days <b>${m.up7 ?? "–"}${m.up7 != null ? "%" : ""}</b></span><span>30 days <b>${m.up30 ?? "–"}${m.up30 != null ? "%" : ""}</b></span><span>90 days <b>${pct90(m)}</b></span><span>Avg response 24 h <b>${m.ms24 != null ? m.ms24 + " ms" : "–"}</b></span><span>Last check <b>${ago(m.last_checked)}</b></span></div>
         ${m.last_error ? `<span class="small" style="color:var(--bad)">Last error: ${esc(m.last_error)}</span>` : ""}
         <div id="mb-${i}"></div></div>`).join("") || `<div class="empty">No monitors yet.</div>`}
-      <div class="legend"><span><i style="background:var(--good)"></i>99.5%+</span><span><i style="background:var(--warn)"></i>95–99.5%</span><span><i style="background:var(--bad)"></i>below 95%</span><span><i style="background:var(--none)"></i>no checks</span></div></section>
+      <div class="legend"><span><i style="background:var(--good)"></i>99.5%+</span><span><i style="background:var(--gold)"></i>95–99.5%</span><span><i style="background:var(--bad)"></i>below 95%</span><span><i style="background:var(--none)"></i>no checks</span></div></section>
     <div class="cols">
-      <section class="card"><header><h2>Response time</h2><span><select id="rtSel" aria-label="Monitor">${d.monitors.map((m) => `<option value="${m.id}">${esc(m.name)}</option>`).join("")}</select> · last 24 h</span></header><div id="rt"></div></section>
+      <section class="card"><header><h2>Response time</h2><span class="row" style="gap:8px">last 24 h <select id="rtSel" aria-label="Monitor">${d.monitors.map((m) => `<option value="${m.id}">${esc(m.name)}</option>`).join("")}</select></span></header><div id="rt"></div></section>
       <section class="card"><header><h2>SSL certificate</h2><span>checked daily</span></header>${d.ssl ? `<div class="kpi" style="border:0;padding:0"><span class="v">${d.ssl.daysLeft != null ? d.ssl.daysLeft + " days left" : "Unknown"}</span><span class="s">${d.ssl.validTo ? `Expires ${new Date(d.ssl.validTo).toDateString()} · ${esc(d.ssl.issuer || "")}` : esc(d.ssl.error || "")} · ${esc(d.ssl.host)} · checked ${ago(d.ssl.checkedAt)}</span></div>` : `<div class="empty">Not checked yet. The daily job checks it, or use Check SSL.</div>`}</section>
     </div>
     <section class="card"><header><h2>Incidents</h2><span>${d.incidents.length} recorded</span></header><div class="tbl"><table><thead><tr><th>Monitor</th><th>Started</th><th>Resolved</th><th>Duration</th><th>Cause</th></tr></thead><tbody>
@@ -366,7 +386,7 @@ async function vMaintenance() {
   const upcoming = windows.filter((w) => new Date(w.ends_at) >= now).sort((a, b) => new Date(a.starts_at) - new Date(b.starts_at));
   const logs = rows.filter((r) => r.kind === "log" || new Date(r.ends_at) < now);
   const local = (d) => new Date(d.getTime() - d.getTimezoneOffset() * 6e4).toISOString().slice(0, 16);
-  view().innerHTML = `${head("Site health", "Maintenance", "Schedule maintenance windows (downtime alerts are muted inside them) and keep a log of what was done to the site. Plugin, theme and WordPress version changes are logged automatically by the daily check.")}
+  view().innerHTML = `${head("Site health", "Maintenance <em>log</em>", "Schedule maintenance windows (downtime alerts are muted inside them) and keep a log of what was done to the site. Plugin, theme and WordPress version changes are logged automatically by the daily check.")}
     ${canEdit() ? `<div class="cols">
       <form class="card" id="winForm"><header><h3>Schedule a maintenance window</h3><span>alerts muted, team notified</span></header><div class="grid">
         <div class="field full"><label for="wTitle">What's happening</label><input type="text" id="wTitle" required placeholder="Monthly plugin updates on production"></div>
@@ -398,7 +418,7 @@ async function vPlugins() {
   const s = d.latest?.data;
   const pend = s ? s.plugins.filter((p) => p.update) : [];
   badges.updates = pend.length; renderNav();
-  view().innerHTML = `${head("Site health", "Plugins & updates", "WordPress core, PHP, theme and plugin versions, read daily from the site. New updates trigger an alert, and installed version changes are logged in Maintenance automatically.",
+  view().innerHTML = `${head("Site health", "Plugins and <em>updates</em>", "WordPress core, PHP, theme and plugin versions, read daily from the site. New updates trigger an alert, and installed version changes are logged in Maintenance automatically.",
     canEdit() && d.configured ? `<button class="btn" type="button" id="wpBtn">Check now</button>` : "")}
     ${!d.configured ? `<section class="card"><header><h2>Connect WordPress</h2></header><ol>
       <li>Upload the <b>Premier Visibility Connector</b> plugin (<span class="mono">visibility/wp-connector/</span> in the repo) to the site and activate it. It only reads; it never changes anything.</li>
@@ -407,7 +427,7 @@ async function vPlugins() {
     ${s ? `<div class="kpis" style="grid-template-columns:repeat(4,minmax(0,1fr))">
       <div class="kpi"><span class="l">WordPress</span><span class="v">${esc(s.core.version)}</span><span class="s">${s.core.update ? `<span class="pill warn">${esc(s.core.update)} available</span>` : "up to date"}</span></div>
       <div class="kpi"><span class="l">PHP</span><span class="v">${esc(s.php)}</span><span class="s">${parseFloat(s.php) < 8.1 ? '<span class="pill warn">below 8.1</span>' : "supported"}</span></div>
-      <div class="kpi"><span class="l">Theme</span><span class="v" style="font-size:18px">${esc(s.theme.name)}</span><span class="s">${esc(s.theme.version)}${s.theme.update ? ` · <span class="pill warn">${esc(s.theme.update)} available</span>` : ""}</span></div>
+      <div class="kpi"><span class="l">Theme</span><span class="v" style="font-size:26px;letter-spacing:-.3px">${esc(s.theme.name)}</span><span class="s">${esc(s.theme.version)}${s.theme.update ? ` · <span class="pill warn">${esc(s.theme.update)} available</span>` : ""}</span></div>
       <div class="kpi"><span class="l">Plugin updates</span><span class="v">${pend.length}</span><span class="s">of ${s.plugins.length} plugins · checked ${ago(d.latest.at)}</span></div></div>
       ${s.debug ? `<div class="banner warn"><b>WP_DEBUG is on.</b> Turn it off on production once the error is fixed; it can expose file paths to visitors.</div>` : ""}
       <section class="card"><header><h2>Plugins</h2><span>updates first</span></header><div class="tbl"><table><thead><tr><th>Plugin</th><th>Installed</th><th>Available</th><th>Active</th><th>Auto-update</th></tr></thead><tbody>
@@ -431,7 +451,7 @@ async function vPlaybook() {
 async function vSettings() {
   const [s, notes, users] = await Promise.all([api("GET", "/settings"), api("GET", "/notifications"), isAdmin() ? api("GET", "/users") : Promise.resolve([])]);
   const ch = (ok, label, how) => `<tr><td>${label}</td><td>${ok ? '<span class="pill good">Configured</span>' : '<span class="pill warn">Not set</span>'}</td><td class="small muted">${how}</td></tr>`;
-  view().innerHTML = `${head("Admin", "Settings")}
+  view().innerHTML = `${head("Admin", "Team and <em>alerts</em>", "Who can sign in, where alerts go, and whether the scheduled checks are running.")}
     <div class="cols">
       <section class="card"><header><h2>Alerts</h2></header>
         <div class="tbl"><table><tbody>

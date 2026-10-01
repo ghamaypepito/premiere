@@ -8,7 +8,8 @@ export function lineChart(host, points, { height = 180, yMin = 0, yMax = null, y
   host.classList.add("chart");
   const data = points.filter((p) => p.y != null);
   if (!data.length) { host.innerHTML = `<div class="empty">${emptyText}</div>`; return; }
-  const W = 640, H = height, L = 40, R = 12, T = 10, B = 24;
+  // Draw at the container's real width so axis text stays at its CSS size.
+  const W = Math.max(300, Math.round(host.clientWidth || 640)), H = height, L = 44, R = 12, T = 10, B = 24;
   const x0 = +points[0].x, x1 = +points[points.length - 1].x || x0 + 1;
   const max = yMax ?? (Math.max(...data.map((p) => p.y)) * 1.15 || 1);
   const sx = (x) => L + ((+x - x0) / Math.max(1, x1 - x0)) * (W - L - R);
@@ -21,9 +22,13 @@ export function lineChart(host, points, { height = 180, yMin = 0, yMax = null, y
     const t = el("text", { x: L - 6, y: y + 3.5, "text-anchor": "end" }); t.textContent = yFmt(Math.round(v)); g.appendChild(t);
   }
   const fmtD = (d) => d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+  const seen = new Set();
   [points[0], points[Math.floor(points.length / 2)], points[points.length - 1]].forEach((p, i) => {
+    const label = p.xLabel || fmtD(new Date(p.x));
+    if (seen.has(label)) return; // all checks inside a few minutes: don't stack identical labels
+    seen.add(label);
     const t = el("text", { x: sx(p.x), y: H - 6, "text-anchor": i === 0 ? "start" : i === 2 ? "end" : "middle" });
-    t.textContent = p.xLabel || fmtD(new Date(p.x)); g.appendChild(t);
+    t.textContent = label; g.appendChild(t);
   });
   svg.appendChild(g);
   // area + line, broken where y is null
