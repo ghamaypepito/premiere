@@ -79,6 +79,18 @@ ask for an export → npm run pull → npm run compare → port anything live ha
 This keeps the build a true mirror, so that when a structural change does come
 along it can be published without first untangling a month of small edits.
 
+## Significant changes arrive as tickets
+
+Anything structural comes from the user as a ticket, which gives the clean
+dividing line this workflow was missing:
+
+**If it came as a ticket, it belongs in the build. If it did not, it is
+content and lives in WordPress.** No judgement call about who owns what.
+
+A ticket names the page ids it touches, which is what the publish is limited
+to — so the ticket writes its own command. `TICKET-TEMPLATE.md` has the format
+and the reasoning behind each field.
+
 ## What to tell the client
 
 Two things, and they are not restrictive:

@@ -64,7 +64,10 @@ no reason. `premier-theme-parts.txt` only writes templates 606 and 609 and is
 always safe whole.
 
 `WORKFLOW.md` has the division of labour, the page ids, and the weekly
-reconcile.
+reconcile. Structural work arrives from the user as a ticket, so: came as a
+ticket, belongs in the build; did not, it is content and stays in WordPress.
+A ticket names its page ids, which is exactly what `__onlyPages` takes.
+`TICKET-TEMPLATE.md` has the format.
 
 ## Live URLs are nested
 
