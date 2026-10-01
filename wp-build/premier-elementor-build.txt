@@ -45,7 +45,7 @@ const LINK = { home:'/', who:'/who-we-are/', what:'/what-we-do/', fep:'/what-we-
            Only set this if the Theme Builder footer is gone, or the site
            renders two footers. */
 const FOOTER_ON_PAGES = false;
-const BUILD_ID = 'v26 2026-10-01 21:23 UTC (global positioning)';
+const BUILD_ID = 'v27 2026-10-01 21:28 UTC (why-it-matters de-duplicated)';
 const TALK = 'Let&rsquo;s Talk about the Future';
 const G='#F2AF11', N='#193153', B='#3E4756', M='#5F6674', W='#FFFFFF', P='#F7F6F2', R='#E6E2D9', L='#DCE3EE';
 const SERIF='Newsreader', SANS='Poppins';
@@ -432,8 +432,7 @@ const home = [
   S({bg:P, pt:136, pb:136, gap:0, s:{flex_align_items:'center'}}, [
     Col(84, {gap:26, s:{flex_align_items:'center', width_mobile:pct(100)}}, [
       EB('Why it matters', {align:'center'}),
-      H('The families that last decided early, and in writing, who leads, who owns, and how the family will handle disagreement.', 'h2', 50, {align:'center', lh:1.15, t:40, m:30}),
-      T('<p>The ones that survive decided early, and in writing, who leads, who owns, and how the family will handle disagreement.</p>', {align:'center', size:18})
+      H('The families that last decided early, and in writing, who leads, who owns, and how the family will handle disagreement.', 'h2', 50, {align:'center', lh:1.15, t:40, m:30})
     ])
   ]),
   S({pt:144, pb:144, gap:60}, [
