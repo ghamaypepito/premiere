@@ -42,3 +42,7 @@ wp-build/sync/pulled/*.tmp
 # Nothing here is part of the deliverable.
 node_modules/
 package-lock.json
+
+# Local environment files. Credentials belong in the shell, not here.
+.env
+.env.*
