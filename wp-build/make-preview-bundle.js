@@ -7,7 +7,7 @@
  * (../../assets/team/web/..., ../legacy/crops/...). That works fine opening the
  * files locally, but nothing above the root can be published or zipped.
  *
- * This copies every referenced file into preview-bundle/_assets/ and rewrites
+ * This copies every referenced file into preview-bundle/assets/ and rewrites
  * the pages to point at it, so the result can be sent to a client, uploaded, or
  * published as a link without anything missing.
  *
@@ -22,12 +22,14 @@ const OUT = path.join(__dirname, 'preview-bundle');
 if (!fs.existsSync(SRC)) { console.error('No preview/. Run make-preview.js first.'); process.exit(1); }
 
 fs.rmSync(OUT, {recursive: true, force: true});
-fs.mkdirSync(path.join(OUT, '_assets'), {recursive: true});
+fs.mkdirSync(path.join(OUT, 'assets'), {recursive: true});
 
-/* _live/ already sits inside preview/ and is referenced relatively, so it can
-   be copied across untouched. */
+/* _live/ already sits inside preview/ and is referenced relatively, so it only
+   needs copying — but it is renamed on the way. Some hosts, the Artifact
+   service among them, reserve top-level names beginning with an underscore,
+   and a bundle that cannot be uploaded anywhere is not much of a bundle. */
 if (fs.existsSync(path.join(SRC, '_live'))) {
-  fs.cpSync(path.join(SRC, '_live'), path.join(OUT, '_live'), {recursive: true});
+  fs.cpSync(path.join(SRC, '_live'), path.join(OUT, 'live'), {recursive: true});
 }
 
 const pages = fs.readdirSync(SRC).filter(f => f.endsWith('.html'));
@@ -47,8 +49,8 @@ function flatten(ref, pageFile) {
   }
   const dir = path.dirname(ref).replace(/\.\.\//g, '').replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '');
   const name = (dir ? dir + '__' : '') + path.basename(ref);
-  fs.copyFileSync(abs, path.join(OUT, '_assets', name));
-  const rel = '_assets/' + name;
+  fs.copyFileSync(abs, path.join(OUT, 'assets', name));
+  const rel = 'assets/' + name;
   copied.set(ref, rel);
   return rel;
 }
@@ -73,6 +75,7 @@ for (const file of pages) {
     });
     return `srcset="${out.join(', ')}"`;
   });
+  html = html.split('"_live/').join('"live/');
   fs.writeFileSync(path.join(OUT, file), html);
 }
 
