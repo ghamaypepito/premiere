@@ -40,6 +40,21 @@ Order matters:
 Each build prints a `BUILD_ID` so it is possible to tell which file
 actually ran. Always quote the expected one when giving publish steps.
 
+## The quick drift check needs no export
+
+`npm run check` fetches the live chrome, re-renders the preview and diffs the
+live site against the build as visible text. It needs no export and no
+credentials, and it catches what matters: copy edits, added or removed
+sections, reordering.
+
+Run it before touching anything. It is not a replacement for the export rule
+above — it cannot show styling, and it cannot port an edit precisely — but it
+answers "has the client changed something" in about twenty seconds, which
+means there is no excuse for not knowing.
+
+`live only` lines are on the site and not in the build: publishing destroys
+them. `build only` lines are changes waiting to be published.
+
 ## Live URLs are nested
 
 Several pages 301 to a nested permalink

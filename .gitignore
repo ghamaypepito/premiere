@@ -46,3 +46,7 @@ package-lock.json
 # Local environment files. Credentials belong in the shell, not here.
 .env
 .env.*
+
+# Live chrome cached by fetch-live-chrome.js. Regenerate with `npm run chrome`;
+# it is a copy of the live site, not source.
+wp-build/preview/_live/

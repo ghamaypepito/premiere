@@ -4,7 +4,10 @@
   "description": "Build and sync tooling for the Premier Family Business Consulting site.",
   "scripts": {
     "preview": "cd wp-build && node make-preview.js",
+    "chrome": "cd wp-build && node fetch-live-chrome.js",
     "theme-parts": "cd wp-build && node make-theme-parts.js",
+    "check": "npm run chrome && npm run preview && node wp-build/sync/live-diff.js",
+    "diff": "node wp-build/sync/live-diff.js",
     "pull": "node wp-build/sync/from-wxr.js",
     "compare": "node wp-build/sync/compare.js"
   },

@@ -131,21 +131,55 @@ function render(el) {
   return '';
 }
 
-const SHELL = (title, inner, nav) => `<!doctype html><html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)} — preview</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,300..700;1,300..700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
+/* The live site's own CSS, header and footer, cached by fetch-live-chrome.js.
+   Without it the preview still renders, just in the plain fallback styling it
+   always used — so a missing cache is a downgrade, not a failure. */
+const LIVE = (() => {
+  const f = path.join('preview', '_live', 'chrome.json');
+  if (!fs.existsSync(f)) return null;
+  try { return JSON.parse(fs.readFileSync(f, 'utf8')); }
+  catch (e) { console.warn('live chrome unreadable, using fallback styling:', e.message); return null; }
+})();
+
+const FALLBACK_CSS = `
 *{box-sizing:border-box}body{margin:0;font:400 17px/1.7 Poppins,system-ui,sans-serif;color:#3E4756;background:#fff}
 img{max-width:100%}.rt p{margin:0 0 .9em}.rt p:last-child{margin-bottom:0}
-.rt a{color:inherit}.pfb-bar{position:sticky;top:0;z-index:99;background:#0F2340;color:#fff;padding:10px 18px;font:500 13px Poppins,sans-serif;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.rt a{color:inherit}
+@media(max-width:900px){section>div{flex-direction:column!important}section>div>div{width:100%!important}}`;
+
+const BAR_CSS = `
+.pfb-bar{position:sticky;top:0;z-index:9999;background:#0F2340;color:#fff;padding:10px 18px;font:500 13px Poppins,sans-serif;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
 .pfb-bar a{color:#F2AF11;text-decoration:none}.pfb-bar a:hover{text-decoration:underline}
 .pfb-bar b{color:#fff;font-weight:600}
-@media(max-width:900px){section>div{flex-direction:column!important}section>div>div{width:100%!important}}
-</style></head><body>
-<div class="pfb-bar"><b>Preview — ${esc(title)}</b>${nav}</div>
-${inner}
+.pfb-bar .pfb-live{margin-left:auto;opacity:.75;font-weight:400}`;
+
+const SHELL = (title, inner, nav) => {
+  const head = LIVE
+    ? [
+        ...LIVE.remoteStylesheets.map(h => `<link rel="stylesheet" href="${h}">`),
+        ...LIVE.stylesheets.map(h => `<link rel="stylesheet" href="${h}">`),
+        `<style>${LIVE.inlineCss}</style>`
+      ].join('\n')
+    : `<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,300..700;1,300..700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>${FALLBACK_CSS}</style>`;
+
+  /* Elementor's frontend CSS only applies inside these wrappers, so the
+     rendered trees go in one to pick up container and widget rules. */
+  const body = LIVE
+    ? `${LIVE.header}\n<div class="elementor"><div class="elementor-section-wrap">${inner}</div></div>\n${LIVE.footer}`
+    : inner;
+
+  const stamp = LIVE ? `<span class="pfb-live">live chrome cached ${esc(LIVE.fetched.slice(0, 16).replace('T', ' '))} UTC</span>` : '';
+
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)} — preview</title>
+${head}
+<style>${LIVE ? '' : ''}${BAR_CSS}</style></head><body>
+<div class="pfb-bar"><b>Preview — ${esc(title)}</b>${nav}${stamp}</div>
+${body}
 </body></html>`;
+};
 
 fs.mkdirSync('preview', {recursive: true});
 const slug = t => t.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -162,7 +196,7 @@ for (const [id, title, elements] of PAGES) {
 fs.writeFileSync(path.join('preview', 'index.html'), SHELL('All pages',
   `<div style="max-width:760px;margin:0 auto;padding:56px 24px">
    <h1 style="font:400 44px/1.1 Newsreader,Georgia,serif;color:#193153">Premier — page preview</h1>
-   <p>Static render of the Elementor build, for review before publishing. Layout and copy are accurate; Elementor's runtime pieces (menu, sticky header, pop-up) are approximated.</p>
+   <p>Static render of the Elementor build, for review before publishing. With the live chrome cached (<code>node fetch-live-chrome.js</code>) the pages wear the real header, footer and Elementor CSS; without it they fall back to plain styling.</p>
    <ul style="line-height:2.2;padding-left:18px">${PAGES.map(([id, t]) => `<li><a href="${slug(t)}.html" style="color:#193153">${esc(t)}</a> <span style="color:#5F6674;font-size:13px">post ${id}</span></li>`).join('')}</ul></div>`, ''));
 
 console.log('rendered', n, 'pages into wp-build/preview/');
