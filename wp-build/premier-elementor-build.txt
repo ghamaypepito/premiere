@@ -45,7 +45,7 @@ const LINK = { home:'/', who:'/who-we-are/', what:'/what-we-do/', fep:'/what-we-
            Only set this if the Theme Builder footer is gone, or the site
            renders two footers. */
 const FOOTER_ON_PAGES = false;
-const BUILD_ID = 'v25 2026-10-01 21:05 UTC (client Home edit reconciled)';
+const BUILD_ID = 'v26 2026-10-01 21:23 UTC (global positioning)';
 const TALK = 'Let&rsquo;s Talk about the Future';
 const G='#F2AF11', N='#193153', B='#3E4756', M='#5F6674', W='#FFFFFF', P='#F7F6F2', R='#E6E2D9', L='#DCE3EE';
 const SERIF='Newsreader', SANS='Poppins';
@@ -411,7 +411,7 @@ const home = [
     Row({gap:64, align:'center'}, [
       Col(50, {gap:28}, [
         H('Uniting families in business, <em>across generations.</em>', 'h1', 76, {lh:1.02, ls:-1.5, t:56, m:42}),
-        T('<p>We help Filipino business families keep the family whole and the business growing, through succession, governance and the hard conversations in between.</p>', {size:19, m:16.5}),
+        T('<p>We help business families keep the family whole and the business growing, through succession, governance and the hard conversations in between.</p>', {size:19, m:16.5}),
         Row({gap:28, align:'center', justify:'flex-start', s:{flex_align_items_mobile:'stretch'}}, [BTN(TALK, LINK.cal, 'p')])
       ]),
       Col(44, {gap:0}, [IMG('family', 640, {hm:420})])
@@ -511,7 +511,7 @@ const PS = (n, title, desc, optional) => Col(17.6, {gap:12, s:{border_border:'so
 ]);
 const fep = [
   PAGEHERO('<a href="/">Home</a> &nbsp;/&nbsp; <a href="/what-we-do/">What we do</a> &nbsp;/&nbsp; Family Enterprise Planning', 'Family Enterprise Planning (FEP)',
-    'Succession and continuity planning for Filipino family businesses',
+    'Succession and continuity planning for family businesses',
     'A holistic, integrated process covering wealth, estate, organization and succession, with family unity kept at the centre of every decision.',
     'handover', [BTN('Get started', LINK.contact, 'p'), BTN('Talk to a consultant', LINK.cal, 'l')]),
   ANSWER('What is family enterprise planning?', 'Family enterprise planning is the process of deciding, documenting and rehearsing how leadership and ownership of a family-owned company pass to the next generation. It covers three handovers that are often confused: management, ownership, and the family authority behind both. A complete plan names successors, sets a timetable, protects and transfers assets, and defines how the family will resolve disagreement.'),
@@ -734,7 +734,7 @@ const PARTNERGROUP = (title, lead, tiles) => {
    institutes and universities as alliances, chambers and financial
    institutions as affiliates. Worth confirming. */
 const PARTNERSECTION = () => S({bg:P, pt:112, pb:40, ptm:64, gap:0}, [
-  PARTNERGROUP('Partnerships and strategic alliances', 'The institutions we work alongside.', [
+  PARTNERGROUP('Partnerships and strategic alliances', 'The institutions we work alongside, in the Philippines and internationally.', [
     PTILE('ffi', 'Family Firm Institute'),
     PTILE('fbn', 'Family Business Network Asia'),
     PTILE('uap', 'University of Asia and the Pacific'),
@@ -1055,7 +1055,7 @@ const profileNeil = PROFILE({k:'neil', first:'Neil', name:'Neil Arnold C. Montes
 const profileThresa = PROFILE({k:'theresa', first:'Thresa', name:'Ma. Theresa B. Ramos', role:'Senior Consultant and Co-founder', creds:'MA, RPSY, ACC, ACMC, CHt, CMC, CSFP, CFBA',
   intro:'As co-founder of Premier, Thresa leads the firm&rsquo;s family strategy and the design of its training programs, guided by experiential education, strengths-based methods and servant leadership.',
   about:['Thresa designs training modules and facilitates group and family dynamics sessions. She runs the firm&rsquo;s family programs, including Family Culture Building and the Family Constitution retreat.',
-    'She has served more than 80 Filipino family businesses across the Philippines and abroad, and believes she is called to help families build stronger relationships for the holistic growth of the individual, the family and the enterprise.'],
+    'She has served more than 80 family businesses across the Philippines and abroad, and believes she is called to help families build stronger relationships for the holistic growth of the individual, the family and the enterprise.'],
   credentials:['Certified in Family Business Advising by the Family Firm Institute, Boston, USA', 'Master of Arts in Clinical Psychology, University of San Carlos', 'Certificate in Family Dynamics and Counseling, Center for Family Ministries (CEFAM), Ateneo de Manila University'],
   works:['Case of a Transgenerational Entrepreneurship in the Cousin Consortium &middot; November 2021', 'Reflection on Dennis Jaffe&rsquo;s Tapping the Wisdom of 100-Year-Old Family Enterprise &middot; October 2021', 'Emotional Leadership in a Long-lived Family Firm &middot; September 2021']});
 
@@ -1173,7 +1173,7 @@ const legacy = [
         T('<p><a href="/">Home</a> &nbsp;/&nbsp; Legacy in Action</p>', {size:13, c:M}),
         EB('The book and the podcast by Jon Ramos'),
         H('Legacy is not what you leave behind. It is what you build today.', 'h1', 58, {lh:1.06, m:36, t:46}),
-        T('<p>A transformative journey for families in business, and for the next generation of Southeast Asian family business leaders.</p>', {size:18}),
+        T('<p>A transformative journey for families in business, and for the next generation of family business leaders.</p>', {size:18}),
         Row({gap:28, align:'center', justify:'flex-start', s:{flex_direction_mobile:'row', flex_wrap:'wrap'}}, [BTN('Get a copy', LINK.book, 'p'), BTN('Watch the podcast', '#podcast', 'l')])
       ]),
       Col(50, {gap:12}, [
@@ -1275,7 +1275,7 @@ const legacy = [
       ]),
       Col(31, {gap:14, s:{width_mobile:pct(100), border_border:'solid', border_width:bx(2,0,0,0), border_color:G, padding:bx(26,0,0,0)}}, [
         H('An ecosystem of growth', 'h3', 26, {m:22}),
-        T('<p>Books, roadshows and podcasts that bring global practice into the Southeast Asian context, so the business stays competitive and true to its roots.</p>', {size:15.5}),
+        T('<p>Books, roadshows and podcasts that bring global practice to families in business, so the company stays competitive and true to its roots.</p>', {size:15.5}),
         BTN('Events and roadshows', LINK.events, 'l')
       ])
     ])

@@ -45,7 +45,7 @@ const LINK = { home:'/', who:'/who-we-are/', what:'/what-we-do/', fep:'/what-we-
            Only set this if the Theme Builder footer is gone, or the site
            renders two footers. */
 const FOOTER_ON_PAGES = false;
-const BUILD_ID = 'v25 2026-10-01 21:05 UTC (client Home edit reconciled)';
+const BUILD_ID = 'v26 2026-10-01 21:23 UTC (global positioning)';
 const TALK = 'Let&rsquo;s Talk about the Future';
 const G='#F2AF11', N='#193153', B='#3E4756', M='#5F6674', W='#FFFFFF', P='#F7F6F2', R='#E6E2D9', L='#DCE3EE';
 const SERIF='Newsreader', SANS='Poppins';

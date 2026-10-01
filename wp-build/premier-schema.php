@@ -90,6 +90,9 @@ if ( ! function_exists( 'pfb_schema_emit' ) ) {
 			'areaServed'  => array(
 				array( '@type' => 'Country', 'name' => 'Philippines' ),
 				array( '@type' => 'Place', 'name' => 'Southeast Asia' ),
+				// Clients abroad, a founder on the Family Firm Institute's
+				// global board, and alliances reaching beyond the region.
+				array( '@type' => 'Place', 'name' => 'Worldwide' ),
 			),
 			'knowsAbout'  => array(
 				'Family business succession planning',
@@ -143,7 +146,7 @@ if ( ! function_exists( 'pfb_schema_emit' ) ) {
 			'@id'             => pfb_schema_id( 'website' ),
 			'url'             => home_url( '/' ),
 			'name'            => 'Premier Family Business Consulting',
-			'inLanguage'      => 'en-PH',
+			'inLanguage'      => 'en',
 			'publisher'       => array( '@id' => pfb_schema_id( 'organization' ) ),
 		);
 	}
@@ -214,7 +217,7 @@ if ( ! function_exists( 'pfb_schema_emit' ) ) {
 			'url'              => get_permalink( $post ),
 			'datePublished'    => get_the_date( DATE_W3C, $post ),
 			'dateModified'     => get_the_modified_date( DATE_W3C, $post ),
-			'inLanguage'       => 'en-PH',
+			'inLanguage'       => 'en',
 			'isPartOf'         => array( '@id' => pfb_schema_id( 'website' ) ),
 			'publisher'        => array( '@id' => pfb_schema_id( 'organization' ) ),
 			'mainEntityOfPage' => array(
