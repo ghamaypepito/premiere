@@ -54,3 +54,8 @@ wp-build/preview/_live/
 # Flattened, self-contained copy of the preview. Regenerate with
 # `npm run bundle`; it is derived output, not source.
 wp-build/preview-bundle/
+
+# Rendered previews. Derived from the build; regenerate with `npm run preview`.
+# They carry the cached-chrome timestamp, so tracking them churns the tree on
+# every render.
+wp-build/preview/
