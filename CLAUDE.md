@@ -55,6 +55,17 @@ means there is no excuse for not knowing.
 `live only` lines are on the site and not in the build: publishing destroys
 them. `build only` lines are changes waiting to be published.
 
+## Publish only the pages that changed
+
+Never republish all seventeen. Set `window.__onlyPages = [27]` in the console
+before pasting the build, and every other page is skipped untouched. The client
+edits live, so a full republish is the one thing that destroys their work for
+no reason. `premier-theme-parts.txt` only writes templates 606 and 609 and is
+always safe whole.
+
+`WORKFLOW.md` has the division of labour, the page ids, and the weekly
+reconcile.
+
 ## Live URLs are nested
 
 Several pages 301 to a nested permalink
