@@ -22,7 +22,16 @@ const MEDIA = {
   teamgroup:[329,'premier-team-culture-of-engagement-and-trust.jpg'], hrignite:[330,'premier-hr-ignite-culture-of-values-session.jpg'],
   office:[331,'premier-family-business-consulting-cebu-office.jpg'], rsgroup:[332,'family-enterprise-roadshow-bohol-2026-participants.jpg'],
   rsguests:[333,'jon-ramos-family-enterprise-roadshow-bohol-2026.jpg'], rssession:[334,'family-enterprise-roadshow-bohol-2026-session.jpg'],
-  rspodium:[335,'jon-ramos-speaking-family-enterprise-roadshow.jpg'], liabook:[336,'legacy-in-action-book-by-jon-ramos.jpg']
+  rspodium:[335,'jon-ramos-speaking-family-enterprise-roadshow.jpg'], liabook:[336,'legacy-in-action-book-by-jon-ramos.jpg'],
+  serenio:[0,'atty-darlon-serenio.jpg'], atienza:[0,'atty-leandro-atienza.jpg'],
+  /* Partner logos. The third element marks them optional: a logo that is not
+     in the media library yet is left out rather than blocking the build. */
+  cfbe:[0,'center-for-family-business-excellence-logo.png',1], strathmore:[0,'strathmore-university-dispute-resolution-centre-logo.png',1],
+  ateneo:[0,'ateneo-de-manila-graduate-school-of-business-logo.png',1], xavier:[0,'xavier-school-logo.png',1],
+  usjr:[0,'university-of-san-jose-recoletos-logo.png',1],
+  ccci:[0,'cebu-chamber-of-commerce-and-industry-logo.png',1], mcci:[0,'mandaue-chamber-of-commerce-and-industry-logo.png',1],
+  pccitarlac:[0,'pcci-tarlac-logo.png',1], pcciparanaque:[0,'pcci-paranaque-logo.png',1], orcham:[0,'orcham-leyte-logo.png',1],
+  inlife:[0,'insular-life-logo.png',1], sunlife:[0,'sun-life-logo.png',1], rcbc:[0,'rcbc-logo.png',1], chinabank:[0,'chinabank-logo.png',1]
 };
 const LINK = { home:'/', who:'/who-we-are/', what:'/what-we-do/', fep:'/what-we-do/family-enterprise-planning/',
   ose:'/what-we-do/organizational-systems-effectiveness/', kpmc:'/what-we-do/key-process-management-consulting/',
@@ -30,14 +39,31 @@ const LINK = { home:'/', who:'/who-we-are/', what:'/what-we-do/', fep:'/what-we-
   cal:'https://meetings.hubspot.com/premier-family-business-consulting/exploratory-meeting', lia:'/legacy-in-action/',
   book:'https://www.paypal.com/ncp/payment/2JKJ26FS4KHJ2',
   form:'https://docs.google.com/forms/d/e/1FAIpQLSeLpaR-2YZ-k-Utkm6H72Uk69qtyfwGYok9Ip8ylHFpw-yCjg/viewform', yt:'https://www.youtube.com/@legacyinactionpodcast' };
-/* true  = no Elementor Pro; each page carries its own footer.
-   false = Pro installed; the footer comes from the Theme Builder template
-           published by premier-theme-parts.txt. Run that first and confirm
-           the footer renders before switching this off. */
-const FOOTER_ON_PAGES = true;
+/* false = the footer comes from the Theme Builder template published by
+           premier-theme-parts.txt. This is the live setup.
+   true  = no Elementor Pro; every page carries its own footer instead.
+           Only set this if the Theme Builder footer is gone, or the site
+           renders two footers. */
+const FOOTER_ON_PAGES = false;
+const BUILD_ID = 'v25 2026-10-01 21:05 UTC (client Home edit reconciled)';
 const TALK = 'Let&rsquo;s Talk about the Future';
 const G='#F2AF11', N='#193153', B='#3E4756', M='#5F6674', W='#FFFFFF', P='#F7F6F2', R='#E6E2D9', L='#DCE3EE';
 const SERIF='Newsreader', SANS='Poppins';
+
+/* Resolve attachment IDs before anything is built. This has to happen above the
+   page definitions: they capture MEDIA values as they are defined, so resolving
+   later left an unresolved entry rendering a 404 URL. */
+for (const [key, v] of Object.entries(MEDIA).filter(([, v]) => v[0] === 0)) {
+  const slug = v[1].replace(/\.[a-z]+$/i, '');
+  const r = await fetch('/wp-json/wp/v2/media?per_page=5&search=' + encodeURIComponent(slug), {credentials:'same-origin'}).catch(() => null);
+  const j = r ? await r.json().catch(() => []) : [];
+  const hit = Array.isArray(j) ? j.find(m => (m.source_url || '').includes(v[1])) : null;
+  if (hit) MEDIA[key][0] = hit.id;
+}
+const HAS = k => MEDIA[k] && MEDIA[k][0] !== 0;
+const missingRequired = Object.entries(MEDIA).filter(([, v]) => v[0] === 0 && !v[2]).map(([, v]) => v[1]);
+if (missingRequired.length) return 'Upload these to the media library first, then run again: ' + missingRequired.join(', ');
+const missingOptional = Object.entries(MEDIA).filter(([, v]) => v[0] === 0 && v[2]).map(([, v]) => v[1]);
 
 const uid = () => Math.random().toString(16).slice(2, 9);
 const px = s => ({unit:'px', size:s, sizes:[]});
@@ -323,6 +349,63 @@ const findTemplate = async (type) => {
   return null;
 };
 
+/* ---------- back to top ---------- */
+/* Lives in the footer template rather than the page build, so it reaches every
+   page — including any the client adds later — without republishing all
+   seventeen. Fixed position, so its place in the DOM does not matter.
+
+   Square-cornered, matching the hero cue and the buttons rather than the
+   floating circle the reference site uses. Gold fill with a navy chevron:
+   navy-on-navy disappeared against the footer, which is exactly where a
+   visitor reaches for it. Appears once the
+   visitor is a screen and a half down; hidden for print. */
+const TOTOP = () => Wd('html', {html:`<style>
+.pfb-top{position:fixed;right:22px;bottom:22px;z-index:120;
+  display:inline-flex;align-items:center;justify-content:center;
+  width:46px;height:46px;padding:0;border:0;cursor:pointer;
+  background:#F2AF11;color:#193153;
+  box-shadow:0 6px 18px rgba(25,49,83,.30);
+  opacity:0;visibility:hidden;transform:translateY(10px);
+  transition:opacity .24s ease-out,transform .24s ease-out,visibility .24s,background-color .2s ease-out}
+.pfb-top.pfb-top--on{opacity:1;visibility:visible;transform:translateY(0)}
+.pfb-top:hover{background:#193153;color:#F2AF11;box-shadow:0 8px 22px rgba(25,49,83,.38)}
+.pfb-top:focus-visible{outline:2px solid #193153;outline-offset:3px}
+.pfb-top svg{display:block}
+@media(max-width:767px){.pfb-top{right:14px;bottom:14px;width:42px;height:42px}}
+@media(prefers-reduced-motion:reduce){.pfb-top{transition:opacity .24s ease-out,visibility .24s}}
+@media print{.pfb-top{display:none}}
+</style>
+<button type="button" class="pfb-top" aria-label="Back to top">
+  <svg width="17" height="11" viewBox="0 0 17 11" fill="none" aria-hidden="true">
+    <path d="M1 10L8.5 2L16 10" stroke="currentColor" stroke-width="1.7" stroke-linecap="square"/>
+  </svg>
+</button>
+<script>
+(function(){
+  var b=document.currentScript.previousElementSibling;
+  if(!b||!b.classList.contains('pfb-top')) b=document.querySelector('.pfb-top');
+  if(!b) return;
+  // Move it onto body so a transformed or overflow-clipped ancestor in the
+  // footer cannot break position:fixed.
+  if(b.parentNode!==document.body) document.body.appendChild(b);
+  var shown=false,tick=false;
+  function sync(){
+    tick=false;
+    var on=(window.pageYOffset||document.documentElement.scrollTop)>window.innerHeight*1.5;
+    if(on!==shown){shown=on;b.classList.toggle('pfb-top--on',on);}
+  }
+  window.addEventListener('scroll',function(){
+    if(!tick){tick=true;window.requestAnimationFrame(sync);}
+  },{passive:true});
+  window.addEventListener('resize',sync,{passive:true});
+  sync();
+  b.addEventListener('click',function(){
+    var quiet=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({top:0,behavior:quiet?'auto':'smooth'});
+  });
+})();
+</script>`});
+
 /* ---------- save ---------- */
 const headerId = await findTemplate('header');
 const footerId = await findTemplate('footer');
@@ -337,7 +420,8 @@ const ed = await (await fetch('/wp-admin/post.php?post=' + headerId + '&action=e
 const nonce = (ed.match(/"ajax":\{"url":"[^"]+","nonce":"([a-z0-9]+)"\}/) || [])[1];
 if (!nonce) return 'no nonce';
 
-const TEMPLATES = [[headerId, 'Premier Header', [HEADER()]], [footerId, 'Premier Footer', [FOOTER()]]];
+const TEMPLATES = [[headerId, 'Premier Header', [HEADER()]],
+                   [footerId, 'Premier Footer', [FOOTER(), TOTOP()]]];
 const out = [];
 
 for (const [pid, title, elements] of TEMPLATES) {

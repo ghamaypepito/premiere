@@ -133,6 +133,63 @@ const findTemplate = async (type) => {
   return null;
 };
 
+/* ---------- back to top ---------- */
+/* Lives in the footer template rather than the page build, so it reaches every
+   page — including any the client adds later — without republishing all
+   seventeen. Fixed position, so its place in the DOM does not matter.
+
+   Square-cornered, matching the hero cue and the buttons rather than the
+   floating circle the reference site uses. Gold fill with a navy chevron:
+   navy-on-navy disappeared against the footer, which is exactly where a
+   visitor reaches for it. Appears once the
+   visitor is a screen and a half down; hidden for print. */
+const TOTOP = () => Wd('html', {html:\`<style>
+.pfb-top{position:fixed;right:22px;bottom:22px;z-index:120;
+  display:inline-flex;align-items:center;justify-content:center;
+  width:46px;height:46px;padding:0;border:0;cursor:pointer;
+  background:#F2AF11;color:#193153;
+  box-shadow:0 6px 18px rgba(25,49,83,.30);
+  opacity:0;visibility:hidden;transform:translateY(10px);
+  transition:opacity .24s ease-out,transform .24s ease-out,visibility .24s,background-color .2s ease-out}
+.pfb-top.pfb-top--on{opacity:1;visibility:visible;transform:translateY(0)}
+.pfb-top:hover{background:#193153;color:#F2AF11;box-shadow:0 8px 22px rgba(25,49,83,.38)}
+.pfb-top:focus-visible{outline:2px solid #193153;outline-offset:3px}
+.pfb-top svg{display:block}
+@media(max-width:767px){.pfb-top{right:14px;bottom:14px;width:42px;height:42px}}
+@media(prefers-reduced-motion:reduce){.pfb-top{transition:opacity .24s ease-out,visibility .24s}}
+@media print{.pfb-top{display:none}}
+</style>
+<button type="button" class="pfb-top" aria-label="Back to top">
+  <svg width="17" height="11" viewBox="0 0 17 11" fill="none" aria-hidden="true">
+    <path d="M1 10L8.5 2L16 10" stroke="currentColor" stroke-width="1.7" stroke-linecap="square"/>
+  </svg>
+</button>
+<script>
+(function(){
+  var b=document.currentScript.previousElementSibling;
+  if(!b||!b.classList.contains('pfb-top')) b=document.querySelector('.pfb-top');
+  if(!b) return;
+  // Move it onto body so a transformed or overflow-clipped ancestor in the
+  // footer cannot break position:fixed.
+  if(b.parentNode!==document.body) document.body.appendChild(b);
+  var shown=false,tick=false;
+  function sync(){
+    tick=false;
+    var on=(window.pageYOffset||document.documentElement.scrollTop)>window.innerHeight*1.5;
+    if(on!==shown){shown=on;b.classList.toggle('pfb-top--on',on);}
+  }
+  window.addEventListener('scroll',function(){
+    if(!tick){tick=true;window.requestAnimationFrame(sync);}
+  },{passive:true});
+  window.addEventListener('resize',sync,{passive:true});
+  sync();
+  b.addEventListener('click',function(){
+    var quiet=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({top:0,behavior:quiet?'auto':'smooth'});
+  });
+})();
+</script>\`});
+
 /* ---------- save ---------- */
 const headerId = await findTemplate('header');
 const footerId = await findTemplate('footer');
@@ -147,7 +204,8 @@ const ed = await (await fetch('/wp-admin/post.php?post=' + headerId + '&action=e
 const nonce = (ed.match(/"ajax":\\{"url":"[^"]+","nonce":"([a-z0-9]+)"\\}/) || [])[1];
 if (!nonce) return 'no nonce';
 
-const TEMPLATES = [[headerId, 'Premier Header', [HEADER()]], [footerId, 'Premier Footer', [FOOTER()]]];
+const TEMPLATES = [[headerId, 'Premier Header', [HEADER()]],
+                   [footerId, 'Premier Footer', [FOOTER(), TOTOP()]]];
 const out = [];
 
 for (const [pid, title, elements] of TEMPLATES) {
