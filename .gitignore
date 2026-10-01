@@ -50,3 +50,7 @@ package-lock.json
 # Live chrome cached by fetch-live-chrome.js. Regenerate with `npm run chrome`;
 # it is a copy of the live site, not source.
 wp-build/preview/_live/
+
+# Flattened, self-contained copy of the preview. Regenerate with
+# `npm run bundle`; it is derived output, not source.
+wp-build/preview-bundle/

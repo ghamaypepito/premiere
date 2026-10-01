@@ -9,7 +9,8 @@
     "check": "npm run chrome && npm run preview && node wp-build/sync/live-diff.js",
     "diff": "node wp-build/sync/live-diff.js",
     "pull": "node wp-build/sync/from-wxr.js",
-    "compare": "node wp-build/sync/compare.js"
+    "compare": "node wp-build/sync/compare.js",
+    "bundle": "npm run preview && cd wp-build && node make-preview-bundle.js"
   },
   "dependencies": {
     "fast-xml-parser": "^4.5.0"
