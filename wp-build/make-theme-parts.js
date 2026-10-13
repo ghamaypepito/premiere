@@ -94,9 +94,12 @@ const HEADER = () => C({
     /* Three explicit columns. Nesting the menu and the button inside one
        shrinking column let the menu box collapse, and its item list then
        overflowed out of the box and under the button. */
-    C({width:pct(16), width_mobile:pct(50), flex_direction:'row', flex_align_items:'center', flex_gap:gp(0),
-       html_tag:'a', link:lnk(LINK.home)}, [LOGO('logow', 164)]),
-    C({width:pct(63), width_mobile:pct(44), flex_direction:'row', flex_align_items:'center',
+    /* The logo column has to be wide enough for the logo at its set width, or
+       the wordmark is clipped mid-letter. At 16% a 200px logo lost "Family
+       Business Consulting"; the nav column gives up the difference. */
+    C({width:pct(20), width_mobile:pct(50), flex_direction:'row', flex_align_items:'center', flex_gap:gp(0),
+       html_tag:'a', link:lnk(LINK.home)}, [LOGO('logow', 200)]),
+    C({width:pct(59), width_mobile:pct(44), flex_direction:'row', flex_align_items:'center',
        flex_justify_content:'flex-end', flex_wrap:'nowrap', flex_gap:gp(0), css_classes:'pfb-navcol'}, [
       NAVMENU()
     ]),

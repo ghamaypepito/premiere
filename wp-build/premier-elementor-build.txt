@@ -45,7 +45,7 @@ const LINK = { home:'/', who:'/who-we-are/', what:'/what-we-do/', fep:'/what-we-
            Only set this if the Theme Builder footer is gone, or the site
            renders two footers. */
 const FOOTER_ON_PAGES = false;
-const BUILD_ID = 'v28 2026-10-01 23:00 UTC (cue keeps its own background)';
+const BUILD_ID = 'v29 2026-10-13 02:59 UTC (what-we-do title, bigger logo)';
 const TALK = 'Let&rsquo;s Talk about the Future';
 const G='#F2AF11', N='#193153', B='#3E4756', M='#5F6674', W='#FFFFFF', P='#F7F6F2', R='#E6E2D9', L='#DCE3EE';
 const SERIF='Newsreader', SANS='Poppins';
@@ -498,7 +498,7 @@ const home = [
 const what = [
   S({pt:104, pb:96, ptm:40, pbm:48, gap:0}, [
     Row({gap:64, align:'flex-end'}, [
-      Col(60, {gap:24}, [EB('What we do'), H('Family business programs, built around one family.', 'h1', 64, {lh:1.05, m:38, t:48})]),
+      Col(60, {gap:24}, [EB('What we do'), H('How We Help Families in Business', 'h1', 64, {lh:1.05, m:38, t:48})]),
       Col(32, {gap:0}, [T('<p>Achieve generational wealth through holistic and integrated family enterprise programs. Most families begin with Family Enterprise Planning; the other three make it hold.</p>', {size:17})])
     ])
   ]),
