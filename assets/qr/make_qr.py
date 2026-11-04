@@ -21,6 +21,7 @@ CODES = [
     ("luvep-qr-register", "https://luvep.com/education/register", "REGISTER", "luvep.com/education/register"),
     ("luvep-qr-rsvp", "https://luvep.com/education/rsvp", "RSVP  ·  Clark / Davao / Digos", "luvep.com/education/rsvp"),
     ("luvep-qr-website", "https://luvep.com", "VISIT OUR WEBSITE", "luvep.com"),
+    ("luvep-qr-immigration", "https://luvep.com/immigration", "IMMIGRATION", "luvep.com/immigration"),
 ]
 
 FONT_DIR = Path("/usr/share/fonts/opentype/inter")
