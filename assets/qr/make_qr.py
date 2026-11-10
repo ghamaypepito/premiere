@@ -23,6 +23,9 @@ CODES = [
     ("luvep-qr-rsvp", "https://luvep.com/education/rsvp", "RSVP  ·  Clark / Davao / Digos", "luvep.com/education/rsvp", LUVEP_LOGO, GREEN),
     ("luvep-qr-website", "https://luvep.com", "VISIT OUR WEBSITE", "luvep.com", LUVEP_LOGO, GREEN),
     ("luvep-qr-immigration", "https://luvep.com/immigration", "IMMIGRATION", "luvep.com/immigration", IMMIGRATION_LOGO, TEAL),
+    ("luvep-qr-bhutanese-association-nz", "https://luvep.com/register/bhutanese-association-of-new-zealand-fz35m",
+     "BHUTANESE ASSOCIATION OF NEW ZEALAND", "luvep.com/register/bhutanese-association-of-new-zealand-fz35m",
+     LUVEP_LOGO, GREEN),
 ]
 
 FONT_DIR = Path("/usr/share/fonts/opentype/inter")
@@ -33,6 +36,15 @@ def font(name, size):
         return ImageFont.truetype(str(FONT_DIR / name), size)
     except OSError:
         return ImageFont.load_default()
+
+
+def fitted_font(draw, text, name, size, max_width):
+    """Largest font up to `size` whose rendering of `text` fits in `max_width`."""
+    f = font(name, size)
+    while size > 20 and draw.textlength(text, font=f) > max_width:
+        size -= 2
+        f = font(name, size)
+    return f
 
 
 def prepared_logo(path):
@@ -86,8 +98,8 @@ def make_card(qr_img, title, caption, colour):
     card = Image.new("RGB", (w, qr_img.height + top + bottom), WHITE)
     card.paste(qr_img, (pad, top))
     d = ImageDraw.Draw(card)
-    f_title = font("Inter-Bold.otf", 64)
-    f_cap = font("Inter-Medium.otf", 44)
+    f_title = fitted_font(d, title, "Inter-Bold.otf", 64, w - pad * 2)
+    f_cap = fitted_font(d, caption, "Inter-Medium.otf", 44, w - pad * 2)
     d.text((w // 2, top // 2 + 10), title, font=f_title, fill=colour, anchor="mm")
     d.text((w // 2, top + qr_img.height + bottom // 2 - 10), caption, font=f_cap, fill=CHARCOAL, anchor="mm")
     return card
