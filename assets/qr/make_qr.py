@@ -26,6 +26,9 @@ CODES = [
     ("luvep-qr-bhutanese-association-nz", "https://luvep.com/register/bhutanese-association-of-new-zealand-fz35m",
      "BHUTANESE ASSOCIATION OF NEW ZEALAND", "luvep.com/register/bhutanese-association-of-new-zealand-fz35m",
      LUVEP_LOGO, GREEN),
+    ("luvep-qr-bhutanese-association-nz-dimmigration", "https://luvep.com/register/bhutanese-association-of-new-zealand-fz35m",
+     "BHUTANESE ASSOCIATION OF NEW ZEALAND", "luvep.com/register/bhutanese-association-of-new-zealand-fz35m",
+     IMMIGRATION_LOGO, TEAL),
 ]
 
 FONT_DIR = Path("/usr/share/fonts/opentype/inter")
