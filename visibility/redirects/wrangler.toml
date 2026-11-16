@@ -1,0 +1,7 @@
+# Tiny edge-redirect Worker for premierfamilybusiness.com (Workers free plan).
+name = "premier-redirects"
+main = "index.js"
+compatibility_date = "2025-09-01"
+workers_dev = false
+preview_urls = false
+routes = [{ pattern = "premierfamilybusiness.com/how-we-help-families-in-business*", zone_name = "premierfamilybusiness.com" }]

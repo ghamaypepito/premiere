@@ -22,6 +22,7 @@ The team's control room for **https://premierfamilybusiness.com**, running on **
 | Schedules | Cron Triggers: `*/5 * * * *` (uptime + one page audit), `0 22 * * *` (WordPress status, pruning; 06:00 Manila) |
 | Sign-in | Cloudflare Access app "Premier Visibility" (email one-time PIN) on `/admin` and `/api`, allowing **ghamaypepito@gmail.com**. Everything else is public. |
 | Domain | Workers custom domain `visibility.premierfamilybusiness.com` (no `*.workers.dev` address) |
+| Edge redirects | Separate tiny Worker `premier-redirects` (`redirects/`) on `premierfamilybusiness.com/how-we-help-families-in-business*`, redirecting old URLs WordPress no longer serves. Deploy with `npx wrangler deploy --config redirects/wrangler.toml`. |
 
 To stay inside the free plan's CPU limit per request, page audits run one or two at a time (the 5-minute cron audits the page checked longest ago; "Check all live pages" loops in small batches), and long-range uptime comes from a daily rollup table rather than raw checks.
 
