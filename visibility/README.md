@@ -1,6 +1,6 @@
 # Premier Visibility
 
-The team's control room for the Premier WordPress site, hosted on **Hostinger** at **https://premierfamilybusiness.com/visibility/**. It tracks four things:
+The team's control room for the Premier WordPress site, hosted on **Hostinger** at **https://visibility.premierfamilybusiness.com** (or, without a subdomain, at `premierfamilybusiness.com/visibility/`). It tracks four things:
 
 | Area | What it records |
 |---|---|
@@ -30,20 +30,26 @@ visibility/
 
 ## Install on Hostinger (about 30 minutes)
 
-### 1. The folder
-The app lives in a `visibility` folder inside the WordPress site's `public_html`, so its address is **https://premierfamilybusiness.com/visibility/**. No subdomain or DNS change is needed. WordPress ignores real folders, so the site is unaffected.
+### 1. The subdomain (hPanel + Cloudflare)
+The domain's DNS is on Cloudflare, so the subdomain needs a step in each.
 
-hPanel → **Websites** → premierfamilybusiness.com → **Files → File Manager** → open `public_html` → **New folder** → `visibility`.
+1. **hPanel** → Websites → premierfamilybusiness.com → **Domains → Subdomains** → create `visibility`. Note the folder hPanel makes for it (usually `public_html/visibility`).
+2. **hPanel** → the same site's **Dashboard** → note the website's **IP address** (also under Advanced → DNS Zone, or Hosting → Details).
+3. **Cloudflare** → premierfamilybusiness.com → **DNS → Records → Add record**: Type `A`, Name `visibility`, IPv4 address = the IP from step 2, Proxy status **DNS only (grey cloud)** for now.
+4. **hPanel** → **Security → SSL** → install the free SSL certificate for `visibility.premierfamilybusiness.com`. It can take up to an hour.
+5. Once https works, switch the Cloudflare record to **Proxied (orange cloud)**. Keep SSL/TLS mode **Full (strict)** (or Full).
+
+No subdomain? Upload to `public_html/visibility/` and use `https://premierfamilybusiness.com/visibility/` instead; the app works in a folder without changes.
 
 ### 2. Create the database
 hPanel → **Databases → Management** → create a MySQL database and user (e.g. `u123456789_visibility`). Keep the name, user and password handy. The tables are created automatically on first use.
 
 ### 3. Upload the app
-1. hPanel → **Files → File Manager** → open `public_html/visibility`.
+1. hPanel → **Files → File Manager** → open the subdomain's folder from step 1.
 2. Upload `dist/premier-visibility-hostinger.zip`, right-click it → **Extract** into that folder. `index.html`, `setup.php`, `api/` and `app/` must sit directly in it.
 
 ### 4. Run the setup page
-Open **https://premierfamilybusiness.com/visibility/**. It sends you to a one-time setup form: enter the database name, user and password from step 2, your name, email and password, and optional alert emails or a Slack webhook. It writes `app/config.php` with freshly generated secrets, creates the tables and your admin account, then shows your cron commands and the WordPress connector key. The page refuses to run again once setup is done, so finish it straight after uploading.
+Open **https://visibility.premierfamilybusiness.com**. It sends you to a one-time setup form: enter the database name, user and password from step 2, your name, email and password, and optional alert emails or a Slack webhook. It writes `app/config.php` with freshly generated secrets, creates the tables and your admin account, then shows your cron commands and the WordPress connector key. The page refuses to run again once setup is done, so finish it straight after uploading.
 
 To change settings later, edit `app/config.php` in File Manager (`config.sample.php` documents every option). Once signed in:
 - add the team (Settings → Team). **Editors** edit briefs and log work, **viewers** read only.
@@ -96,4 +102,4 @@ The SEO/AEO scoring rules live in `public/js/rules.js` and run in the browser; t
 - Admins can download all data as JSON from Settings. Hostinger's daily backups include the database.
 
 ## Cloudflare
-The site runs behind Cloudflare. The API answers with `Cache-Control: no-store` and PHP isn't cached by default, so nothing extra is needed. After uploading a new version, purge the Cloudflare cache (or just `/visibility/*`) so browsers get the new JavaScript and CSS.
+The site runs behind Cloudflare. The API answers with `Cache-Control: no-store` and PHP isn't cached by default, so nothing extra is needed. After uploading a new version, purge the Cloudflare cache so browsers get the new JavaScript and CSS.
