@@ -7,8 +7,8 @@ define('DB_USER', 'u123456789_visibility');
 define('DB_PASS', 'the-database-password');
 
 // The WordPress site to watch, and where this app lives.
-define('SITE_URL', 'https://white-cassowary-123006.hostingersite.com');
-define('APP_URL', 'https://visibility.white-cassowary-123006.hostingersite.com');
+define('SITE_URL', 'https://premierfamilybusiness.com');
+define('APP_URL', 'https://visibility.premierfamilybusiness.com');
 
 // Long random strings. Generate at https://1password.com/password-generator (40+ characters, letters and digits).
 define('SESSION_SECRET', 'replace-with-40-plus-random-characters');

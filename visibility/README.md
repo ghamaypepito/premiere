@@ -31,12 +31,10 @@ visibility/
 ## Install on Hostinger (about 30 minutes)
 
 ### 1. Create the subdomain
-hPanel → **Websites** → the site's **Dashboard** → **Domains → Subdomains** → create `visibility`.
+hPanel → **Websites** → the site's **Dashboard** → **Domains → Subdomains** → create `visibility` on **premierfamilybusiness.com**, giving `https://visibility.premierfamilybusiness.com`.
 Note the folder hPanel creates for it (for example `public_html/visibility`).
 
-> **Temporary domains:** `white-cassowary-123006.hostingersite.com` is a Hostinger temporary domain. If hPanel doesn't offer subdomains for it, pick one of these:
-> - **Connect the real domain first** and create `visibility.premierfamilybusiness.com`. This is the cleaner long-term option.
-> - **Use a folder instead:** upload to `public_html/visibility/` so the app lives at `https://white-cassowary-123006.hostingersite.com/visibility/`. The app works in a subfolder without changes.
+> **DNS through Cloudflare:** premierfamilybusiness.com is served through Cloudflare. If its DNS is managed in Cloudflare, also add a record there: `A visibility` pointing to the Hostinger server IP shown in hPanel, or the `CNAME` hPanel gives you. If a subdomain isn't possible, upload to `public_html/visibility/` instead and use `https://premierfamilybusiness.com/visibility/`. The app works in a subfolder without changes.
 
 Then hPanel → **Security → SSL** and make sure the subdomain has a certificate (Hostinger's free SSL, usually automatic).
 
@@ -48,7 +46,7 @@ hPanel → **Databases → Management** → create a MySQL database and user (e.
 2. Upload `dist/premier-visibility-hostinger.zip`, right-click → **Extract** into that folder. `index.html` must sit directly in it, next to `api/` and `app/`.
 3. In `app/`, copy `config.sample.php` to **`config.php`** and fill it in:
    - `DB_DSN`, `DB_USER`, `DB_PASS`: the database from step 2. The host is `localhost`.
-   - `SITE_URL`: `https://white-cassowary-123006.hostingersite.com` (change it to the real domain at launch)
+   - `SITE_URL`: `https://premierfamilybusiness.com`
    - `APP_URL`: the address of this app
    - `SESSION_SECRET` and `CRON_SECRET`: long random strings
    - `ADMIN_EMAIL` / `ADMIN_PASSWORD` / `ADMIN_NAME`: the first admin account
@@ -83,9 +81,8 @@ Settings → Alerts shows when each job last ran, so you can confirm they're wor
 
 The connector only reads: it reports versions and pending updates and never installs or changes anything. Requests without the key are refused.
 
-### 7. At launch
-When the real domain goes live, change `SITE_URL` in `config.php`, and edit the four monitors' URLs under Uptime. The staging site is currently set to `noindex, nofollow`, so every page will show a noindex warning until then. That's expected on staging and must be switched off at launch: WordPress → Settings → Reading → untick "Discourage search engines".
-
+### 7. Check robots.txt first
+Live checks on 16 November 2026 found that `https://premierfamilybusiness.com/robots.txt` ends with `User-agent: Googlebot / Disallow: /` and `User-agent: * / Disallow: /`, which stops Google from crawling the whole site. Remove those lines in WordPress (Settings → Reading: untick "Discourage search engines"; Rank Math → General Settings → Edit robots.txt; or a physical `robots.txt` in `public_html`), purge the Cloudflare cache, and request a recrawl in Search Console.
 ---
 
 ## Updating the app
