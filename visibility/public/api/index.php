@@ -6,6 +6,13 @@ header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store');
 header('X-Robots-Tag: noindex, nofollow');
 
+// Not configured yet: point the browser at the one-time setup page.
+if (!is_file(__DIR__ . '/../app/config.php') && !getenv('DB_DSN')) {
+    http_response_code(503);
+    echo '{"error":"Premier Visibility isn\'t set up yet.","setup":true}';
+    exit;
+}
+
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 $path = '/' . ltrim((string) ($_GET['r'] ?? ''), '/');
 $body = [];

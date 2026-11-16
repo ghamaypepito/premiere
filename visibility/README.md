@@ -39,20 +39,13 @@ hPanel → **Websites** → premierfamilybusiness.com → **Files → File Manag
 hPanel → **Databases → Management** → create a MySQL database and user (e.g. `u123456789_visibility`). Keep the name, user and password handy. The tables are created automatically on first use.
 
 ### 3. Upload the app
-1. In File Manager, open `public_html/visibility`.
-2. Upload `dist/premier-visibility-hostinger.zip`, right-click → **Extract** into that folder. `index.html` must sit directly in it, next to `api/` and `app/`.
-3. In `app/`, copy `config.sample.php` to **`config.php`** and fill it in:
-   - `DB_DSN`, `DB_USER`, `DB_PASS`: the database from step 2. The host is `localhost`.
-   - `SITE_URL`: `https://premierfamilybusiness.com`
-   - `APP_URL`: `https://premierfamilybusiness.com/visibility/`
-   - `SESSION_SECRET` and `CRON_SECRET`: long random strings
-   - `ADMIN_EMAIL` / `ADMIN_PASSWORD` / `ADMIN_NAME`: the first admin account
-   - Alerts: `SLACK_WEBHOOK_URL`, and/or `ALERT_EMAILS` + `RESEND_API_KEY` (most reliable), or `USE_PHP_MAIL` = `true` to send through Hostinger's mail
-4. Make sure the site uses **PHP 8.1 or newer**: hPanel → **Advanced → PHP Configuration**.
+1. hPanel → **Files → File Manager** → open `public_html/visibility`.
+2. Upload `dist/premier-visibility-hostinger.zip`, right-click it → **Extract** into that folder. `index.html`, `setup.php`, `api/` and `app/` must sit directly in it.
 
-### 4. First sign-in
-Open the app and sign in with the admin email and password from `config.php`. Then:
-- change your password (Settings)
+### 4. Run the setup page
+Open **https://premierfamilybusiness.com/visibility/**. It sends you to a one-time setup form: enter the database name, user and password from step 2, your name, email and password, and optional alert emails or a Slack webhook. It writes `app/config.php` with freshly generated secrets, creates the tables and your admin account, then shows your cron commands and the WordPress connector key. The page refuses to run again once setup is done, so finish it straight after uploading.
+
+To change settings later, edit `app/config.php` in File Manager (`config.sample.php` documents every option). Once signed in:
 - add the team (Settings → Team). **Editors** edit briefs and log work, **viewers** read only.
 - press **Send test alert**
 - press **Run the daily check now** to take the first live snapshots

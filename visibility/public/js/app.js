@@ -10,6 +10,7 @@ let me = null, dirty = false, badges = { incidents: 0, updates: 0 };
 async function api(method, path, body) {
   const r = await fetch("api/index.php?r=" + encodeURIComponent(path), { method, headers: body ? { "content-type": "application/json" } : {}, body: body ? JSON.stringify(body) : undefined, credentials: "same-origin" });
   let data = null; try { data = await r.json(); } catch {}
+  if (r.status === 503 && data?.setup) { location.href = "setup.php"; throw new Error("signed out"); }
   if (r.status === 401 && path !== "/login") { me = null; renderLogin(); throw new Error("signed out"); }
   if (!r.ok) { const e = new Error(data?.error || `Request failed (${r.status})`); e.status = r.status; e.data = data; throw e; }
   return data;

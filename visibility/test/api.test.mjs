@@ -30,7 +30,7 @@ before(async () => {
   });
   await new Promise((r) => site.listen(0, "127.0.0.1", r));
   tmp = mkdtempSync(join(tmpdir(), "pv-"));
-  env = { ...process.env, DB_DSN: `sqlite:${join(tmp, "t.db")}`, SESSION_SECRET: "s".repeat(32), ADMIN_EMAIL: "jon@example.com", ADMIN_PASSWORD: "correct-horse-battery",
+  env = { ...process.env, DB_DSN: process.env.TEST_DB_DSN || `sqlite:${join(tmp, "t.db")}`, DB_USER: process.env.TEST_DB_USER || "", DB_PASS: process.env.TEST_DB_PASS || "", SESSION_SECRET: "s".repeat(32), ADMIN_EMAIL: "jon@example.com", ADMIN_PASSWORD: "correct-horse-battery",
     SITE_URL: `http://127.0.0.1:${site.address().port}`, WP_CONNECTOR_KEY: KEY, CRON_SECRET: "c".repeat(20) };
   const port = 3300 + Math.floor(Math.random() * 500);
   base = `http://127.0.0.1:${port}`;
