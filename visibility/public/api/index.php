@@ -27,7 +27,7 @@ try {
     error_log('Premier Visibility: ' . $e->getMessage() . ' @ ' . $e->getFile() . ':' . $e->getLine());
     $status = 500;
     $out = ['error' => str_contains($e->getMessage(), 'config') || str_contains($e->getMessage(), 'SECRET') || str_contains($e->getMessage(), 'DB_DSN')
-        ? $e->getMessage() : 'Something went wrong on the server. Check the PHP error log in hPanel.'];
+        ? $e->getMessage() : 'Something went wrong on the server. Check the PHP error log in your hosting panel.'];
 }
 http_response_code($status);
 echo json_encode($out, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);

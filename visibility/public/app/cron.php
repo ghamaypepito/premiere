@@ -1,5 +1,5 @@
 <?php
-// Scheduled jobs for hPanel > Advanced > Cron Jobs:
+// Scheduled jobs for cPanel > Cron Jobs (or hPanel > Advanced > Cron Jobs):
 //   every 5 minutes:  php /home/USER/domains/DOMAIN/public_html/visibility/app/cron.php uptime
 //   daily:            php /home/USER/domains/DOMAIN/public_html/visibility/app/cron.php daily
 if (PHP_SAPI !== 'cli') { http_response_code(403); exit; }

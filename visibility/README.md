@@ -1,6 +1,6 @@
 # Premier Visibility
 
-The team's control room for the Premier WordPress site, hosted on **Hostinger** at **https://visibility.premierfamilybusiness.com** (or, without a subdomain, at `premierfamilybusiness.com/visibility/`). It tracks four things:
+The team's control room for the Premier WordPress site, hosted on the site's **cPanel** hosting (or Hostinger) at **https://visibility.premierfamilybusiness.com** (or, without a subdomain, at `premierfamilybusiness.com/visibility/`). It tracks four things:
 
 | Area | What it records |
 |---|---|
@@ -11,7 +11,7 @@ The team's control room for the Premier WordPress site, hosted on **Hostinger** 
 
 Alerts go to **Slack** and/or **email**, and every attempt is logged under Settings.
 
-It is plain **PHP 8.1+ and MySQL**, so it runs on any Hostinger web or WordPress hosting plan. It needs no Node.js and no build step on the server.
+It is plain **PHP 8.1+ and MySQL**, so it runs on cPanel hosting and on any Hostinger web or WordPress plan. It needs no Node.js and no build step on the server.
 
 ```
 visibility/
@@ -28,7 +28,39 @@ visibility/
 
 ---
 
-## Install on Hostinger (about 30 minutes)
+## Install on cPanel (the live site, about 30 minutes)
+
+premierfamilybusiness.com runs on cPanel hosting behind Cloudflare.
+
+### 1. Subdomain (cPanel)
+cPanel → **Domains** (or **Subdomains** on older cPanel) → **Create A New Domain** → `visibility.premierfamilybusiness.com`. Untick "Share document root" if offered, and note the **Document Root** it creates (for example `/home/CPANELUSER/visibility.premierfamilybusiness.com`).
+
+### 2. DNS (Cloudflare)
+cPanel's home page shows the server's **Shared IP Address** in the right-hand panel. In Cloudflare → premierfamilybusiness.com → **DNS → Records → Add record**: Type `A`, Name `visibility`, IPv4 = that IP, Proxy status **DNS only (grey cloud)** until SSL is issued.
+
+### 3. SSL (cPanel)
+cPanel → **SSL/TLS Status** → tick `visibility.premierfamilybusiness.com` → **Run AutoSSL**. When it shows a valid certificate, switch the Cloudflare record to **Proxied (orange cloud)** and keep SSL/TLS mode **Full (strict)**.
+
+### 4. PHP version (cPanel)
+cPanel → **MultiPHP Manager** (or **Select PHP Version**) → set the subdomain to **PHP 8.1 or newer** with the `pdo_mysql` and `curl` extensions on (they usually are).
+
+### 5. Database (cPanel)
+cPanel → **MySQL Database Wizard**: create a database (e.g. `visibility`), a user with a strong password, and on the privileges step tick **ALL PRIVILEGES**. cPanel prefixes both with your username, e.g. `CPANELUSER_visibility`. Use the full prefixed names in the setup form.
+
+### 6. Upload
+cPanel → **File Manager** → open the subdomain's Document Root → **Upload** `dist/premier-visibility-hostinger.zip` → right-click → **Extract**. `index.html`, `setup.php`, `api/` and `app/` must sit directly in the Document Root.
+
+### 7. Setup page
+Open **https://visibility.premierfamilybusiness.com** and complete the one-time setup form (database, your login, alerts). It writes `app/config.php`, creates the tables and your admin account, and shows the cron commands and the WordPress connector key.
+
+### 8. Cron jobs (cPanel)
+cPanel → **Cron Jobs** → add the two commands the setup page showed you: one with Common Settings **Once Per Five Minutes** (`uptime`), one **Once Per Day** (`daily`). They look like `/usr/local/bin/php /home/CPANELUSER/visibility.premierfamilybusiness.com/app/cron.php uptime >/dev/null 2>&1`.
+
+Then follow **WordPress connector** and **Check robots.txt first** below (steps 6 and 7 of the Hostinger section apply to cPanel too).
+
+---
+
+## Install on Hostinger hPanel (alternative, about 30 minutes)
 
 ### 1. The subdomain (hPanel + Cloudflare)
 The domain's DNS is on Cloudflare, so the subdomain needs a step in each.

@@ -1,7 +1,7 @@
 <?php
 // Copy this file to config.php (same folder) and fill it in. config.php is never served to browsers.
 
-// MySQL database from hPanel > Databases > Management. The host is usually "localhost".
+// MySQL database from cPanel > MySQL Databases (or hPanel > Databases). The host is usually "localhost".
 define('DB_DSN', 'mysql:host=localhost;dbname=u123456789_visibility;charset=utf8mb4');
 define('DB_USER', 'u123456789_visibility');
 define('DB_PASS', 'the-database-password');

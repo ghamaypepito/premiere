@@ -36,7 +36,7 @@ if (!$installed && ($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     $alertEmails = trim((string) ($_POST['alert_emails'] ?? ''));
     $slack = trim((string) ($_POST['slack'] ?? ''));
 
-    if ($dbName === '' || $dbUser === '') $errors[] = 'Enter the database name and user from hPanel → Databases.';
+    if ($dbName === '' || $dbUser === '') $errors[] = 'Enter the database name and user (cPanel → MySQL Databases).';
     if (!preg_match('#^https?://[^/\s]+$#', $siteUrl)) $errors[] = 'The website address should look like https://premierfamilybusiness.com';
     if ($name === '') $errors[] = 'Enter your name.';
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'Enter a valid email for your login.';
@@ -47,7 +47,7 @@ if (!$installed && ($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     $dsn = 'mysql:host=' . $dbHost . ';dbname=' . $dbName . ';charset=utf8mb4';
     if (!$errors) {
         try { new PDO($dsn, $dbUser, $dbPass, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]); }
-        catch (Throwable $e) { $errors[] = "Couldn't connect to the database. Check the name, user and password in hPanel → Databases. (" . $e->getMessage() . ')'; }
+        catch (Throwable $e) { $errors[] = "Couldn't connect to the database. Check the name, user and password, and that the user has ALL PRIVILEGES on the database (cPanel → MySQL Databases). (" . $e->getMessage() . ')'; }
     }
     if (!$errors) {
         $cfg = [
@@ -72,7 +72,10 @@ if (!$installed && ($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
                     run("INSERT INTO users (email,name,role,pass_hash,failed_logins,created_at) VALUES (?,?,'admin',?,0,?)", [$email, $name, password_hash($pass, PASSWORD_DEFAULT), iso()]);
                 }
                 log_event('system', "$name set up Premier Visibility");
-                $done = ['cron' => __DIR__ . '/app/cron.php', 'key' => $cfg['WP_CONNECTOR_KEY']];
+                // CLI PHP path for cron: cPanel usually has /usr/local/bin/php, Hostinger /usr/bin/php.
+                $phpBin = 'php';
+                foreach (['/usr/local/bin/php', '/usr/bin/php'] as $cand) if (@is_executable($cand)) { $phpBin = $cand; break; }
+                $done = ['cron' => __DIR__ . '/app/cron.php', 'php' => $phpBin, 'key' => $cfg['WP_CONNECTOR_KEY']];
                 unset($_SESSION['setup_token']);
             } catch (Throwable $e) {
                 @unlink($configFile);
@@ -94,25 +97,25 @@ $token = $_SESSION['setup_token'] ?? '';
 <?php if ($done): ?>
   <div class="phead"><div><span class="eyebrow">Setup complete</span><h1>You're <em>in.</em></h1><p>The database tables, the 20 starting page briefs and the uptime monitors are ready.</p></div></div>
   <section class="card step"><header><h3><span class="no">01</span>Sign in</h3></header><p style="margin:0"><a class="btn" href="./">Open Premier Visibility</a></p></section>
-  <section class="card step"><header><h3><span class="no">02</span>Add the two cron jobs</h3><span>hPanel → Advanced → Cron Jobs → Custom</span></header>
-    <div class="field"><span class="lbl">Every 5 minutes</span><pre class="code">/usr/bin/php <?= $h($done['cron']) ?> uptime</pre></div>
-    <div class="field"><span class="lbl">Once a day (e.g. 22:00)</span><pre class="code">/usr/bin/php <?= $h($done['cron']) ?> daily</pre></div></section>
+  <section class="card step"><header><h3><span class="no">02</span>Add the two cron jobs</h3><span>cPanel → Cron Jobs (or hPanel → Advanced → Cron Jobs)</span></header>
+    <div class="field"><span class="lbl">Every 5 minutes</span><pre class="code"><?= $h($done['php']) ?> <?= $h($done['cron']) ?> uptime &gt;/dev/null 2&gt;&amp;1</pre></div>
+    <div class="field"><span class="lbl">Once a day (e.g. 22:00)</span><pre class="code"><?= $h($done['php']) ?> <?= $h($done['cron']) ?> daily &gt;/dev/null 2&gt;&amp;1</pre><span class="hint">The &gt;/dev/null part stops cPanel emailing you after every run.</span></div></section>
   <section class="card step"><header><h3><span class="no">03</span>Connect WordPress (plugin updates)</h3></header>
     <p style="margin:0">Install the <b>Premier Visibility Connector</b> plugin, then add this line to the site's <code>wp-config.php</code>, above "That's all, stop editing". This key is shown only once.</p>
     <pre class="code">define( 'PREMIER_VISIBILITY_KEY', '<?= $h($done['key']) ?>' );</pre></section>
 <?php elseif ($installed): ?>
-  <div class="phead"><div><span class="eyebrow">Premier Visibility</span><h1>Already <em>set up.</em></h1><p>This page only works before the app is configured. To change settings, edit <code>app/config.php</code> in hPanel's File Manager.</p></div></div>
+  <div class="phead"><div><span class="eyebrow">Premier Visibility</span><h1>Already <em>set up.</em></h1><p>This page only works before the app is configured. To change settings, edit <code>app/config.php</code> in your hosting File Manager.</p></div></div>
   <p><a class="btn" href="./">Open Premier Visibility</a></p>
 <?php else: ?>
   <div class="phead"><div><span class="eyebrow">One-time setup</span><h1>Set up <em>Premier Visibility</em></h1><p>Fill this in once. The app writes its own configuration, creates its secrets and builds the database tables. Finish it now: this page closes itself as soon as setup is done.</p></div></div>
   <?php if ($errors): ?><div class="banner bad"><ul class="errs"><?php foreach ($errors as $e) echo '<li>' . $h($e) . '</li>'; ?></ul></div><?php endif; ?>
   <form method="post" autocomplete="off" style="display:flex;flex-direction:column;gap:24px">
     <input type="hidden" name="token" value="<?= $h($token) ?>">
-    <section class="card step"><header><h3><span class="no">01</span>Database</h3><span>From hPanel → Databases → Management</span></header><div class="grid">
+    <section class="card step"><header><h3><span class="no">01</span>Database</h3><span>From cPanel → MySQL Databases (names start with your cPanel username)</span></header><div class="grid">
       <div class="field"><label for="db_name">Database name</label><input type="text" id="db_name" name="db_name" required placeholder="u123456789_visibility" value="<?= $v('db_name') ?>"></div>
       <div class="field"><label for="db_user">Database user</label><input type="text" id="db_user" name="db_user" required placeholder="u123456789_visibility" value="<?= $v('db_user') ?>"></div>
       <div class="field"><label for="db_pass">Database password</label><input type="password" id="db_pass" name="db_pass" autocomplete="new-password"></div>
-      <div class="field"><label for="db_host">Database host</label><input type="text" id="db_host" name="db_host" value="<?= $v('db_host', 'localhost') ?>"><span class="hint">Leave as localhost unless hPanel shows another.</span></div>
+      <div class="field"><label for="db_host">Database host</label><input type="text" id="db_host" name="db_host" value="<?= $v('db_host', 'localhost') ?>"><span class="hint">Leave as localhost unless your host says otherwise.</span></div>
     </div></section>
     <section class="card step"><header><h3><span class="no">02</span>Your admin account</h3></header><div class="grid">
       <div class="field"><label for="admin_name">Your name</label><input type="text" id="admin_name" name="admin_name" required value="<?= $v('admin_name') ?>"></div>
