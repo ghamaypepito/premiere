@@ -8,10 +8,9 @@ let me = null, dirty = false, badges = { incidents: 0, updates: 0 };
 
 /* ---------- utilities ---------- */
 async function api(method, path, body) {
-  const r = await fetch("api/index.php?r=" + encodeURIComponent(path), { method, headers: body ? { "content-type": "application/json" } : {}, body: body ? JSON.stringify(body) : undefined, credentials: "same-origin" });
+  const r = await fetch("api" + path, { method, headers: body ? { "content-type": "application/json" } : {}, body: body ? JSON.stringify(body) : undefined, credentials: "same-origin" });
   let data = null; try { data = await r.json(); } catch {}
-  if (r.status === 503 && data?.setup) { location.href = "setup.php"; throw new Error("signed out"); }
-  if (r.status === 401 && path !== "/login") { me = null; renderLogin(); throw new Error("signed out"); }
+  if (r.status === 401) { me = null; renderLogin(); throw new Error("signed out"); }
   if (!r.ok) { const e = new Error(data?.error || `Request failed (${r.status})`); e.status = r.status; e.data = data; throw e; }
   return data;
 }
@@ -33,25 +32,17 @@ const isAdmin = () => me && me.role === "admin";
 const busy = async (btn, fn) => { const txt = btn.textContent; btn.disabled = true; btn.textContent = "Working…"; try { return await fn(); } catch (e) { if (e.message !== "signed out") toast(e.message); } finally { btn.disabled = false; btn.textContent = txt; } };
 
 /* ---------- shell ---------- */
-function renderLogin(err = "") {
+function renderLogin() {
   app.innerHTML = `<div class="login"><div class="pane">
     <img src="img/premier-logo-navy.png" alt="Premier Family Business Consulting" width="174" height="30">
-    <form id="loginForm" novalidate>
+    <div style="display:flex;flex-direction:column;gap:18px;max-width:420px">
       <span class="eyebrow">Premier Visibility</span>
       <h1>Every page, <em>accounted for.</em></h1>
-      <p class="lede">SEO and AEO briefs, live-page changes, uptime and updates for the Premier website, in one place for the team.</p>
-      <div class="field"><label for="lEmail">Email</label><input type="email" id="lEmail" autocomplete="username" required></div>
-      <div class="field"><label for="lPass">Password</label><input type="password" id="lPass" autocomplete="current-password" required></div>
-      <p class="err" id="lErr" role="alert">${esc(err)}</p>
-      <button class="btn" type="submit">Sign in</button>
-    </form>
-    <p class="legal">Team access only. Ask an admin for an account.</p></div>
+      <p class="lede">Your sign-in has expired. Sign in again with your Premier email through Cloudflare Access.</p>
+      <a class="btn" href="./" style="align-self:flex-start;padding:16px 28px;font-size:15px">Sign in</a>
+    </div>
+    <p class="legal">Team access only. The public report is at <a href="report">/report</a>.</p></div>
     <figure class="photo" style="margin:0"><figcaption><span>Premier Family Business Consulting</span>Uniting families in business, across generations.</figcaption></figure></div>`;
-  document.getElementById("loginForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    try { const r = await api("POST", "/login", { email: lEmail.value, password: lPass.value }); me = r.user; boot(); }
-    catch (x) { document.getElementById("lErr").textContent = x.message; }
-  });
 }
 
 const NAV = [["#/", "Dashboard"], ["#/pages", "Pages"], ["#/activity", "Activity"], null, ["#/uptime", "Uptime", "incidents"], ["#/maintenance", "Maintenance"], ["#/plugins", "Plugins", "updates"], null, ["#/playbook", "Playbook"], ["#/settings", "Settings"]];
@@ -65,14 +56,14 @@ function shell() {
         <details class="who" id="who"><summary aria-label="Account"><span class="nm">${esc(me.name)}</span><span class="avatar" aria-hidden="true">${esc(initials(me.name))}</span></summary>
           <div class="menu"><div><b>${esc(me.name)}</b><div class="small muted">${esc(me.email)} · ${esc(me.role)}</div></div>
           <a class="link" href="${esc(me.site)}" target="_blank" rel="noopener">Open ${esc(host)} ↗</a>
-          <a class="link" href="#/settings">Settings and password</a>
-          <button class="btn ghost sm" type="button" id="logoutBtn">Sign out</button></div></details>
+          <a class="link" href="report" target="_blank" rel="noopener">Public visibility report ↗</a>
+          <a class="link" href="#/settings">Settings</a>
+          <a class="btn ghost sm" href="/cdn-cgi/access/logout">Sign out</a></div></details>
         <button type="button" class="menuBtn" id="menuBtn" aria-controls="nav" aria-expanded="false">Menu</button>
       </div></div></header>
     <main class="content" id="view"></main>
     <footer class="foot"><span>Premier Family Business Consulting · Visibility</span><span>Watching <a href="${esc(me.site)}" target="_blank" rel="noopener">${esc(host)}</a></span></footer>`;
   renderNav();
-  document.getElementById("logoutBtn").onclick = async () => { await api("POST", "/logout"); me = null; renderLogin(); };
   const nav = document.getElementById("nav"), mb = document.getElementById("menuBtn"), who = document.getElementById("who");
   mb.onclick = () => { const o = nav.classList.toggle("open"); mb.setAttribute("aria-expanded", o); };
   nav.addEventListener("click", (e) => { if (e.target.closest("a")) { nav.classList.remove("open"); mb.setAttribute("aria-expanded", "false"); } });
@@ -132,9 +123,8 @@ async function vDashboard() {
   const liveIssues = pages.filter((p) => p.live_at && (p.live_status >= 400 || !p.live_status || p.live_noindex === "true")).length;
   const home = d.monitors[0];
   const down = d.monitors.filter((m) => m.state === "down");
-  const ssl = d.ssl;
   view().innerHTML = `
-  ${head("Overview", "Site <em>visibility</em>", `Brief quality, live SEO signals, uptime and updates for ${esc(new URL(me.site).hostname)}.`)}
+  ${head("Overview", "Site <em>visibility</em>", `Brief quality, live SEO signals, uptime and updates for ${esc(new URL(me.site).hostname)}.`, `<a class="btn ghost" href="report" target="_blank" rel="noopener">Public report ↗</a>`)}
   ${down.length ? `<div class="banner bad"><span class="dot down"></span><b>${down.map((m) => esc(m.name)).join(", ")} ${down.length > 1 ? "are" : "is"} down.</b> ${esc(down[0].last_error)} · <a href="#/uptime">See uptime</a></div>` : ""}
   ${d.nextWindow ? `<div class="banner info"><b>Maintenance ${new Date(d.nextWindow.starts_at) <= new Date() ? "in progress" : "scheduled"}:</b> ${esc(d.nextWindow.title)} · ${when(d.nextWindow.starts_at)} to ${when(d.nextWindow.ends_at)}. Alerts are muted during the window.</div>` : ""}
   <div class="kpis">
@@ -142,7 +132,7 @@ async function vDashboard() {
     <a class="kpi" href="#/pages"><span class="l">Average brief score</span><span class="v">${avg}<small>%</small></span><span class="s">${ready} of ${pages.length} pages ready</span></a>
     <a class="kpi ${liveIssues ? "warn" : ""}" href="#/pages"><span class="l">Live SEO issues</span><span class="v">${liveIssues}</span><span class="s">pages with errors or noindex</span></a>
     <a class="kpi ${d.wp && d.wp.pending ? "warn" : ""}" href="#/plugins"><span class="l">Pending updates</span><span class="v">${d.wp ? d.wp.pending + (d.wp.core?.update ? 1 : 0) + (d.wp.themeUpdate ? 1 : 0) : "–"}</span><span class="s">${d.wp ? `checked ${ago(d.wp.at)}` : "connector not set up"}</span></a>
-    <a class="kpi ${ssl?.daysLeft != null && ssl.daysLeft <= 21 ? "warn" : ""}" href="#/uptime"><span class="l">SSL certificate</span><span class="v">${ssl?.daysLeft != null ? `${ssl.daysLeft}<small> days</small>` : "–"}</span><span class="s">${ssl?.daysLeft != null ? `expires ${ssl.validTo.slice(0, 10)}` : ssl?.error ? esc(ssl.error) : "not checked yet"}</span></a>
+    <a class="kpi ${d.incidents30 ? "warn" : ""}" href="#/uptime"><span class="l">Incidents · 30 days</span><span class="v">${d.incidents30}</span><span class="s">${d.openIncidents.length ? `${d.openIncidents.length} open now` : "none open now"}</span></a>
   </div>
   <div class="cols">
     <section class="card"><header><h2>Average brief score</h2><span>last 90 days, all pages</span></header><div id="trend"></div></section>
@@ -165,7 +155,7 @@ function feed(events) {
   return events.map((e) => `<div class="ev">${sevDot(e.severity)}<div><div class="t">${e.page_id ? `<a href="#/page/${encodeURIComponent(e.page_id)}/${e.kind === "live" ? "live" : "history"}">${esc(e.title)}</a>` : esc(e.title)}</div>
     <div class="m">${esc(kindLabel(e.kind))}${e.user_name ? ` · ${esc(e.user_name)}` : ""}${e.detail?.note ? ` · “${esc(e.detail.note)}”` : ""}</div></div><time datetime="${e.at}" title="${when(e.at)}">${ago(e.at)}</time></div>`).join("");
 }
-const kindLabel = (k) => ({ brief: "Brief change", live: "Live page change", uptime: "Uptime", ssl: "SSL", plugins: "Plugins & updates", maintenance: "Maintenance", system: "Team" }[k] || k);
+const kindLabel = (k) => ({ brief: "Brief change", live: "Live page change", uptime: "Uptime", ssl: "HTTPS", plugins: "Plugins & updates", maintenance: "Maintenance", system: "Team" }[k] || k);
 function bindRows() { view().querySelectorAll("tr[data-href]").forEach((tr) => tr.addEventListener("click", () => (location.hash = tr.dataset.href))); }
 
 /* ---------- pages ---------- */
@@ -199,7 +189,7 @@ async function vPages() {
     document.getElementById("npCancel").onclick = () => (form.hidden = true);
     form.addEventListener("submit", async (e) => { e.preventDefault(); try { const b = blank({ ...TEMPL.article, id: "new", name: npName.value, url: npUrl.value, type: npType.value, p: "", custom: true, noLive: false }); const sc = scoreOf(evaluate(b)); const r = await api("POST", "/pages", { name: npName.value, type: npType.value, url: npUrl.value, brief: b, score: sc.total, fails: sc.fails }); location.hash = `#/page/${encodeURIComponent(r.id)}`; } catch (x) { toast(x.message); } });
     const aa = document.getElementById("auditAll");
-    aa.onclick = () => busy(aa, async () => { await api("POST", "/run/daily"); toast("Live pages checked"); route(); });
+    aa.onclick = () => busy(aa, async () => { await auditAll(); route(); });
   }
 }
 
@@ -326,7 +316,7 @@ async function vActivity() {
   const events = await api("GET", "/events");
   let k = "all";
   view().innerHTML = `${head("Audit trail", "What <em>changed</em>, and who changed it", "Every brief save, live-page change, outage, update and maintenance note, newest first.")}
-    <div class="chips" id="evFilter">${["all", "brief", "live", "uptime", "plugins", "maintenance", "ssl", "system"].map((x) => `<button type="button" class="chip" data-k="${x}" aria-pressed="${x === "all"}">${x === "all" ? "All" : kindLabel(x)}</button>`).join("")}</div>
+    <div class="chips" id="evFilter">${["all", "brief", "live", "uptime", "plugins", "maintenance", "system"].map((x) => `<button type="button" class="chip" data-k="${x}" aria-pressed="${x === "all"}">${x === "all" ? "All" : kindLabel(x)}</button>`).join("")}</div>
     <section class="card"><div class="feed" id="evList"></div></section>`;
   const draw = () => { document.getElementById("evList").innerHTML = feed(events.filter((e) => k === "all" || e.kind === k)); };
   draw();
@@ -338,7 +328,7 @@ async function vUptime() {
   const d = await api("GET", "/uptime");
   badges.incidents = d.incidents.filter((i) => !i.resolved_at).length; renderNav();
   view().innerHTML = `${head("Site health", "Uptime and <em>incidents</em>", "Checked every 5 minutes. An incident opens after two failed checks in a row, and alerts go out when a monitor goes down and when it recovers. WordPress critical-error pages count as down even when they return HTTP 200.",
-    canEdit() ? `<button class="btn ghost" type="button" id="sslBtn">Check SSL</button><button class="btn" type="button" id="addMon">Add monitor</button>` : "")}
+    canEdit() ? `<button class="btn" type="button" id="addMon">Add monitor</button>` : "")}
     <form class="card" id="monForm" hidden><header><h3>Add a monitor</h3></header><div class="grid">
       <div class="field"><label for="mName">Name</label><input type="text" id="mName" placeholder="Insights hub"></div>
       <div class="field"><label for="mUrl">URL</label><input type="url" id="mUrl" required placeholder="${esc(me.site)}/resources/"></div>
@@ -354,7 +344,7 @@ async function vUptime() {
       <div class="legend"><span><i style="background:var(--good)"></i>99.5%+</span><span><i style="background:var(--gold)"></i>95–99.5%</span><span><i style="background:var(--bad)"></i>below 95%</span><span><i style="background:var(--none)"></i>no checks</span></div></section>
     <div class="cols">
       <section class="card"><header><h2>Response time</h2><span class="row" style="gap:8px">last 24 h <select id="rtSel" aria-label="Monitor">${d.monitors.map((m) => `<option value="${m.id}">${esc(m.name)}</option>`).join("")}</select></span></header><div id="rt"></div></section>
-      <section class="card"><header><h2>SSL certificate</h2><span>checked daily</span></header>${d.ssl ? `<div class="kpi" style="border:0;padding:0"><span class="v">${d.ssl.daysLeft != null ? d.ssl.daysLeft + " days left" : "Unknown"}</span><span class="s">${d.ssl.validTo ? `Expires ${new Date(d.ssl.validTo).toDateString()} · ${esc(d.ssl.issuer || "")}` : esc(d.ssl.error || "")} · ${esc(d.ssl.host)} · checked ${ago(d.ssl.checkedAt)}</span></div>` : `<div class="empty">Not checked yet. The daily job checks it, or use Check SSL.</div>`}</section>
+      <section class="card"><header><h2>How checks run</h2></header><p style="margin:0">Checks run from Cloudflare's network every five minutes, so they keep working even when the website's own server is down. A WordPress "critical error" page counts as down even when it returns HTTP 200. One page's live SEO snapshot is also refreshed on each run, so every page is re-checked about once a day.</p><p style="margin:0">HTTPS certificates for the site are issued and renewed by Cloudflare. Certificate problems show up here as failed checks.</p></section>
     </div>
     <section class="card"><header><h2>Incidents</h2><span>${d.incidents.length} recorded</span></header><div class="tbl"><table><thead><tr><th>Monitor</th><th>Started</th><th>Resolved</th><th>Duration</th><th>Cause</th></tr></thead><tbody>
       ${d.incidents.map((i) => `<tr><td>${esc(i.name)}${i.in_window ? ' <span class="pill info">planned maintenance</span>' : ""}</td><td class="small">${when(i.started_at)}</td><td class="small">${i.resolved_at ? when(i.resolved_at) : '<span class="pill bad">Ongoing</span>'}</td><td class="mono">${i.duration}</td><td>${esc(i.cause)}</td></tr>`).join("") || `<tr><td colspan="5" class="muted">No incidents. Good.</td></tr>`}
@@ -367,7 +357,6 @@ async function vUptime() {
     document.getElementById("addMon").onclick = () => { f.hidden = false; mName.focus(); };
     document.getElementById("monCancel").onclick = () => (f.hidden = true);
     f.addEventListener("submit", async (e) => { e.preventDefault(); try { await api("POST", "/monitors", { name: mName.value, url: mUrl.value, must_contain: mMust.value }); toast("Monitor added"); route(); } catch (x) { toast(x.message); } });
-    document.getElementById("sslBtn").onclick = (e) => busy(e.target, async () => { await api("POST", "/ssl/check"); route(); });
   }
   view().addEventListener("click", async (e) => {
     const b = e.target.closest("button"); if (!b) return;
@@ -456,45 +445,49 @@ async function vSettings() {
     <div class="cols">
       <section class="card"><header><h2>Alerts</h2></header>
         <div class="tbl"><table><tbody>
-          ${ch(s.channels.slack, "Slack", "SLACK_WEBHOOK_URL")}${ch(s.channels.email, "Email", "RESEND_API_KEY or USE_PHP_MAIL")}
-          ${ch(s.channels.connector, "WordPress connector", "WP_CONNECTOR_KEY in app/config.php")}${ch(s.channels.cron, "Uptime cron job", s.lastCron.uptime ? `last ran ${ago(s.lastCron.uptime)}` : "hPanel → Cron Jobs → app/cron.php uptime")}${ch(!!s.lastCron.daily, "Daily cron job", s.lastCron.daily ? `last ran ${ago(s.lastCron.daily)}` : "hPanel → Cron Jobs → app/cron.php daily")}${ch(s.channels.heartbeat, "Outside heartbeat", "HEARTBEAT_URL (healthchecks.io)")}
+          ${ch(s.channels.slack, "Slack", "Worker secret SLACK_WEBHOOK_URL")}${ch(s.channels.email, "Email (Resend, free)", "Worker secrets RESEND_API_KEY and ALERT_FROM")}
+          ${ch(s.channels.connector, "WordPress connector", "Worker secret WP_CONNECTOR_KEY")}${ch(!!s.lastCron.uptime, "5-minute checks", s.lastCron.uptime ? `last ran ${ago(s.lastCron.uptime)}` : "Cloudflare Cron Trigger, starts after deploy")}${ch(!!s.lastCron.daily, "Daily check", s.lastCron.daily ? `last ran ${ago(s.lastCron.daily)}` : "Cloudflare Cron Trigger, 06:00 Manila")}${ch(s.channels.access, "Sign-in (Cloudflare Access)", "Only emails in the Access policy can open the app")}
         </tbody></table></div>
         ${isAdmin() ? `<form id="setForm" class="grid"><div class="field full"><label for="sEmails">Alert emails</label><input type="text" id="sEmails" value="${esc(s.alertEmails.join(", "))}" placeholder="jon@…, it@…"><span class="hint">Comma separated. Used when email alerts are configured.</span></div>
-          <div class="field"><label for="sSsl">Warn when SSL expires within (days)</label><input type="text" id="sSsl" value="${s.sslWarnDays}" inputmode="numeric"></div>
           <div class="field full row"><button class="btn" type="submit">Save settings</button><button class="btn ghost" type="button" id="testBtn">Send test alert</button></div></form>` : ""}
       </section>
       <section class="card"><header><h2>Your account</h2><span>${esc(me.email)}</span></header>
-        <form id="pwForm" class="grid"><div class="field"><label for="pwCur">Current password</label><input type="password" id="pwCur" autocomplete="current-password"></div>
-          <div class="field"><label for="pwNew">New password</label><input type="password" id="pwNew" autocomplete="new-password" minlength="10"></div>
-          <div class="field full"><button class="btn" type="submit">Change password</button></div></form>
+        <p style="margin:0">You sign in with Cloudflare Access, so there's no app password to manage. <a class="link" href="/cdn-cgi/access/logout">Sign out</a></p>
+        ${isAdmin() && s.connectorKey ? `<div class="field"><span class="lbl">WordPress connector key</span><span class="hint">Install the Premier Visibility Connector plugin, then add this line to the site's wp-config.php, above "That's all, stop editing".</span><pre class="code">define( 'PREMIER_VISIBILITY_KEY', '${esc(s.connectorKey)}' );</pre></div>` : ""}
+        <p style="margin:0">The <a class="link" href="report" target="_blank" rel="noopener">public visibility report</a> shows uptime, incidents and page readiness to anyone with the link. It never shows plugin versions, brief contents or team details.</p>
         ${isAdmin() ? `<div class="row"><button class="btn ghost" type="button" id="exportBtn">Download all data (JSON)</button><button class="btn ghost" type="button" id="runBtn">Run the daily check now</button></div>` : ""}
       </section>
     </div>
     ${isAdmin() ? `<section class="card"><header><h2>Team</h2><span>admins manage everything · editors edit briefs and log work · viewers read only</span></header>
       <div class="tbl"><table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th></th></tr></thead><tbody>
         ${users.map((u) => `<tr><td>${esc(u.name)}</td><td>${esc(u.email)}</td><td><select data-role="${u.id}" aria-label="Role for ${esc(u.name)}" ${u.id === me.id ? "disabled" : ""}>${["admin", "editor", "viewer"].map((r) => `<option ${u.role === r ? "selected" : ""}>${r}</option>`).join("")}</select></td>
-          <td class="row">${u.id === me.id ? "" : `<button class="btn sm ghost" type="button" data-reset="${u.id}">Reset password</button><button class="btn sm danger" type="button" data-udel="${u.id}">Remove</button>`}</td></tr>`).join("")}</tbody></table></div>
+          <td class="row">${u.id === me.id ? "" : `<button class="btn sm danger" type="button" data-udel="${u.id}">Remove</button>`}</td></tr>`).join("")}</tbody></table></div>
       <form id="userForm" class="grid" style="grid-template-columns:repeat(4,minmax(0,1fr))"><div class="field"><label for="uName">Name</label><input type="text" id="uName"></div><div class="field"><label for="uEmail">Email</label><input type="email" id="uEmail" required></div>
-        <div class="field"><label for="uRole">Role</label><select id="uRole"><option>editor</option><option>viewer</option><option>admin</option></select></div><div class="field"><label for="uPass">Starting password</label><input type="text" id="uPass" minlength="10" required></div>
-        <div class="field full"><button class="btn" type="submit">Add team member</button><span class="hint">Share the password privately. They can change it under Settings.</span></div></form></section>` : ""}
+        <div class="field"><label for="uRole">Role</label><select id="uRole"><option>editor</option><option>viewer</option><option>admin</option></select></div><div class="field" style="justify-content:flex-end"><button class="btn" type="submit">Add team member</button></div>
+        <span class="hint full">They also need to be added to the Cloudflare Access policy for this app (Zero Trust → Access → Applications → Premier Visibility), or they won't be able to open it.</span></form></section>` : ""}
     <section class="card"><header><h2>Alert log</h2><span>last 200</span></header><div class="tbl"><table><thead><tr><th>When</th><th>Channel</th><th>Subject</th><th>Result</th></tr></thead><tbody>
       ${notes.map((n) => `<tr><td class="small">${when(n.at)}</td><td>${esc(n.channel)}</td><td>${esc(n.subject)}</td><td>${n.ok ? '<span class="pill good">Sent</span>' : `<span class="pill bad">Failed</span> <span class="small muted">${esc(n.error)}</span>`}</td></tr>`).join("") || `<tr><td colspan="4" class="muted">No alerts sent yet.</td></tr>`}
     </tbody></table></div></section>`;
-  document.getElementById("setForm")?.addEventListener("submit", async (e) => { e.preventDefault(); try { await api("PUT", "/settings", { alertEmails: sEmails.value, sslWarnDays: sSsl.value }); toast("Settings saved"); } catch (x) { toast(x.message); } });
+  document.getElementById("setForm")?.addEventListener("submit", async (e) => { e.preventDefault(); try { await api("PUT", "/settings", { alertEmails: sEmails.value }); toast("Settings saved"); } catch (x) { toast(x.message); } });
   document.getElementById("testBtn")?.addEventListener("click", (e) => busy(e.target, async () => { const r = await api("POST", "/notifications/test"); toast(r.results.length ? r.results.map((x) => `${x.channel}: ${x.ok ? "sent" : x.error}`).join(" · ") : "No alert channel is configured yet"); route(); }));
-  document.getElementById("pwForm").addEventListener("submit", async (e) => { e.preventDefault(); try { await api("PUT", "/me/password", { current: pwCur.value, next: pwNew.value }); toast("Password changed"); pwCur.value = pwNew.value = ""; } catch (x) { toast(x.message); } });
   document.getElementById("exportBtn")?.addEventListener("click", (e) => busy(e.target, async () => {
     const data = await api("GET", "/export"); const a = document.createElement("a");
     a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: "application/json" })); a.download = `premier-visibility-${new Date().toISOString().slice(0, 10)}.json`; a.click();
   }));
-  document.getElementById("runBtn")?.addEventListener("click", (e) => busy(e.target, async () => { const r = await api("POST", "/run/daily"); toast(`Done. ${r.audit?.length ?? 0} pages checked${r.wp?.error ? ` · WordPress: ${r.wp.error}` : ""}`); }));
-  document.getElementById("userForm")?.addEventListener("submit", async (e) => { e.preventDefault(); try { await api("POST", "/users", { name: uName.value, email: uEmail.value, role: uRole.value, password: uPass.value }); toast("Team member added"); route(); } catch (x) { toast(x.message); } });
+  document.getElementById("runBtn")?.addEventListener("click", (e) => busy(e.target, async () => { const r = await api("POST", "/run/daily"); const n = await auditAll(); toast(`Done. ${n} pages checked${r.wp?.error ? ` · WordPress: ${r.wp.error}` : ""}`); }));
+  document.getElementById("userForm")?.addEventListener("submit", async (e) => { e.preventDefault(); try { await api("POST", "/users", { name: uName.value, email: uEmail.value, role: uRole.value }); toast("Team member added"); route(); } catch (x) { toast(x.message); } });
   view().addEventListener("change", async (e) => { const sel = e.target.closest("[data-role]"); if (sel) { try { await api("PUT", `/users/${sel.dataset.role}`, { role: sel.value }); toast("Role updated"); } catch (x) { toast(x.message); } } });
   view().addEventListener("click", async (e) => {
-    const r = e.target.closest("[data-reset]"), d = e.target.closest("[data-udel]");
-    if (r) { const pw = prompt("New password for this person (10+ characters):"); if (pw) { try { await api("PUT", `/users/${r.dataset.reset}`, { password: pw }); toast("Password reset"); } catch (x) { toast(x.message); } } }
+    const d = e.target.closest("[data-udel]");
     if (d && confirm("Remove this team member? Their past changes stay in the history.")) { try { await api("DELETE", `/users/${d.dataset.udel}`); route(); } catch (x) { toast(x.message); } }
   });
+}
+
+// Live checks run two pages per request so each stays inside the Workers free plan's CPU limit.
+async function auditAll() {
+  let n = 0;
+  for (let i = 0; i < 20; i++) { const r = await api("POST", "/run/audit"); n += r.audited.length; if (!r.remaining) break; toast(`Checked ${n} pages, ${r.remaining} to go…`); }
+  return n;
 }
 
 /* ---------- boot ---------- */

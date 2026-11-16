@@ -1,4 +1,7 @@
 node_modules/
 .data/
-public/app/config.php
+.wrangler/
+.dev.vars
 *.db
+worker/src/logo.js
+worker/src/static.js

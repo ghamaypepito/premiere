@@ -1,0 +1,31 @@
+# Premier Visibility on Cloudflare Workers (free plan).
+name = "premier-visibility"
+main = "worker/src/index.js"
+compatibility_date = "2025-09-01"
+workers_dev = false          # no unprotected *.workers.dev address; only the Access-protected subdomain
+preview_urls = false
+routes = [{ pattern = "visibility.premierfamilybusiness.com", custom_domain = true }]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "premier-visibility"
+database_id = "138a702e-6cfe-4477-b411-bd8e5232358d"
+migrations_dir = "worker/migrations"
+
+[triggers]
+crons = ["*/5 * * * *", "0 22 * * *"]   # uptime + one page audit every 5 min; WordPress status daily (06:00 Manila)
+
+[vars]
+SITE_URL = "https://premierfamilybusiness.com"
+APP_URL = "https://visibility.premierfamilybusiness.com"
+ACCESS_TEAM_DOMAIN = "holy-haze-f14c.cloudflareaccess.com"
+ACCESS_AUD = "c98d216312a74b2613b90eed1e633d42b8daa7ebb3a9502eacaca6960c4e8795"
+ADMIN_EMAILS = "ghamaypepito@gmail.com"
+
+[[rules]]
+type = "Text"
+globs = ["**/*.md"]
+fallthrough = true
+
+[observability]
+enabled = true

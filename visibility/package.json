@@ -1,13 +1,17 @@
 {
   "name": "premier-visibility",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "private": true,
-  "description": "SEO/AEO change tracking, uptime, maintenance and plugin updates for the Premier WordPress site. PHP + MySQL, built for Hostinger.",
+  "description": "SEO/AEO change tracking, uptime, maintenance and plugin updates for premierfamilybusiness.com, on Cloudflare Workers + D1.",
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs",
     "package": "node scripts/build.mjs --zip",
-    "dev": "npm run build && sh scripts/dev.sh",
-    "test": "npm run build && node --test test/*.test.mjs"
+    "dev": "npm run build && wrangler dev --local --persist-to .data --test-scheduled",
+    "test": "npm run build && node --test test/*.test.mjs",
+    "deploy": "npm run build && wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4.162.0"
   }
 }
