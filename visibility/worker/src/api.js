@@ -23,7 +23,7 @@ const route = (method, pattern, auth, fn) => {
 
 export async function handleApi(req, env, ctx) {
   const url = new URL(req.url);
-  const path = url.pathname.replace(/^\/api/, "") || "/";
+  const path = url.pathname.replace(/^(\/admin)?\/api/, "") || "/";
   const r = routes.find((x) => x.method === req.method && x.re.test(path));
   if (!r) return json(404, { error: "Not found" });
   const m = path.match(r.re);

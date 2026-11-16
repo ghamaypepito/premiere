@@ -41,7 +41,7 @@ function renderLogin() {
       <p class="lede">Your sign-in has expired. Sign in again with your Premier email through Cloudflare Access.</p>
       <a class="btn" href="./" style="align-self:flex-start;padding:16px 28px;font-size:15px">Sign in</a>
     </div>
-    <p class="legal">Team access only. The public report is at <a href="report">/report</a>.</p></div>
+    <p class="legal">Team access only. The public report is at <a href="/">visibility.premierfamilybusiness.com</a>.</p></div>
     <figure class="photo" style="margin:0"><figcaption><span>Premier Family Business Consulting</span>Uniting families in business, across generations.</figcaption></figure></div>`;
 }
 
@@ -56,7 +56,7 @@ function shell() {
         <details class="who" id="who"><summary aria-label="Account"><span class="nm">${esc(me.name)}</span><span class="avatar" aria-hidden="true">${esc(initials(me.name))}</span></summary>
           <div class="menu"><div><b>${esc(me.name)}</b><div class="small muted">${esc(me.email)} · ${esc(me.role)}</div></div>
           <a class="link" href="${esc(me.site)}" target="_blank" rel="noopener">Open ${esc(host)} ↗</a>
-          <a class="link" href="report" target="_blank" rel="noopener">Public visibility report ↗</a>
+          <a class="link" href="/" target="_blank" rel="noopener">Public visibility report ↗</a>
           <a class="link" href="#/settings">Settings</a>
           <a class="btn ghost sm" href="/cdn-cgi/access/logout">Sign out</a></div></details>
         <button type="button" class="menuBtn" id="menuBtn" aria-controls="nav" aria-expanded="false">Menu</button>
@@ -124,7 +124,7 @@ async function vDashboard() {
   const home = d.monitors[0];
   const down = d.monitors.filter((m) => m.state === "down");
   view().innerHTML = `
-  ${head("Overview", "Site <em>visibility</em>", `Brief quality, live SEO signals, uptime and updates for ${esc(new URL(me.site).hostname)}.`, `<a class="btn ghost" href="report" target="_blank" rel="noopener">Public report ↗</a>`)}
+  ${head("Overview", "Site <em>visibility</em>", `Brief quality, live SEO signals, uptime and updates for ${esc(new URL(me.site).hostname)}.`, `<a class="btn ghost" href="/" target="_blank" rel="noopener">Public report ↗</a>`)}
   ${down.length ? `<div class="banner bad"><span class="dot down"></span><b>${down.map((m) => esc(m.name)).join(", ")} ${down.length > 1 ? "are" : "is"} down.</b> ${esc(down[0].last_error)} · <a href="#/uptime">See uptime</a></div>` : ""}
   ${d.nextWindow ? `<div class="banner info"><b>Maintenance ${new Date(d.nextWindow.starts_at) <= new Date() ? "in progress" : "scheduled"}:</b> ${esc(d.nextWindow.title)} · ${when(d.nextWindow.starts_at)} to ${when(d.nextWindow.ends_at)}. Alerts are muted during the window.</div>` : ""}
   <div class="kpis">
@@ -454,7 +454,7 @@ async function vSettings() {
       <section class="card"><header><h2>Your account</h2><span>${esc(me.email)}</span></header>
         <p style="margin:0">You sign in with Cloudflare Access, so there's no app password to manage. <a class="link" href="/cdn-cgi/access/logout">Sign out</a></p>
         ${isAdmin() && s.connectorKey ? `<div class="field"><span class="lbl">WordPress connector key</span><span class="hint">Install the Premier Visibility Connector plugin, then add this line to the site's wp-config.php, above "That's all, stop editing".</span><pre class="code">define( 'PREMIER_VISIBILITY_KEY', '${esc(s.connectorKey)}' );</pre></div>` : ""}
-        <p style="margin:0">The <a class="link" href="report" target="_blank" rel="noopener">public visibility report</a> shows uptime, incidents and page readiness to anyone with the link. It never shows plugin versions, brief contents or team details.</p>
+        <p style="margin:0">The <a class="link" href="/" target="_blank" rel="noopener">public visibility report</a> shows uptime, incidents and page readiness to anyone with the link. It never shows plugin versions, brief contents or team details.</p>
         ${isAdmin() ? `<div class="row"><button class="btn ghost" type="button" id="exportBtn">Download all data (JSON)</button><button class="btn ghost" type="button" id="runBtn">Run the daily check now</button></div>` : ""}
       </section>
     </div>

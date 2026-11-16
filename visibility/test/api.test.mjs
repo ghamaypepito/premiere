@@ -43,14 +43,17 @@ before(async () => {
 after(() => { try { process.kill(-dev.pid, "SIGTERM"); } catch {} site?.close(); rmSync(tmp, { recursive: true, force: true }); });
 
 async function call(method, path, body, headers = {}) {
-  const r = await fetch(`${base}/api${path}`, { method, headers: { origin: base, ...(body ? { "content-type": "application/json" } : {}), ...headers }, body: body ? JSON.stringify(body) : undefined });
+  const r = await fetch(`${base}/admin/api${path}`, { method, headers: { origin: base, ...(body ? { "content-type": "application/json" } : {}), ...headers }, body: body ? JSON.stringify(body) : undefined });
   const text = await r.text();
   let json; try { json = JSON.parse(text); } catch { json = { raw: text.slice(0, 300) }; }
   return { status: r.status, body: json };
 }
 
-test("static app is served and the first user becomes admin", async () => {
-  assert.equal((await fetch(base + "/")).status, 200);
+test("app is served under /admin and the first user becomes admin", async () => {
+  assert.equal((await fetch(base + "/admin/")).status, 200);
+  assert.match(await (await fetch(base + "/admin/css/app.css")).text(), /--navy/);
+  assert.equal((await fetch(base + "/admin", { redirect: "manual" })).status, 301);
+  assert.equal((await fetch(base + "/api/me")).status, 200, "legacy /api path still answers");
   const me = await call("GET", "/me");
   assert.equal(me.status, 200, JSON.stringify(me.body) + devLog.slice(-800));
   assert.equal(me.body.user.email, ADMIN); assert.equal(me.body.user.role, "admin");
@@ -134,7 +137,8 @@ test("cron trigger runs checks and an audit; batched audit endpoint; dashboard; 
 });
 
 test("public report shows health but no sensitive details", async () => {
-  const r = await fetch(`${base}/report`);
+  assert.equal((await fetch(`${base}/report`)).status, 200);
+  const r = await fetch(`${base}/`);
   assert.equal(r.status, 200);
   const html = await r.text();
   assert.match(html, /Premier Visibility <em>report<\/em>/);
