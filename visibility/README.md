@@ -1,6 +1,6 @@
 # Premier Visibility
 
-The team's control room for the Premier WordPress site, hosted on **Hostinger** as `visibility.<site>`. It tracks four things:
+The team's control room for the Premier WordPress site, hosted on **Hostinger** at **https://premierfamilybusiness.com/visibility/**. It tracks four things:
 
 | Area | What it records |
 |---|---|
@@ -30,28 +30,25 @@ visibility/
 
 ## Install on Hostinger (about 30 minutes)
 
-### 1. Create the subdomain
-hPanel → **Websites** → the site's **Dashboard** → **Domains → Subdomains** → create `visibility` on **premierfamilybusiness.com**, giving `https://visibility.premierfamilybusiness.com`.
-Note the folder hPanel creates for it (for example `public_html/visibility`).
+### 1. The folder
+The app lives in a `visibility` folder inside the WordPress site's `public_html`, so its address is **https://premierfamilybusiness.com/visibility/**. No subdomain or DNS change is needed. WordPress ignores real folders, so the site is unaffected.
 
-> **DNS through Cloudflare:** premierfamilybusiness.com is served through Cloudflare. If its DNS is managed in Cloudflare, also add a record there: `A visibility` pointing to the Hostinger server IP shown in hPanel, or the `CNAME` hPanel gives you. If a subdomain isn't possible, upload to `public_html/visibility/` instead and use `https://premierfamilybusiness.com/visibility/`. The app works in a subfolder without changes.
-
-Then hPanel → **Security → SSL** and make sure the subdomain has a certificate (Hostinger's free SSL, usually automatic).
+hPanel → **Websites** → premierfamilybusiness.com → **Files → File Manager** → open `public_html` → **New folder** → `visibility`.
 
 ### 2. Create the database
 hPanel → **Databases → Management** → create a MySQL database and user (e.g. `u123456789_visibility`). Keep the name, user and password handy. The tables are created automatically on first use.
 
 ### 3. Upload the app
-1. hPanel → **Files → File Manager** → open the subdomain's folder.
+1. In File Manager, open `public_html/visibility`.
 2. Upload `dist/premier-visibility-hostinger.zip`, right-click → **Extract** into that folder. `index.html` must sit directly in it, next to `api/` and `app/`.
 3. In `app/`, copy `config.sample.php` to **`config.php`** and fill it in:
    - `DB_DSN`, `DB_USER`, `DB_PASS`: the database from step 2. The host is `localhost`.
    - `SITE_URL`: `https://premierfamilybusiness.com`
-   - `APP_URL`: the address of this app
+   - `APP_URL`: `https://premierfamilybusiness.com/visibility/`
    - `SESSION_SECRET` and `CRON_SECRET`: long random strings
    - `ADMIN_EMAIL` / `ADMIN_PASSWORD` / `ADMIN_NAME`: the first admin account
    - Alerts: `SLACK_WEBHOOK_URL`, and/or `ALERT_EMAILS` + `RESEND_API_KEY` (most reliable), or `USE_PHP_MAIL` = `true` to send through Hostinger's mail
-4. Make sure the subdomain uses **PHP 8.1 or newer**: hPanel → **Advanced → PHP Configuration**.
+4. Make sure the site uses **PHP 8.1 or newer**: hPanel → **Advanced → PHP Configuration**.
 
 ### 4. First sign-in
 Open the app and sign in with the admin email and password from `config.php`. Then:
@@ -61,12 +58,12 @@ Open the app and sign in with the admin email and password from `config.php`. Th
 - press **Run the daily check now** to take the first live snapshots
 
 ### 5. Scheduled checks
-hPanel → **Advanced → Cron Jobs** → create two jobs. Take the full folder path from File Manager: it looks like `/home/u123456789/domains/<domain>/public_html/visibility`.
+hPanel → **Advanced → Cron Jobs** → create two jobs. Take the full folder path from File Manager: it looks like `/home/u123456789/domains/premierfamilybusiness.com/public_html/visibility`.
 
 | Schedule | Command |
 |---|---|
-| Every 5 minutes (`*/5 * * * *`) | `/usr/bin/php /home/u123456789/domains/<domain>/public_html/visibility/app/cron.php uptime` |
-| Once a day (e.g. `0 22 * * *`, which is 06:00 Manila time if the server clock is UTC) | `/usr/bin/php /home/u123456789/domains/<domain>/public_html/visibility/app/cron.php daily` |
+| Every 5 minutes (`*/5 * * * *`) | `/usr/bin/php /home/u123456789/domains/premierfamilybusiness.com/public_html/visibility/app/cron.php uptime` |
+| Once a day (e.g. `0 22 * * *`, which is 06:00 Manila time if the server clock is UTC) | `/usr/bin/php /home/u123456789/domains/premierfamilybusiness.com/public_html/visibility/app/cron.php daily` |
 
 Settings → Alerts shows when each job last ran, so you can confirm they're working.
 
@@ -104,3 +101,6 @@ The SEO/AEO scoring rules live in `public/js/rules.js` and run in the browser; t
 - Sessions are signed, HttpOnly, SameSite=Lax cookies. Cross-site writes are refused.
 - The app sends `noindex` headers and a `robots.txt` that disallows everything.
 - Admins can download all data as JSON from Settings. Hostinger's daily backups include the database.
+
+## Cloudflare
+The site runs behind Cloudflare. The API answers with `Cache-Control: no-store` and PHP isn't cached by default, so nothing extra is needed. After uploading a new version, purge the Cloudflare cache (or just `/visibility/*`) so browsers get the new JavaScript and CSS.

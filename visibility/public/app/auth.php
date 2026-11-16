@@ -15,13 +15,18 @@ function is_https(): bool {
     return (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https');
 }
 
+// Scope the cookie to the app's own folder (e.g. /visibility/) so WordPress on the same domain never receives it.
+function cookie_path(): string {
+    $dir = rtrim(str_replace('\\', '/', dirname(dirname($_SERVER['SCRIPT_NAME'] ?? '/api/index.php'))), '/');
+    return $dir === '' || $dir === '.' ? '/' : $dir . '/';
+}
 function set_session(int $uid): void {
     $payload = b64u(json_encode(['uid' => $uid, 'exp' => time() + SESSION_DAYS * 86400]));
     $sig = b64u(hash_hmac('sha256', $payload, session_secret(), true));
-    setcookie(SESSION_COOKIE, "$payload.$sig", ['expires' => time() + SESSION_DAYS * 86400, 'path' => '/', 'secure' => is_https(), 'httponly' => true, 'samesite' => 'Lax']);
+    setcookie(SESSION_COOKIE, "$payload.$sig", ['expires' => time() + SESSION_DAYS * 86400, 'path' => cookie_path(), 'secure' => is_https(), 'httponly' => true, 'samesite' => 'Lax']);
 }
 function clear_session(): void {
-    setcookie(SESSION_COOKIE, '', ['expires' => time() - 3600, 'path' => '/', 'secure' => is_https(), 'httponly' => true, 'samesite' => 'Lax']);
+    setcookie(SESSION_COOKIE, '', ['expires' => time() - 3600, 'path' => cookie_path(), 'secure' => is_https(), 'httponly' => true, 'samesite' => 'Lax']);
 }
 
 function current_user(): ?array {
