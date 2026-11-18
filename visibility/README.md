@@ -32,7 +32,7 @@ visibility/
   worker/migrations/   D1 schema
   public/              web app (HTML/CSS/JS), bundled into the Worker at build time
   public/js/rules.js   SEO/AEO scoring rules (browser); starting briefs are generated from it
-  wp-connector/        the read-only WordPress plugin
+  wp-connector/        the WordPress plugin (read-only status; optional SEO fixes with backup and undo)
   test/                end-to-end tests in Cloudflare's local runtime against a fake WordPress site
 ```
 
@@ -42,6 +42,7 @@ visibility/
 - **Alerts:** add a Slack webhook and/or a [Resend](https://resend.com) API key (free tier) as Worker secrets, then use Settings → *Send test alert*:
   `npx wrangler secret put SLACK_WEBHOOK_URL`, `npx wrangler secret put RESEND_API_KEY`, and optionally `ALERT_FROM` (needs the domain verified in Resend). Alert recipients are edited in Settings.
 - **WordPress connector:** install `dist/premier-visibility-connector.zip` in WordPress, then copy the `define( 'PREMIER_VISIBILITY_KEY', … )` line shown in the app under Settings (admins only) into `wp-config.php`.
+- **SEO fixes through the connector (optional):** adding `define( 'PREMIER_VISIBILITY_ALLOW_WRITES', true );` to `wp-config.php` switches on the connector's write endpoints (`/meta` for Rank Math meta descriptions, `/schema` for per-page JSON-LD, `/replace-links` for exact link URL swaps in content and Elementor data, `/undo`). Each change keeps a backup on the page; none touch layout or styling. Remove the line to make the connector read-only again.
 
 ## Deploy
 
